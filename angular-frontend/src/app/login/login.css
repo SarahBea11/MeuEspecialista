@@ -11,16 +11,19 @@
 .login-esquerda {
     width: 50%;
     height: 100%;
-    background-color: #0d4d2b;
+    background-color: #044F23;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 
+.logo-box {
+    width: 350px;
+}
+
 .logo-box img {
-    width: 300px;
-    height: auto;
+    width: 100%;
 }
 
 
@@ -42,10 +45,12 @@
 }
 
 
-.form-wrapper h1 {
-    font-size: 38px;
-    margin-bottom: 30px;
-    text-align: center;
+.form-wrapper {
+    width: 100%;
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
 }
 
 
