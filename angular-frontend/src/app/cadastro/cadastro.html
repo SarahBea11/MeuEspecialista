@@ -12,54 +12,84 @@
         <p>Escolha uma opção:</p>
         <div class="opcoes-alinhadas">
             <label>
-                <input type="radio" name="perfil"> Sou Médico
+                <input type="radio" name="perfil" value="medico"
+                ngModel>
+                 Sou Médico
             </label>
 
             <label>
-                <input type="radio" name="perfil"> Sou Paciente 
+                <input type="radio" name="perfil" value="paciente"
+                ngModel>
+                 Sou Paciente 
             </label>
         </div>
     </div>
 
-    <form>
+    <form (ngSubmit)="criarConta(cadastroForm)" #cadastroForm="ngForm">
             <div class = "campo">
-                <input type = "text" placeholder="Nome Completo:">
+                <input type = "text" name="nome"
+                placeholder="Nome Completo:"
+                ngModel>
 
             </div>
             
             <div class = "campo">
-                <input type = "email" placeholder="E-mail:">
+                <input type = "email" name="email"
+                 placeholder="E-mail:"
+                 ngMpodel>
 
             </div>
 
             <div class = "duas-colunas">
-                <input type = "password" placeholder="Senha:">
-                <input type = "text" placeholder="CRM:">
+                <input type = "password" name="senha"
+                placeholder="Senha:"
+                ngModel>
+
+                <input type = "text" name="crm"
+                 placeholder="CRM:"
+                 ngModel>
             </div>
 
             <div class = "duas-colunas">
-                <input type = "password" placeholder="Confirmar Senha:">
-                <input type = "text" placeholder="CPF:">
+                <input type = "password" name="confirmaSenha"
+                placeholder="Confirmar Senha:"
+                ngModel>
+
+                <input type = "text" name="cpf" 
+                placeholder="CPF:"
+                ngModel>
             </div>
 
             <div class = "duas-colunas">
-                <input type = "text" placeholder="Cidade:">
-                <input type = "text" placeholder="Endereço:">
+                <input type = "text" name="cidade"
+                 placeholder="Cidade:" 
+                 ngModel>
+
+                <input type = "text" name="endereco"
+                 placeholder="Endereço:"
+                 ngModel>
             </div>
 
             <div class="duas-colunas">
-                <input type = "text" placeholder="Telefone:">
-                <input type = "text" placeholder="Especialidade:">
+                <input type = "text" name="telefone"
+                 placeholder="Telefone:"
+                 ngModel>
+
+                <input type = "text" name="especialidade"
+                 placeholder="Especialidade:"
+                 ngModel>
             </div>
 
             <div class ="campo">
-                <input type = "text" placeholder="Convênio:">
+                <input type = "text" name="convenio"
+                placeholder="Convênio:" 
+                ngModel>
             </div>
 
             <div class = "botoes">
-                <button type = "submit "class = "criar">Criar</button>
-                <button type ="reset" class = "limpar">Limpar</button>
-                <button type="button" class="cancelar" routerLink="/">Cancelar</button>
+                <button type="submit" class = "criar">Criar</button>
+                <button type="reset" class = "limpar">Limpar</button>
+                <button type="button" class="cancelar" (click)="cancelar()">Cancelar</button>
             </div>
         </form>
     </div>
