@@ -7,8 +7,8 @@ import { Login } from './login/login';
 import { Cadastro } from './cadastro/cadastro';
 
 @NgModule({
-  declarations: [App, Login, Cadastro],
-  imports: [BrowserModule, AppRoutingModule],
+  declarations: [App, Login],
+  imports: [BrowserModule, Cadastro, AppRoutingModule],
   providers: [provideBrowserGlobalErrorListeners()],
   bootstrap: [App],
 })

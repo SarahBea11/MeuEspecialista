@@ -1,0 +1,132 @@
+*{
+    box-sizing: border-box;
+}
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    margin:0;
+    background: #f0f0f0;
+}
+
+.navbar{
+    background-color: #044F23;
+    height: 70px;
+    display:flex;
+    align-items: center;
+    padding-left: 20px;
+}
+
+.logo {
+    width: 65px;
+}
+
+.logo img {
+    width: 100%;
+}
+
+.container{
+    width: 900px;
+    margin: 40px auto;
+    text-align:center;
+}
+
+h1{
+    text-align: center;
+    margin-bottom: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.tipo-usuario {
+    background-color: #d9d9d9; 
+    border: 1px solid #333;    
+    border-radius: 10px;
+    padding: 15px;
+    width: 350px;        
+    margin: 20px;
+    font-weight: bold;  
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: left; 
+
+}
+
+
+.tipo-usuario p {
+    margin-top: 0;
+    margin-bottom: 10px;
+    text-align: left;         
+}
+
+.opcoes-alinhadas {
+    display: flex;             
+    justify-content: center;   
+    gap: 30px; 
+    font:Arial;               
+}
+
+.opcoes-alinhadas label {
+    display: flex;
+    align-items: center;       
+    gap: 8px;                  
+    cursor: pointer;
+}
+
+.opcoes-alinhadas input {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+form{
+    width:100%;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin:6px 0;
+    border:none;
+    background:#d9d9d9;
+    border-radius:4px;
+    font-size:14px;
+
+}
+
+.duas-colunas{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:10px;
+}
+
+.duas-colunas input{
+    width:100%;
+    flex:1;
+}
+
+.botoes{
+    display: flex;
+    justify-content: right;
+    gap:20px;
+    margin-top:20px;
+}
+
+button{
+    padding: 12px;
+    margin-bottom: 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    border: 2px solid #0d4d2b;
+    font-size: 16px;
+}
+
+.criar{
+    background: #39ac4a;
+}
+
+.limpar{
+    background: #39ac4a ;
+}
+
+.cancelar{
+    background: #e43d3d;
+}
