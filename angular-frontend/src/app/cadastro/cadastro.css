@@ -121,12 +121,17 @@ button{
 
 .criar{
     background: #39ac4a;
+    border-color: #0a0a0a;
+
 }
 
 .limpar{
-    background: #39ac4a ;
+    background: #39ac4a;
+    border-color: #0a0a0a;
+
 }
 
 .cancelar{
     background: #e43d3d;
+    border-color: #0a0a0a;
 }

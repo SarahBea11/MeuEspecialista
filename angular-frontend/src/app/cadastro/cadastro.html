@@ -1,65 +1,65 @@
-<nav class = "navbar">
-    <div class = "logo">
-        <img src="assets/logo-especialista.png" alt="Meu Especialista">
+    <nav class = "navbar">
+        <div class = "logo">
+            <img src="assets/logo-especialista.png" alt="Meu Especialista">
+        </div>
+
+    </nav>
+
+    <div class = "container">
+        <h1>Cadastrar-se</h1>
+
+    <div class="tipo-usuario"> 
+        <p>Escolha uma opção:</p>
+        <div class="opcoes-alinhadas">
+            <label>
+                <input type="radio" name="perfil"> Sou Médico
+            </label>
+
+            <label>
+                <input type="radio" name="perfil"> Sou Paciente 
+            </label>
+        </div>
     </div>
 
-</nav>
+    <form>
+            <div class = "campo">
+                <input type = "text" placeholder="Nome Completo:">
 
-<div class = "container">
-    <h1>Cadastrar-se</h1>
+            </div>
+            
+            <div class = "campo">
+                <input type = "email" placeholder="E-mail:">
 
-<div class="tipo-usuario"> 
-    <p>Escolha uma opção:</p>
-    <div class="opcoes-alinhadas">
-        <label>
-            <input type="radio" name="perfil"> Sou Médico
-        </label>
+            </div>
 
-        <label>
-            <input type="radio" name="perfil"> Sou Paciente 
-        </label>
+            <div class = "duas-colunas">
+                <input type = "password" placeholder="Senha:">
+                <input type = "text" placeholder="CRM:">
+            </div>
+
+            <div class = "duas-colunas">
+                <input type = "password" placeholder="Confirmar Senha:">
+                <input type = "text" placeholder="CPF:">
+            </div>
+
+            <div class = "duas-colunas">
+                <input type = "text" placeholder="Cidade:">
+                <input type = "text" placeholder="Endereço:">
+            </div>
+
+            <div class="duas-colunas">
+                <input type = "text" placeholder="Telefone:">
+                <input type = "text" placeholder="Especialidade:">
+            </div>
+
+            <div class ="campo">
+                <input type = "text" placeholder="Convênio:">
+            </div>
+
+            <div class = "botoes">
+                <button type = "submit "class = "criar">Criar</button>
+                <button type ="reset" class = "limpar">Limpar</button>
+                <button type="button" class="cancelar" routerLink="/">Cancelar</button>
+            </div>
+        </form>
     </div>
-</div>
-
-<form>
-        <div class = "campo">
-            <input type = "text" placeholder="Nome Completo:">
-
-        </div>
-        
-        <div class = "campo">
-            <input type = "email" placeholder="E-mail:">
-
-        </div>
-
-        <div class = "duas-colunas">
-            <input type = "password" placeholder="Senha:">
-            <input type = "text" placeholder="CRM:">
-        </div>
-
-        <div class = "duas-colunas">
-            <input type = "password" placeholder="Confirmar Senha:">
-            <input type = "text" placeholder="CPF:">
-        </div>
-
-        <div class = "duas-colunas">
-            <input type = "text" placeholder="Cidade:">
-            <input type = "text" placeholder="Endereço:">
-        </div>
-
-        <div class="duas-colunas">
-            <input type = "text" placeholder="Telefone:">
-            <input type = "text" placeholder="Especialidade:">
-        </div>
-
-        <div class ="campo">
-            <input type = "text" placeholder="Convênio:">
-        </div>
-
-        <div class = "botoes">
-            <button class = "criar">Criar</button>
-            <button class = "limpar">Limpar</button>
-            <button class = "cancelar">Cancelar</button>
-        </div>
-    </form>
-</div>

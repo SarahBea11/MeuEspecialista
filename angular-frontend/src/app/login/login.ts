@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-login',
   standalone: false,
   templateUrl: './login.html',
-  styleUrl: './login.css',
+  styleUrls: ['./login.css']
 })
 export class Login {
 loginData = {
@@ -14,7 +14,7 @@ loginData = {
   }
 
 
-construtor(){}
+constructor(){}
 
 onLogin() {
   console.log(this.loginData);
