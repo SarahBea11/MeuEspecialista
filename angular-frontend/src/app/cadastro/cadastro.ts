@@ -12,6 +12,8 @@ import { Router } from '@angular/router';
 export class Cadastro {
 
 tipoUsuario:string = '';
+crm:string='';
+especialidade:string='';
 
 constructor(private router: Router){}
 
@@ -22,5 +24,15 @@ constructor(private router: Router){}
 
   cancelar() {
     this.router.navigate(['/']);
+  }
+
+  limpar(form:any){
+
+    form.resetForm();
+
+    this.tipoUsuario ='';
+    this.crm = '';
+    this.especialidade = '';
+
   }
 }
