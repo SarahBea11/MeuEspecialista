@@ -8,7 +8,9 @@
     <div class = "container">
         <h1>Cadastrar-se</h1>
 
-    <div class="tipo-usuario"> 
+
+    <form (ngSubmit)="criarConta(cadastroForm)" #cadastroForm="ngForm">
+             <div class="tipo-usuario"> 
         <p>Escolha uma opção:</p>
         <div class="opcoes-alinhadas">
             <label>
@@ -25,7 +27,6 @@
         </div>
     </div>
 
-    <form (ngSubmit)="criarConta(cadastroForm)" #cadastroForm="ngForm">
             <div class = "campo">
                 <input type = "text" name="nome"
                 placeholder="Nome Completo:"
