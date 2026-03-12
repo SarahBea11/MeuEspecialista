@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-cadastro',
   standalone:true,
@@ -9,6 +10,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./cadastro.css']
 })
 export class Cadastro {
+
+tipoUsuario:string = '';
 
 constructor(private router: Router){}
 

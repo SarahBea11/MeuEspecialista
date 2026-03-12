@@ -135,3 +135,16 @@ button{
     background: #e43d3d;
     border-color: #0a0a0a;
 }
+
+input:disabled{
+    background-color: #cfcfcf;
+    color: #777;
+    border: 2px dashed #999;
+    cursor: not-allowed;
+}
+
+input:focus{
+    outline: none;
+    border: 2px solid #044F23;
+    background-color: #ffffff;
+}

@@ -15,13 +15,13 @@
         <div class="opcoes-alinhadas">
             <label>
                 <input type="radio" name="perfil" value="medico"
-                ngModel>
+                [(ngModel)]="tipoUsuario" >
                  Sou Médico
             </label>
 
             <label>
                 <input type="radio" name="perfil" value="paciente"
-                ngModel>
+                [(ngModel)]="tipoUsuario" >
                  Sou Paciente 
             </label>
         </div>
@@ -37,7 +37,7 @@
             <div class = "campo">
                 <input type = "email" name="email"
                  placeholder="E-mail:"
-                 ngMpodel>
+                 ngModel>
 
             </div>
 
@@ -48,7 +48,8 @@
 
                 <input type = "text" name="crm"
                  placeholder="CRM:"
-                 ngModel>
+                 ngModel
+                 [disabled]="tipoUsuario !== 'medico'">
             </div>
 
             <div class = "duas-colunas">
@@ -78,7 +79,8 @@
 
                 <input type = "text" name="especialidade"
                  placeholder="Especialidade:"
-                 ngModel>
+                 ngModel
+                 [disabled]="tipoUsuario !=='medico'">
             </div>
 
             <div class ="campo">
