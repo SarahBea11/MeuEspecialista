@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { AuthService } from '../services/auth';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -13,11 +15,19 @@ loginData = {
 
   }
 
+constructor(private authService: AuthService, private router: Router) {}
 
-constructor(){}
-
-onLogin() {
-  console.log(this.loginData);
+  logar() {
+    this.authService.login(this.loginData).subscribe({
+      next: (res) => {
+        console.log('Sucesso!', res);
+        alert('Login realizado!');
+        this.router.navigate(['/cadastro']); // Redireciona após o login
+      },
+      error: (err) => {
+        console.error('Erro!', err);
+        alert('E-mail ou senha incorretos.');
+      }
+    });
   }
-
 }
