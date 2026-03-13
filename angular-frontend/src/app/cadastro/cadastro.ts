@@ -1,25 +1,56 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-cadastro',
-  standalone:true,
-  imports:[FormsModule],
+  standalone: true,
+  imports: [FormsModule, HttpClientModule],
   templateUrl: './cadastro.html',
   styleUrls: ['./cadastro.css']
 })
 export class Cadastro {
+  tipoUsuario: string = '';
+  crm: string = '';
+  especialidade: string = '';
+  mensagemSucesso: boolean = false;
 
-tipoUsuario:string = '';
-crm:string='';
-especialidade:string='';
+  constructor(private router: Router, private http: HttpClient) {}
 
-constructor(private router: Router){}
+  criarConta(form: NgForm) {
+    const dados: any = {
+      tipo: this.tipoUsuario,
+      nome: form.value.nome,
+      email: form.value.email,
+      senha: form.value.senha,
+      cidade: form.value.cidade,
+      endereco: form.value.endereco,
+      telefone: form.value.telefone,
+      especialidade: form.value.especialidade,
+      crm: form.value.crm,
+      cpf: form.value.cpf,
+      convenio_id: this.tipoUsuario === 'paciente' ? 1 : undefined,
+      convenios: this.tipoUsuario === 'medico' ? [1] : undefined
+    };
 
-  criarConta(form:any){
-    console.log("Conta criada");
-    console.log(form.value);
+    this.http.post('http://localhost/MeuEspecialista/php-backend/api/cadastro.php', dados, {
+      headers: { 'Content-Type': 'application/json' }
+    }).subscribe({
+      next: (res: any) => {
+        console.log(res);
+        alert(res.message);
+        this.mensagemSucesso = true;
+        form.resetForm();
+        this.tipoUsuario = '';
+        this.crm = '';
+        this.especialidade = '';
+      },
+      error: (err) => {
+        console.error(err);
+        alert('Erro ao cadastrar: ' + (err.error?.message || err.statusText));
+      }
+    });
   }
 
   cancelar() {
