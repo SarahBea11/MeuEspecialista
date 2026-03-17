@@ -59,7 +59,8 @@
 
                 <input type = "text" name="cpf" 
                 placeholder="CPF:"
-                ngModel>
+                ngModel
+                [disabled] = "tipoUsuario !== 'paciente'">
             </div>
 
             <div class = "duas-colunas">
