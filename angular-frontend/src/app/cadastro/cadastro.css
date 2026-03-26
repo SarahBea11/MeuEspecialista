@@ -120,20 +120,20 @@ button{
 }
 
 .criar{
-    background: #39ac4a;
-    border-color: #0a0a0a;
+    background: rgb(216, 209, 209);
+    border-color: #044F23;
 
 }
 
 .limpar{
-    background: #39ac4a;
-    border-color: #0a0a0a;
+    background: rgb(216, 209, 209);
+    border-color: #044F23
 
 }
 
 .cancelar{
-    background: #e43d3d;
-    border-color: #0a0a0a;
+    background:rgb(216, 209, 209);
+    border-color: #044F23;
 }
 
 input:disabled{
