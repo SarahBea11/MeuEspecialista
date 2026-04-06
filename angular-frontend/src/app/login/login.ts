@@ -6,16 +6,18 @@ import { Router } from '@angular/router';
   selector: 'app-login',
   standalone: false,
   templateUrl: './login.html',
-  styleUrls: ['./login.css']
+  styleUrls: ['./login.css'],
 })
 export class Login {
-loginData = {
-  email:'',
-  password:''
+  loginData = {
+    email: '',
+    password: '',
+  };
 
-  }
-
-constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) {}
 
   logar() {
     this.authService.login(this.loginData).subscribe({
@@ -27,7 +29,7 @@ constructor(private authService: AuthService, private router: Router) {}
       error: (err) => {
         console.error('Erro!', err);
         alert('E-mail ou senha incorretos.');
-      }
+      },
     });
   }
 }
