@@ -1,10 +1,21 @@
 <?php
+//
+if (isset($_SERVER['HTTP_ORIGIN'])) {
+    header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+    header("Access-Control-Allow-Credentials: true");
+    header("Access-Control-Max-Age: 86400");
+}
 
-header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: POST");
-header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
 
+// 🔥 Resposta obrigatória para preflight
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit(0);
+}
+//
 include_once '../config/database.php';
 include_once '../models/Usuario.php';
 
@@ -14,15 +25,15 @@ $usuario = new Usuario($db);
 
 $data = json_decode(file_get_contents("php://input"));
 
-if(!empty($data->email) && !empty($data->senha)) {
+if (!empty($data->email) && !empty($data->password)) {
     $usuario->email = $data->email;
     $stmt = $usuario->findByEmail();
     $num = $stmt->rowCount();
 
-    if($num > 0) {
+    if ($num > 0) {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        
-        if($data->senha == $row['senha']) {
+
+        if ($data->password == $row['senha']) {
             http_response_code(200);
             echo json_encode(array(
                 "status" => "success",
@@ -38,4 +49,3 @@ if(!empty($data->email) && !empty($data->senha)) {
         echo json_encode(array("status" => "error", "message" => "Usuário não encontrado."));
     }
 }
-?>

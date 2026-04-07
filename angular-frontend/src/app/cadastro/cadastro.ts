@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-cadastro',
   standalone: true,
-  imports: [FormsModule, HttpClientModule],
+  imports: [CommonModule, FormsModule, HttpClientModule],
   templateUrl: './cadastro.html',
   styleUrls: ['./cadastro.css'],
 })

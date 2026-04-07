@@ -1,7 +1,7 @@
 <h1 align="center">💼 MeuEspecialista</h1>
 
 <p align="center">
-  Plataforma para conectar usuários a especialistas de diversas áreas 🚀
+  Plataforma para conectar usuários a especialistas de diversas áreas relacionadas à saúde 🚀
 </p>
 
 <p align="center">
@@ -13,7 +13,7 @@
 
 ## 📌 Sobre o projeto
 
-O **MeuEspecialista** é uma plataforma desenvolvida com o objetivo de conectar usuários a profissionais da area de saúde de diversas 
+O **MeuEspecialista** é uma plataforma desenvolvida com o objetivo de conectar usuários a profissionais da area de saúde de diversas
 , facilitando a busca por serviços de forma rápida e eficiente.
 
 Este projeto foi desenvolvido como prática acadêmica, focando em desenvolvimento web e organização de sistemas.
@@ -22,26 +22,27 @@ Este projeto foi desenvolvido como prática acadêmica, focando em desenvolvimen
 
 ## 🎯 Funcionalidades
 
-- ✅ Cadastro de usuários  
-- ✅ Listagem de especialistas  
-- ✅ Busca por serviços  
-- 🚧 Sistema de agendamento (em desenvolvimento)  
+- ✅ Cadastro de usuários
+- ✅ Listagem de especialistas
+- ✅ Busca por serviços
+- 🚧 Sistema de agendamento (em desenvolvimento)
 
 ---
 
 ## 🛠️ Tecnologias utilizadas
 
-- HTML  
-- CSS  
+- HTML
+- CSS
 - JavaScript
-- PHP  
-- Git e GitHub  
+- PHP
+- Git e GitHub
 
 ---
 
 ## 📸 Demonstração
 
 <!-- COLOQUE PRINTS DO SEU SISTEMA AQUI -->
+
 ![preview](link-da-imagem)
 
 ---
@@ -56,3 +57,4 @@ git clone https://github.com/SarahBea11/MeuEspecialista.git
 cd MeuEspecialista
 
 # Abra o arquivo index.html no navegador
+```
