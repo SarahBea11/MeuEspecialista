@@ -1,5 +1,4 @@
 <?php
-//
 if (isset($_SERVER['HTTP_ORIGIN'])) {
     header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
     header("Access-Control-Allow-Credentials: true");
@@ -10,12 +9,10 @@ header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
 
-// 🔥 Resposta obrigatória para preflight
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit(0);
 }
-//
 include_once '../config/database.php';
 include_once '../models/Usuario.php';
 
@@ -25,7 +22,7 @@ $usuario = new Usuario($db);
 
 $data = json_decode(file_get_contents("php://input"));
 
-if (!empty($data->email) && !empty($data->password)) {
+if (!empty($data->email) && !empty($senhaHash)) {
     $usuario->email = $data->email;
     $stmt = $usuario->findByEmail();
     $num = $stmt->rowCount();
@@ -33,7 +30,7 @@ if (!empty($data->email) && !empty($data->password)) {
     if ($num > 0) {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($data->password == $row['senha']) {
+        if ($senhaHash == $row['senha']) {
             http_response_code(200);
             echo json_encode(array(
                 "status" => "success",

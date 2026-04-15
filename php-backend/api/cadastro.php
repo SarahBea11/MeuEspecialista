@@ -1,5 +1,4 @@
 <?php
-
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
@@ -9,7 +8,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit();
 }
-
 include_once '../config/database.php';
 
 $database = new Database();
@@ -25,7 +23,6 @@ if (
 ) {
 
     try {
-
         $db->beginTransaction();
 
         $senhaHash = password_hash($data->senha, PASSWORD_DEFAULT);
@@ -38,7 +35,6 @@ if (
         $stmt->bindParam(":email", $data->email);
         $stmt->bindParam(":senha", $senhaHash);
         $stmt->bindParam(":tipo", $data->tipo);
-
         $stmt->execute();
 
         $usuario_id = $db->lastInsertId();
@@ -76,7 +72,6 @@ if (
             if (empty($data->cpf)) {
                 throw new Exception("CPF é obrigatório para paciente.");
             }
-
             $query = "INSERT INTO pacientes_perfil 
                       (usuario_id, cpf, convenio_id)
                       VALUES (:usuario_id, :cpf, :convenio_id)";
@@ -91,7 +86,6 @@ if (
 
             $stmt->execute();
         }
-
         $db->commit();
 
         http_response_code(200);
@@ -99,7 +93,6 @@ if (
             "status" => "success",
             "message" => "Cadastro realizado com sucesso"
         ]);
-
     } catch (Exception $e) {
 
         $db->rollBack();
@@ -110,7 +103,6 @@ if (
             "message" => $e->getMessage()
         ]);
     }
-
 } else {
     http_response_code(400);
     echo json_encode([
@@ -118,4 +110,3 @@ if (
         "message" => "Dados incompletos"
     ]);
 }
-
