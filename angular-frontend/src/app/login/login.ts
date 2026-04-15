@@ -24,7 +24,7 @@ export class Login {
       next: (res) => {
         console.log('Sucesso!', res);
         alert('Login realizado!');
-        this.router.navigate(['/cadastro']); // Redireciona após o login
+        this.router.navigate(['/buscacr']);
       },
       error: (err) => {
         console.error('Erro!', err);
