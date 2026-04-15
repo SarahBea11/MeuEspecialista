@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from '../services/auth';
 import { Router } from '@angular/router';
 
+
 @Component({
   selector: 'app-login',
   standalone: false,
@@ -24,7 +25,7 @@ export class Login {
       next: (res) => {
         console.log('Sucesso!', res);
         alert('Login realizado!');
-        this.router.navigate(['/buscacr']);
+        this.router.navigate(['/buscar']);
       },
       error: (err) => {
         console.error('Erro!', err);
