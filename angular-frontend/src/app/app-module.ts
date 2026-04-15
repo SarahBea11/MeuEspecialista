@@ -8,9 +8,10 @@ import { App } from './app';
 import { Login } from './login/login';
 import { Cadastro } from './cadastro/cadastro';
 import { Home } from './home/home';
+import { Perfil } from './perfil/perfil';
 
 @NgModule({
-  declarations: [App, Login, Home],
+  declarations: [App, Login, Home, Perfil],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, Cadastro],
   providers: [],
   bootstrap: [App],

@@ -4,12 +4,14 @@ import { Login } from './login/login';
 import { Cadastro } from './cadastro/cadastro';
 import { Home } from './home/home';
 import { Buscar } from './buscar/buscar';
+import { Perfil } from './perfil/perfil';
 
 export const routes: Routes = [
   { path: 'login', component: Login },
   { path: 'cadastro', component: Cadastro },
   { path: '', component: Home },
-  { path: 'buscar', component: Buscar }
+  { path: 'buscar', component: Buscar },
+  { path: 'perfil', component: Perfil }
 
 ];
 
