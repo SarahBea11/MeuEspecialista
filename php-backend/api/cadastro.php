@@ -22,7 +22,7 @@ if (
     !empty($data->tipo)
 ) {
 
-    try {
+    try {   
         $db->beginTransaction();
 
         $senhaHash = password_hash($data->senha, PASSWORD_DEFAULT);

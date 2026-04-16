@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 export class Login {
   loginData = {
     email: '',
-    password: '',
+    senha: '',
   };
 
   constructor(

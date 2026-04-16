@@ -22,27 +22,37 @@ $usuario = new Usuario($db);
 
 $data = json_decode(file_get_contents("php://input"));
 
-if (!empty($data->email) && !empty($senhaHash)) {
+if (!empty($data->email) && !empty($data->senha)) {
+
     $usuario->email = $data->email;
     $stmt = $usuario->findByEmail();
     $num = $stmt->rowCount();
-
+echo json_encode($data);
+exit();
     if ($num > 0) {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($senhaHash == $row['senha']) {
+        if (password_verify($data->senha, $row['senha'])) {
+
             http_response_code(200);
-            echo json_encode(array(
+            echo json_encode([
                 "status" => "success",
                 "message" => "Login realizado!",
                 "tipo" => $row['tipo']
-            ));
+            ]);
+
         } else {
             http_response_code(401);
-            echo json_encode(array("status" => "error", "message" => "Senha incorreta."));
+            echo json_encode(["status" => "error", "message" => "Senha incorreta."]);
         }
+
     } else {
         http_response_code(404);
-        echo json_encode(array("status" => "error", "message" => "Usuário não encontrado."));
+        echo json_encode(["status" => "error", "message" => "Usuário não encontrado."]);
     }
+
+} else {
+    http_response_code(400);
+    echo json_encode(["status" => "error", "message" => "Preencha todos os campos"]);
 }
+
