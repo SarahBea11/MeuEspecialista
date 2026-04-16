@@ -25,6 +25,7 @@ export class Login {
       next: (res) => {
         console.log('Sucesso!', res);
         alert('Login realizado!');
+         localStorage.setItem('usuarioLogado', 'true');
         this.router.navigate(['/buscar']);
       },
       error: (err) => {
