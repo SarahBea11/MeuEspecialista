@@ -27,6 +27,7 @@
 .menu .ativo {
     color: #7CFF8F;
 }
+
 .container-busca {
     padding: 30px;
     margin: 30px;
@@ -34,23 +35,39 @@
 }
 
 .barra-busca {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 30px;
     position: relative;
+    display: inline;
+    justify-content: center;
+    align-items: center;
 }
 
 .barra-busca input {
-    padding: 12px 40px 12px 15px;
-    width: 400px;
+    padding: 18px 60px 18px 25px;
+    width: 900px;
     border-radius: 25px;
     border: 1px solid #ccc;
 }
 
-.icone {
+.barra-busca button {
     position: absolute;
-    right: calc(50% - 180px);
-    top: 10px;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    border: none;
+    background: #0d4d2b;
+    color: white;
+    font-weight: bold;
+
+    padding: 0 20px;
+    height: 40px;
+    width: auto;
+    border-radius: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
 }
 
 .conteudo {
@@ -85,10 +102,12 @@
 .resultados {
     flex: 1;
 }
+
 .card-medico {
-  background: rgb(160, 194, 167);
-  padding: 15px;
-  margin-bottom: 15px;
-  border-radius: 10px;
-  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    font-family: Arial, Helvetica, sans-serif;
+    background: rgb(143, 226, 160);
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
