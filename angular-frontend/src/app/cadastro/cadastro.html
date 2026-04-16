@@ -2,6 +2,10 @@
   <div class="logo">
     <img src="assets/logo-especialista.png" alt="Meu Especialista" />
   </div>
+
+  <div class="menu">
+    <a routerLink="">Sair</a>
+  </div>
 </nav>
 
 <div class="container">
@@ -34,44 +38,46 @@
     <div class="duas-colunas">
       <input type="password" name="senha" placeholder="Senha:" ngModel />
 
-      <ng-container *ngIf="tipoUsuario === 'medico'">
-        <input type="text" name="crm" placeholder="CRM:" ngModel />
-      </ng-container>
+      <input type="text" name="crm" placeholder="CRM:" ngModel [disabled]="tipoUsuario === 'paciente'" />
 
-      <ng-template #vazio>
-        <div></div>
-      </ng-template>
     </div>
 
     <div class="duas-colunas">
       <input type="password" name="confirmaSenha" placeholder="Confirmar Senha:" ngModel />
 
-      <ng-container *ngIf="tipoUsuario === 'paciente'">
-        <input type="text" name="cpf" placeholder="CPF:" ngModel />
-      </ng-container>
+      <input type="text" name="cpf" placeholder="CPF:" ngModel [disabled]="tipoUsuario === 'medico'" />
     </div>
 
     <div class="duas-colunas">
-      <input type="text" name="cidade" placeholder="Cidade:" ngModel />
+      <select name="cidade" ngModel>
+        <option value="">Selecione a cidade:</option>
+
+        <option *ngFor="let cidade of cidades" [value]="cidade.id">
+          {{ cidade.nome }}
+        </option>
+      </select>
 
       <input type="text" name="endereco" placeholder="Endereço:" ngModel />
     </div>
 
-    <div class="duas-colunas">
-      <input type="text" name="telefone" placeholder="Telefone:" ngModel />
+    <div class="campo">
+      <select name="especialidade" ngModel [disabled]="tipoUsuario === 'paciente'">
+        <option value="">Selecione a especialidade:</option>
 
-      <ng-container *ngIf="tipoUsuario === 'medico'">
-        <input type="text" name="especialidade" placeholder="Especialidade:" ngModel />
-      </ng-container>
-
-      <ng-template #vazio>
-        <div></div>
-      </ng-template>
-
+        <option *ngFor="let esp of especialidades" [value]="esp.id">
+          {{ esp.nome }}
+        </option>
+      </select>
     </div>
 
     <div class="campo">
-      <input type="text" name="convenio" placeholder="Convênio:" ngModel />
+      <select name="convenio" ngModel>
+        <option value="">Selecione o convênio:</option>
+
+        <option *ngFor="let conv of convenios" [value]="conv.id">
+          {{ conv.nome }}
+        </option>
+      </select>
     </div>
 
     <div class="botoes">

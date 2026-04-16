@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-cadastro',
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule],
+  imports: [CommonModule, FormsModule, HttpClientModule, RouterModule],
   templateUrl: './cadastro.html',
   styleUrls: ['./cadastro.css'],
 })
@@ -16,10 +17,28 @@ export class Cadastro {
   especialidade: string = '';
   mensagemSucesso: boolean = false;
 
+  cidades = [
+  { id: 1, nome: 'Campinas' },
+  { id: 2, nome: 'Indaiatuba' },
+  { id: 3, nome: 'Itu' }
+];
+
+especialidades = [
+  { id: 1, nome: 'Cardiologia' },
+  { id: 2, nome: 'Pediatria' },
+  { id: 3, nome: 'Psiquiatria' }
+];
+
+convenios = [
+  { id: 1, nome: 'Amil' },
+  { id: 2, nome: 'Intermédica' },
+  { id: 3, nome: 'Unimed' }
+];
+
   constructor(
     private router: Router,
     private http: HttpClient,
-  ) {}
+  ) { }
 
   criarConta(form: NgForm) {
     const dados: any = {
