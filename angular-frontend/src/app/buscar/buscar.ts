@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MedicoService } from '../services/medico.service';
 
@@ -13,7 +13,7 @@ import { MedicoService } from '../services/medico.service';
 })
 export class Buscar {
   especialidades = ['Cardiologia', 'Pediatria', 'Psiquiatria'];
-  cidades = ['Campinas', 'Indaiatuba', 'São Paulo', 'Itu'];
+  cidades = ['Campinas', 'Indaiatuba', 'Itu'];
   convenios = ['Amil', 'Intermédica', 'Unimed'];
 
   cidadeSelecionada: string = '';

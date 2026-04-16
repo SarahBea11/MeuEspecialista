@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { FormsModule, NgForm } from '@angular/forms';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+
 @Component({
   selector: 'app-cadastro',
   standalone: true,
@@ -18,22 +19,23 @@ export class Cadastro {
   mensagemSucesso: boolean = false;
 
   cidades = [
-  { id: 1, nome: 'Campinas' },
-  { id: 2, nome: 'Indaiatuba' },
-  { id: 3, nome: 'Itu' }
-];
+    { id: 1, nome: 'Campinas' },
+    { id: 2, nome: 'Indaiatuba' },
+    { id: 3, nome: 'Itu' }
+  ];
 
-especialidades = [
-  { id: 1, nome: 'Cardiologia' },
-  { id: 2, nome: 'Pediatria' },
-  { id: 3, nome: 'Psiquiatria' }
-];
+  especialidades = [
+    { id: 1, nome: 'Cardiologia' },
+    { id: 2, nome: 'Pediatria' },
+    { id: 3, nome: 'Psiquiatria' }
+  ];
 
-convenios = [
-  { id: 1, nome: 'Amil' },
-  { id: 2, nome: 'Intermédica' },
-  { id: 3, nome: 'Unimed' }
-];
+  convenios = [
+    { id: 1, nome: 'Não conveniado' },
+    { id: 2, nome: 'Amil' },
+    { id: 3, nome: 'Intermédica' },
+    { id: 4, nome: 'Unimed' }
+  ];
 
   constructor(
     private router: Router,
@@ -54,10 +56,11 @@ convenios = [
       cpf: form.value.cpf,
       convenio_id: this.tipoUsuario === 'paciente' ? 1 : undefined,
       convenios: this.tipoUsuario === 'medico' ? [1] : undefined,
+      
     };
 
     this.http
-      .post('http://localhost/MeuEspecialista/php-backend/api/cadastro.php', dados, {
+      .post('http://172.20.10.2/MeuEspecialista/php-backend/api/cadastro.php', dados, {
         headers: { 'Content-Type': 'application/json' },
       })
       .subscribe({
@@ -69,6 +72,8 @@ convenios = [
           this.tipoUsuario = '';
           this.crm = '';
           this.especialidade = '';
+          this.router.navigate(['/login']);
+
         },
         error: (err) => {
           console.error(err);
@@ -82,6 +87,8 @@ convenios = [
   }
 
   limpar(form: any) {
+
+
     form.resetForm();
 
     this.tipoUsuario = '';

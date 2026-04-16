@@ -1,6 +1,5 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { Buscar } from './buscar';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 describe('Buscar', () => {
   let component: Buscar;
@@ -15,7 +14,6 @@ describe('Buscar', () => {
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
-
   it('should create', () => {
     expect(component).toBeTruthy();
   });
