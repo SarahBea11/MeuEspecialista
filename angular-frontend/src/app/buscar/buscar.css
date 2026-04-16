@@ -21,12 +21,12 @@
     cursor: pointer;
     font-weight: bold;
     color: white;
+    text-decoration: none;
 }
 
 .menu .ativo {
     color: #7CFF8F;
 }
-
 .container-busca {
     padding: 30px;
     margin: 30px;
