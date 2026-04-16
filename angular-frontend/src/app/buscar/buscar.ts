@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-
+import { MedicoService } from '../services/medico.service';
 
 @Component({
   selector: 'app-buscar',
@@ -13,10 +13,25 @@ import { RouterModule } from '@angular/router';
 })
 export class Buscar {
   especialidades = ['Cardiologia', 'Pediatria', 'Psiquiatria'];
-  cidades = ['Campinas', 'Indaiatuba', 'São Paulo'];
+  cidades = ['Campinas', 'Indaiatuba', 'São Paulo', 'Itu'];
   convenios = ['Amil', 'Intermédica', 'Unimed'];
 
   cidadeSelecionada: string = '';
   convenioSelecionado: string = '';
   especialidadeSelecionada: string = '';
+
+  resultados: any[] = [];
+
+  constructor(private medicoService: MedicoService) {}
+
+  buscarMedicos() {
+    this.medicoService.buscar(this.cidadeSelecionada, this.especialidadeSelecionada).subscribe({
+      next: (res) => {
+        this.resultados = res;
+      },
+      error: (err) => {
+        console.error(err);
+      },
+    });
+  }
 }
