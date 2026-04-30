@@ -1,17 +1,22 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MedicoService {
-
   private apiUrl = 'http://localhost/MeuEspecialista/php-backend/api/buscar_medicos.php';
 
   constructor(private http: HttpClient) {}
 
-  buscar(cidade: string, especialidade: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}?cidade=${cidade}&especialidade=${especialidade}`);
+  // Adicionamos o parâmetro opcional 'termo' para o nome/CRM
+  buscar(cidade: string, especialidade: string, termo: string = ''): Observable<any[]> {
+    let params = new HttpParams()
+      .set('cidade', cidade)
+      .set('especialidade', especialidade)
+      .set('termo', termo);
+
+    return this.http.get<any[]>(this.apiUrl, { params });
   }
 }

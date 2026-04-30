@@ -23,13 +23,19 @@ export class Login {
     this.authService.login(this.loginData).subscribe({
       next: (res) => {
         console.log('Sucesso!', res);
-        alert('Login realizado!');
-         localStorage.setItem('usuarioLogado', 'true');
+
+        localStorage.setItem('token', res.token);
+
+        localStorage.setItem('tipoUsuario', res.tipo);
+
+        localStorage.setItem('usuarioLogado', 'true');
+
         this.router.navigate(['/buscar']);
       },
       error: (err) => {
         console.error('Erro!', err);
-        alert('E-mail ou senha incorretos.');
+        const mensagem = err.error?.message || 'E-mail ou senha incorretos.';
+        alert(mensagem);
       },
     });
   }

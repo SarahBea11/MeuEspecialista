@@ -6,12 +6,20 @@ import { Perfil } from './perfil/perfil';
 import { FormsModule } from '@angular/forms';
 import { Cadastro } from './cadastro/cadastro';
 import { AppRoutingModule } from './app-routing-module';
-import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
+import { AuthInterceptor } from './services/auth.interceptor';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+
 @NgModule({
   declarations: [App, Login, Home, Perfil],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, Cadastro],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [App],
 })
 export class AppModule {}
