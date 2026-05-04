@@ -1,0 +1,42 @@
+import { Router } from '@angular/router';
+import { Component } from '@angular/core';
+import { AuthService } from '../services/auth';
+
+@Component({
+  selector: 'app-login',
+  standalone: false,
+  templateUrl: './login.html',
+  styleUrls: ['./login.css'],
+})
+export class Login {
+  loginData = {
+    email: '',
+    senha: '',
+  };
+
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) {}
+
+  logar() {
+    this.authService.login(this.loginData).subscribe({
+      next: (res) => {
+        console.log('Sucesso!', res);
+
+        localStorage.setItem('token', res.token);
+
+        localStorage.setItem('tipoUsuario', res.tipo);
+
+        localStorage.setItem('usuarioLogado', 'true');
+
+        this.router.navigate(['/buscar']);
+      },
+      error: (err) => {
+        console.error('Erro!', err);
+        const mensagem = err.error?.message || 'E-mail ou senha incorretos.';
+        alert(mensagem);
+      },
+    });
+  }
+}

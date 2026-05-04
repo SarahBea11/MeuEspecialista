@@ -1,0 +1,157 @@
+.nav-bar {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #044f23;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+}
+
+.logo {
+  width: 70px;
+}
+
+.logo img {
+  width: 100%;
+}
+
+.menu a {
+  margin-left: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+}
+
+.menu .ativo {
+  color: #7cff8f;
+}
+
+.container-perfil {
+  padding: 30px;
+  margin: 30px auto;
+  max-width: 800px;
+  background: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.container-perfil h1 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-family: Arial;
+  font-weight: bold;
+  font-size: 25px;
+  color: black;
+}
+
+.container-perfil p {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+}
+
+.container-perfil strong {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 13px;
+}
+
+.tipo-usuario {
+  background: #e0e0e0;
+  padding: 15px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.duas-colunas {
+  display: flex;
+  gap: 15px;
+}
+
+.duas-colunas input {
+  flex: 1;
+}
+
+.container-perfil label {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+}
+
+.container-perfil .duas-colunas {
+  display: flex;
+  align-items: center;
+  margin-bottom: 13px;
+}
+
+.container-perfil .campo {
+  margin-bottom: 13px;
+}
+
+.botoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+button {
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.editar {
+  background: #e0e0e0;
+}
+
+.salvar {
+  background: #044f23;
+  color: white;
+}
+
+.cancelar {
+  background: #ccc;
+}
+
+input:disabled {
+  background: #f2f2f2;
+  color: #888;
+  cursor: not-allowed;
+}
+
+input:focus {
+  outline: none;
+  border: 2px solid #044f23;
+}
+
+input:disabled {
+  background-color: #f9f9f9;
+  color: #666;
+  cursor: not-allowed;
+  border: 1px solid #ddd;
+}
+input[readonly] {
+  background-color: #f0f0f0 !important;
+  color: #666;
+  cursor: not-allowed;
+  border: 1px solid #ccc;
+}
+
+input:not([readonly]) {
+  background-color: #fff !important;
+  color: #000;
+  border: 1px solid #2e5e35;
+}

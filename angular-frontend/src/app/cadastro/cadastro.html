@@ -1,0 +1,89 @@
+<nav class="navbar">
+  <div class="logo">
+    <img src="assets/logo-especialista.png" alt="Meu Especialista" />
+  </div>
+
+  <div class="menu">
+    <a routerLink="">Sair</a>
+  </div>
+</nav>
+
+<div class="container">
+  <h1>Cadastrar-se</h1>
+
+  <form (ngSubmit)="criarConta(cadastroForm)" #cadastroForm="ngForm">
+    <div class="tipo-usuario">
+      <p>Escolha uma opção:</p>
+      <div class="opcoes-alinhadas">
+        <label>
+          <input type="radio" name="perfil" value="medico" [(ngModel)]="tipoUsuario" />
+          Sou Médico
+        </label>
+
+        <label>
+          <input type="radio" name="perfil" value="paciente" [(ngModel)]="tipoUsuario" />
+          Sou Paciente
+        </label>
+      </div>
+    </div>
+
+    <div class="campo">
+      <input type="text" name="nome" placeholder="Nome Completo:" ngModel />
+    </div>
+
+    <div class="campo">
+      <input type="email" name="email" placeholder="E-mail:" ngModel />
+    </div>
+
+    <div class="duas-colunas">
+      <input type="password" name="senha" placeholder="Senha:" ngModel />
+
+      <input type="text" name="crm" placeholder="CRM:" ngModel [disabled]="tipoUsuario === 'paciente'" />
+
+    </div>
+
+    <div class="duas-colunas">
+      <input type="password" name="confirmaSenha" placeholder="Confirmar Senha:" ngModel />
+
+      <input type="text" name="cpf" placeholder="CPF:" ngModel [disabled]="tipoUsuario === 'medico'" />
+    </div>
+
+    <div class="duas-colunas">
+      <select name="cidade" ngModel>
+        <option value="">Selecione a cidade:</option>
+
+        <option *ngFor="let cidade of cidades" [value]="cidade.id">
+          {{ cidade.nome }}
+        </option>
+      </select>
+
+      <input type="text" name="endereco" placeholder="Endereço:" ngModel />
+    </div>
+
+    <div class="campo">
+      <select name="especialidade" ngModel [disabled]="tipoUsuario === 'paciente'">
+        <option value="">Selecione a especialidade:</option>
+
+        <option *ngFor="let esp of especialidades" [value]="esp.id">
+          {{ esp.nome }}
+        </option>
+      </select>
+    </div>
+
+    <div class="campo">
+      <select name="convenio" ngModel>
+        <option value="">Selecione o convênio:</option>
+
+        <option *ngFor="let conv of convenios" [value]="conv.id">
+          {{ conv.nome }}
+        </option>
+      </select>
+    </div>
+
+    <div class="botoes">
+      <button type="submit" class="criar">Criar</button>
+      <button type="reset" class="limpar" (click)="limpar(cadastroForm)">Limpar</button>
+      <button type="button" class="cancelar" (click)="cancelar()">Cancelar</button>
+    </div>
+  </form>
+</div>

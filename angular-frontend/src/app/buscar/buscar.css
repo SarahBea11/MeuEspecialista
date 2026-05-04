@@ -1,0 +1,113 @@
+.nav-bar {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #044F23;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+}
+
+.logo {
+    width: 70px;
+}
+
+.logo img {
+    width: 100%;
+}
+
+.menu a {
+    margin-left: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+}
+
+.menu .ativo {
+    color: #7CFF8F;
+}
+
+.container-busca {
+    padding: 30px;
+    margin: 30px;
+    gap: 15px;
+}
+
+.barra-busca {
+    position: relative;
+    display: inline;
+    justify-content: center;
+    align-items: center;
+}
+
+.barra-busca input {
+    padding: 18px 60px 18px 25px;
+    width: 900px;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+}
+
+.barra-busca button {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    border: none;
+    background: #0d4d2b;
+    color: white;
+    font-weight: bold;
+
+    padding: 0 20px;
+    height: 40px;
+    width: auto;
+    border-radius: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.conteudo {
+    display: flex;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.filtro {
+    font-family: Arial;
+    width: 250px;
+    background: #e0e0e0;
+    padding: 20px;
+    border-radius: 15px;
+    direction: flex-end;
+}
+
+.filtro label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.filtro select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 10px;
+    border: none;
+    margin-top: 5px;
+}
+
+.resultados {
+    flex: 1;
+}
+
+.card-medico {
+    font-family: Arial, Helvetica, sans-serif;
+    background: rgb(143, 226, 160);
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
