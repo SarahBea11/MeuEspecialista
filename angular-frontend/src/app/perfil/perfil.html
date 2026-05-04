@@ -1,105 +1,165 @@
 <nav class="nav-bar">
-    <div class="logo">
-        <img src="assets/logo-especialista.png" alt="Meu Especialista" />
-    </div>
+  <div class="logo">
+    <img src="assets/logo-especialista.png" alt="Meu Especialista" />
+  </div>
 
-
-    <div class="menu">
-        <a routerLink="/buscar">Buscar</a>
-        <a class="ativo" routerLink="/perfil"> Meu perfil</a>
-        <a routerLink="">Sair</a>
-    </div>
+  <div class="menu">
+    <a routerLink="/buscar">Buscar</a>
+    <a class="ativo" routerLink="/perfil">Meu perfil</a>
+    <a (click)="sair()" style="cursor: pointer">Sair</a>
+  </div>
 </nav>
 
-
 <div class="container-perfil">
-    <h1>Meu Perfil</h1>
+  <h1>Meu Perfil</h1>
 
+  <form #perfilForm="ngForm">
+    <div class="tipo-usuario">
+      <p>Tipo de usuário:</p>
+      <strong>{{ usuario.tipo | titlecase }}</strong>
+    </div>
 
-    <form>
-        <div class="tipo-usuario">
-            <p>Tipo de usuário:</p>
-            <strong>{{usuario.tipo}}</strong>
+    <div class="campo">
+      <label>Nome Completo:</label>
+      <input
+        type="text"
+        name="nome"
+        [(ngModel)]="usuario.nome"
+        placeholder="Nome Completo"
+        [readonly]="!editando"
+      />
+    </div>
+
+    <div class="campo">
+      <label>E-mail:</label>
+      <input
+        type="email"
+        name="email"
+        [(ngModel)]="usuario.email"
+        placeholder="E-mail"
+        [readonly]="!editando"
+      />
+    </div>
+
+    <div class="duas-colunas" *ngIf="editando">
+      <div class="campo-interno">
+        <label>Nova Senha:</label>
+        <input
+          type="password"
+          name="senha"
+          [(ngModel)]="usuario.senha"
+          placeholder="Deixe em branco para não alterar"
+        />
+      </div>
+
+      <div class="campo-interno">
+        <label>Confirmar Senha:</label>
+        <input
+          type="password"
+          name="confirmarSenha"
+          [(ngModel)]="usuario.confirmarSenha"
+          placeholder="Confirme a nova senha"
+        />
+      </div>
+    </div>
+
+    <div class="duas-colunas">
+      <ng-container *ngIf="usuario.tipo === 'medico'">
+        <div class="campo-interno">
+          <label>CRM:</label>
+          <input
+            type="text"
+            name="crm"
+            [(ngModel)]="usuario.crm"
+            placeholder="CRM"
+            [readonly]="!editando"
+          />
         </div>
 
-
-        <div class="campo">
-            <label>Nome Completo:</label>
-            <input type="text" name="nome" [(ngModel)]="usuario.nome" placeholder="Nome Completo:"
-                [disabled]="!editando">
+        <div class="campo-interno">
+          <label>Especialidade:</label>
+          <input
+            type="text"
+            name="especialidade"
+            [(ngModel)]="usuario.especialidade"
+            placeholder="Especialidade"
+            [readonly]="!editando"
+          />
         </div>
+      </ng-container>
 
-
-        <div class="campo">
-            <label>E-mail:</label>
-            <input type="text" name="email" [(ngModel)]="usuario.email" placeholder="E-mail:" [disabled]="!editando">
+      <ng-container *ngIf="usuario.tipo === 'paciente'">
+        <div class="campo-interno">
+          <label>CPF:</label>
+          <input
+            type="text"
+            name="cpf"
+            [(ngModel)]="usuario.cpf"
+            placeholder="CPF"
+            [readonly]="!editando"
+          />
         </div>
+      </ng-container>
+    </div>
 
-        <div class="duas-colunas">
-            <label>Senha:</label>
-            <input type="text" name="senha" [(ngModel)]="usuario.senha" placeholder="Senha:" [disabled]="!editando">
+    <div class="duas-colunas">
+      <div class="campo-interno">
+        <label>Cidade:</label>
+        <input
+          type="text"
+          name="cidade"
+          [(ngModel)]="usuario.cidade"
+          placeholder="Cidade"
+          [readonly]="!editando"
+        />
+      </div>
 
-            <label>Confirmar Senha:</label>
-            <input type="text" name="confirmarSenha" [(ngModel)]="usuario.confirmarSenha" placeholder="Confirmar Senha"
-                [disabled]="!editando">
-        </div>
+      <div class="campo-interno">
+        <label>Endereço:</label>
+        <input
+          type="text"
+          name="endereco"
+          [(ngModel)]="usuario.endereco"
+          placeholder="Endereço"
+          [readonly]="!editando"
+        />
+      </div>
+    </div>
 
-        <div class="duas-colunas">
-            <ng-container *ngIf="usuario.tipo ==='medico'">
-                <label>CRM:</label>
-                <input type="text" name="crm" [(ngModel)]="usuario.crm" placeholder="CRM:" [disabled]="!editando">
+    <div class="duas-colunas">
+      <div class="campo-interno">
+        <label>Telefone:</label>
+        <input
+          type="text"
+          name="telefone"
+          [(ngModel)]="usuario.telefone"
+          placeholder="Telefone"
+          [readonly]="!editando"
+        />
+      </div>
 
-                <label>Especialidade:</label>
-                <input type="text" name="especialidade" [(ngModel)]="usuario.especialidade" placeholder="Especialidade"
-                    [disabled]="!editando">
-            </ng-container>
+      <div class="campo-interno">
+        <label>Convênio:</label>
+        <input
+          type="text"
+          name="convenio"
+          [(ngModel)]="usuario.convenio"
+          placeholder="Convênio"
+          [readonly]="!editando"
+        />
+      </div>
+    </div>
 
+    <div class="botoes">
+      <button type="button" class="btn-editar" *ngIf="!editando" (click)="habilitarEdicao()">
+        Editar Perfil
+      </button>
 
-            <ng-container *ngIf="usuario.tipo === 'paciente'">
-                <label>CPF:</label>
-                <input type="text" name="cpf" [(ngModel)]="usuario.cpf" placeholder="CPF:" [disabled]="!editando">
-            </ng-container>
-        </div>
+      <ng-container *ngIf="editando">
+        <button type="submit" class="btn-salvar" (click)="salvar()">Salvar Alterações</button>
 
-
-        <div class="duas-colunas">
-            <label>Cidade:</label>
-            <input type="text" name="cidade" [(ngModel)]="usuario.cidade" placeholder="Cidade:" [disabled]="!editando">
-
-            <label>Endereço:</label>
-            <input type="text" name="endereco" [(ngModel)]="usuario.endereco" placeholder="Endereço:"
-                [disabled]="!editando">
-        </div>
-
-
-        <div class="duas-colunas">
-            <label>Telefone:</label>
-            <input type="text" name="telefone" [(ngModel)]="usuario.telefone" placeholder="Telefone:"
-                [disabled]="!editando">
-
-            <label>Convênio:</label>
-            <input type="text" name="convenio" [(ngModel)]="usuario.convenio" placeholder="Convênio:"
-                [disabled]="!editando">
-        </div>
-
-
-        <div class="botoes">
-
-
-            <button type="button" *ngIf="!editando" (click)="habilitarEdicao()">
-                Editar
-            </button>
-
-
-            <button type="button" *ngIf="editando" (click)="salvar()">
-                Salvar
-            </button>
-
-
-            <button type="button" *ngIf="editando" (click)="cancelar()">
-                Cancelar
-            </button>
-        </div>
-    </form>
-
+        <button type="button" class="btn-cancelar" (click)="cancelar()">Cancelar</button>
+      </ng-container>
+    </div>
+  </form>
 </div>

@@ -13,4 +13,14 @@ export class AuthService {
   login(dados: any): Observable<any> {
     return this.http.post(this.apiUrl, dados);
   }
+
+  getPerfil() {
+    return this.http.get('http://localhost/MeuEspecialista/php-backend/api/perfil.php');
+  }
+  atualizarPerfil(dados: any) {
+    return this.http.post(
+      'http://localhost/MeuEspecialista/php-backend/api/atualizar_perfil.php',
+      dados,
+    );
+  }
 }

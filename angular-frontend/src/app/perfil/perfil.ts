@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../services/auth';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-perfil',
@@ -6,63 +8,76 @@ import { Component } from '@angular/core';
   templateUrl: './perfil.html',
   styleUrl: './perfil.css',
 })
-export class Perfil {
+export class Perfil implements OnInit {
   usuario: any = {
-    tipo: '',
     nome: '',
     email: '',
-    senha: '',
-    confirmarSenha: '',
-    cpf: '',
-    crm: '',
-    especialidade: '',
+    tipo: '',
     cidade: '',
     endereco: '',
     telefone: '',
-    convenio: ''
+    convenio: '',
+    cpf: '',
+    crm: '',
+    especialidade: '',
   };
-
   usuarioOriginal: any = {};
   editando: boolean = false;
 
-  constructor() { }
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private cdr: ChangeDetectorRef,
+  ) {}
 
   ngOnInit(): void {
     this.carregarUsuario();
   }
 
   carregarUsuario() {
-    const dados = {
-      tipo: 'medico',
-      nome: 'user',
-      email: 'user@email.com',
-      senha: 'senha123',
-      confirmarSenha: 'senha123',
-      crm: '12345',
-      especialidade: 'Cardiologia',
-      cidade: 'Itu',
-      endereco: 'Rua X',
-      telefone: '11999999999',
-      convenio: 'Unimed'
-    };
+    this.authService.getPerfil().subscribe({
+      next: (res: any) => {
+        if (res.status === 'success') {
+          this.usuario = { ...res.dados };
+          this.usuarioOriginal = { ...res.dados };
 
-    this.usuario = dados;
+          this.cdr.detectChanges();
+
+          console.log('Dados carregados com sucesso no F5');
+        }
+      },
+      error: (err) => {
+        console.error('Erro:', err);
+      },
+    });
   }
 
   habilitarEdicao() {
-    this.usuarioOriginal = { ...this.usuario }; 
     this.editando = true;
   }
 
-  salvar() {
-    console.log('Salvando...', this.usuario);
-
-
+  cancelar() {
+    this.usuario = { ...this.usuarioOriginal };
     this.editando = false;
+    this.cdr.detectChanges();
   }
 
-  cancelar() {
-    this.usuario = { ...this.usuarioOriginal }; 
-    this.editando = false;
+  salvar() {
+    this.authService.atualizarPerfil(this.usuario).subscribe({
+      next: (res: any) => {
+        alert('Perfil atualizado!');
+        this.usuarioOriginal = { ...this.usuario };
+        this.editando = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        alert('Erro ao salvar');
+      },
+    });
+  }
+
+  sair() {
+    localStorage.clear();
+    this.router.navigate(['/login']);
   }
 }
