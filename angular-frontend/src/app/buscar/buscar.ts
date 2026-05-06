@@ -21,6 +21,7 @@ export class Buscar {
   especialidadeSelecionada: string = '';
 
   resultados: any[] = [];
+termoBusca: any;
 
   constructor(private medicoService: MedicoService) {}
 
