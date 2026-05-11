@@ -16,55 +16,54 @@
       <p>Escolha uma opção:</p>
       <div class="opcoes-alinhadas">
         <label>
-          <input type="radio" name="perfil" value="medico" [(ngModel)]="tipoUsuario" />
+          <input type="radio" name="perfil" value="medico" [(ngModel)]="tipoUsuario" required />
           Sou Médico
         </label>
 
         <label>
-          <input type="radio" name="perfil" value="paciente" [(ngModel)]="tipoUsuario" />
+          <input type="radio" name="perfil" value="paciente" [(ngModel)]="tipoUsuario" required />
           Sou Paciente
         </label>
       </div>
     </div>
 
     <div class="campo">
-      <input type="text" name="nome" placeholder="Nome Completo:" ngModel />
+      <input type="text" name="nome" placeholder="Nome Completo:" ngModel required />
     </div>
 
     <div class="campo">
-      <input type="email" name="email" placeholder="E-mail:" ngModel />
+      <input type="email" name="email" placeholder="E-mail:" ngModel required />
     </div>
 
     <div class="duas-colunas">
-      <input type="password" name="senha" placeholder="Senha:" ngModel />
-
+      <input type="password" name="senha" placeholder="Senha:" ngModel required />
       <input type="text" name="crm" placeholder="CRM:" ngModel [disabled]="tipoUsuario === 'paciente'" />
-
     </div>
 
     <div class="duas-colunas">
-      <input type="password" name="confirmaSenha" placeholder="Confirmar Senha:" ngModel />
-
+      <input type="password" name="confirmaSenha" placeholder="Confirmar Senha:" ngModel required />
       <input type="text" name="cpf" placeholder="CPF:" ngModel [disabled]="tipoUsuario === 'medico'" />
     </div>
 
-    <div class="duas-colunas">
-      <select name="cidade" ngModel>
-        <option value="">Selecione a cidade:</option>
+    <div class="campo">
+      <input type="text" name="telefone" placeholder="Telefone:" ngModel required />
+    </div>
 
-        <option *ngFor="let cidade of cidades" [value]="cidade.id">
+    <div class="duas-colunas">
+      <select name="cidade" ngModel required>
+        <option value="">Selecione a cidade:</option>
+        <option *ngFor="let cidade of cidades" [value]="cidade.nome">
           {{ cidade.nome }}
         </option>
       </select>
 
-      <input type="text" name="endereco" placeholder="Endereço:" ngModel />
+      <input type="text" name="endereco" placeholder="Endereço:" ngModel required />
     </div>
 
     <div class="campo">
       <select name="especialidade" ngModel [disabled]="tipoUsuario === 'paciente'">
         <option value="">Selecione a especialidade:</option>
-
-        <option *ngFor="let esp of especialidades" [value]="esp.id">
+        <option *ngFor="let esp of especialidades" [value]="esp.nome">
           {{ esp.nome }}
         </option>
       </select>
@@ -72,8 +71,7 @@
 
     <div class="campo">
       <select name="convenio" ngModel>
-        <option value="">Selecione o convênio:</option>
-
+        <option value="">Selecione o convênio (Opcional):</option>
         <option *ngFor="let conv of convenios" [value]="conv.id">
           {{ conv.nome }}
         </option>
@@ -81,8 +79,8 @@
     </div>
 
     <div class="botoes">
-      <button type="submit" class="criar">Criar</button>
-      <button type="reset" class="limpar" (click)="limpar(cadastroForm)">Limpar</button>
+      <button type="submit" class="criar" [disabled]="!cadastroForm.valid">Criar</button>
+      <button type="button" class="limpar" (click)="limpar(cadastroForm)">Limpar</button>
       <button type="button" class="cancelar" (click)="cancelar()">Cancelar</button>
     </div>
   </form>

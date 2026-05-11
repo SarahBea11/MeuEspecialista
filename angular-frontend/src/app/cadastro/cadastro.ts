@@ -14,9 +14,6 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 })
 export class Cadastro {
   tipoUsuario: string = '';
-  crm: string = '';
-  especialidade: string = '';
-  mensagemSucesso: boolean = false;
 
   cidades = [
     { id: 1, nome: 'Campinas' },
@@ -37,13 +34,16 @@ export class Cadastro {
     { id: 4, nome: 'Unimed' }
   ];
 
-  constructor(
-    private router: Router,
-    private http: HttpClient,
-  ) { }
+  constructor(private router: Router, private http: HttpClient) { }
 
   criarConta(form: NgForm) {
-    const dados: any = {
+    // Verificação básica de senha
+    if (form.value.senha !== form.value.confirmaSenha) {
+      alert("As senhas não coincidem!");
+      return;
+    }
+
+    const dados = {
       tipo: this.tipoUsuario,
       nome: form.value.nome,
       email: form.value.email,
@@ -54,30 +54,19 @@ export class Cadastro {
       especialidade: form.value.especialidade,
       crm: form.value.crm,
       cpf: form.value.cpf,
-      convenio_id: this.tipoUsuario === 'paciente' ? 1 : undefined,
-      convenios: this.tipoUsuario === 'medico' ? [1] : undefined,
-      
+      convenio_id: form.value.convenio // Pega o ID selecionado no select
     };
 
     this.http
-      .post('http://172.20.10.2/MeuEspecialista/php-backend/api/cadastro.php', dados, {
-        headers: { 'Content-Type': 'application/json' },
-      })
+      .post('http://localhost/MeuEspecialista/php-backend/api/cadastro.php', dados)
       .subscribe({
         next: (res: any) => {
-          console.log(res);
           alert(res.message);
-          this.mensagemSucesso = true;
-          form.resetForm();
-          this.tipoUsuario = '';
-          this.crm = '';
-          this.especialidade = '';
           this.router.navigate(['/login']);
-
         },
         error: (err) => {
           console.error(err);
-          alert('Erro ao cadastrar: ' + (err.error?.message || err.statusText));
+          alert('Erro ao cadastrar: ' + (err.error?.message || 'Verifique a conexão com o servidor.'));
         },
       });
   }
@@ -86,13 +75,8 @@ export class Cadastro {
     this.router.navigate(['/']);
   }
 
-  limpar(form: any) {
-
-
+  limpar(form: NgForm) {
     form.resetForm();
-
     this.tipoUsuario = '';
-    this.crm = '';
-    this.especialidade = '';
   }
 }

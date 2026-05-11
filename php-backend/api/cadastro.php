@@ -8,6 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit();
 }
+
 include_once '../config/database.php';
 
 $database = new Database();
@@ -21,16 +22,15 @@ if (
     !empty($data->senha) &&
     !empty($data->tipo)
 ) {
-
-    try {   
+    try {
         $db->beginTransaction();
+
+        // 1. Inserir na tabela usuarios
+        $query = "INSERT INTO usuarios (nome, email, senha, tipo) VALUES (:nome, :email, :senha, :tipo)";
+        $stmt = $db->prepare($query);
 
         $senhaHash = password_hash($data->senha, PASSWORD_DEFAULT);
 
-        $query = "INSERT INTO usuarios (nome, email, senha, tipo)
-                  VALUES (:nome, :email, :senha, :tipo)";
-
-        $stmt = $db->prepare($query);
         $stmt->bindParam(":nome", $data->nome);
         $stmt->bindParam(":email", $data->email);
         $stmt->bindParam(":senha", $senhaHash);
@@ -39,74 +39,53 @@ if (
 
         $usuario_id = $db->lastInsertId();
 
+        // 2. Se for médico, preenche medicos_perfil
         if ($data->tipo === 'medico') {
-
-            if (
-                empty($data->crm) ||
-                empty($data->especialidade) ||
-                empty($data->telefone) ||
-                empty($data->cidade) ||
-                empty($data->endereco)
-            ) {
-                throw new Exception("Dados incompletos para médico.");
+            if (empty($data->crm) || empty($data->telefone)) {
+                throw new Exception("CRM e Telefone são obrigatórios para médicos.");
             }
 
-            $query = "INSERT INTO medicos_perfil 
-                      (usuario_id, crm, especialidade, telefone, cidade, endereco)
-                      VALUES (:usuario_id, :crm, :especialidade, :telefone, :cidade, :endereco)";
-
-            $stmt = $db->prepare($query);
-
-            $stmt->bindParam(":usuario_id", $usuario_id);
-            $stmt->bindParam(":crm", $data->crm);
-            $stmt->bindParam(":especialidade", $data->especialidade);
-            $stmt->bindParam(":telefone", $data->telefone);
-            $stmt->bindParam(":cidade", $data->cidade);
-            $stmt->bindParam(":endereco", $data->endereco);
-
-            $stmt->execute();
-        }
-
-        if ($data->tipo === 'paciente') {
-
+            $queryMed = "INSERT INTO medicos_perfil (usuario_id, crm, especialidade, telefone, cidade, endereco) 
+                         VALUES (:usuario_id, :crm, :especialidade, :telefone, :cidade, :endereco)";
+            
+            $stmtMed = $db->prepare($queryMed);
+            $stmtMed->bindParam(":usuario_id", $usuario_id);
+            $stmtMed->bindParam(":crm", $data->crm);
+            $stmtMed->bindParam(":especialidade", $data->especialidade);
+            $stmtMed->bindParam(":telefone", $data->telefone);
+            $stmtMed->bindParam(":cidade", $data->cidade);
+            $stmtMed->bindParam(":endereco", $data->endereco);
+            $stmtMed->execute();
+        } 
+        // 3. Se for paciente, preenche pacientes_perfil
+        else if ($data->tipo === 'paciente') {
             if (empty($data->cpf)) {
-                throw new Exception("CPF é obrigatório para paciente.");
+                throw new Exception("CPF é obrigatório para pacientes.");
             }
-            $query = "INSERT INTO pacientes_perfil 
-                      (usuario_id, cpf, convenio_id)
-                      VALUES (:usuario_id, :cpf, :convenio_id)";
 
-            $stmt = $db->prepare($query);
-
-            $stmt->bindParam(":usuario_id", $usuario_id);
-            $stmt->bindParam(":cpf", $data->cpf);
-
-            $convenio_id = isset($data->convenio_id) ? $data->convenio_id : null;
-            $stmt->bindParam(":convenio_id", $convenio_id);
-
-            $stmt->execute();
+            $queryPac = "INSERT INTO pacientes_perfil (usuario_id, cpf, convenio_id) 
+                         VALUES (:usuario_id, :cpf, :convenio_id)";
+            
+            $stmtPac = $db->prepare($queryPac);
+            $stmtPac->bindParam(":usuario_id", $usuario_id);
+            $stmtPac->bindParam(":cpf", $data->cpf);
+            
+            // Caso o convênio não seja selecionado, envia NULL
+            $conv_id = !empty($data->convenio_id) ? $data->convenio_id : null;
+            $stmtPac->bindParam(":convenio_id", $conv_id);
+            $stmtPac->execute();
         }
+
         $db->commit();
+        echo json_encode(["status" => "success", "message" => "Cadastro realizado com sucesso!"]);
 
-        http_response_code(200);
-        echo json_encode([
-            "status" => "success",
-            "message" => "Cadastro realizado com sucesso"
-        ]);
     } catch (Exception $e) {
-
         $db->rollBack();
- 
         http_response_code(500);
-        echo json_encode([
-            "status" => "error",
-            "message" => $e->getMessage()
-        ]);
+        echo json_encode(["status" => "error", "message" => $e->getMessage()]);
     }
 } else {
     http_response_code(400);
-    echo json_encode([
-        "status" => "error",
-        "message" => "Dados incompletos"
-    ]);
+    echo json_encode(["status" => "error", "message" => "Dados incompletos."]);
 }
+?>
