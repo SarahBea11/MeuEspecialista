@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../config/app_config.php';
 if (isset($_SERVER['HTTP_ORIGIN'])) {
     header("Access-Control-Max-Age: 86400");
     header("Access-Control-Allow-Credentials: true");
@@ -35,18 +36,15 @@ if (!empty($data->email) && !empty($data->senha)) {
         if (password_verify($data->senha, $row['senha'])) {
 
             $payload = [
-                "id" => $row['id'],
+                "id"    => $row['id'],
                 "email" => $data->email,
-                "tipo" => $row['tipo'],
-                "exp" => time() + (60 * 60 * 8)
+                "tipo"  => $row['tipo'],
+                "exp"   => time() + JWT_EXPIRACAO
             ];
 
             $tokenPayload = base64_encode(json_encode($payload));
-
-            $chave_secreta = "MINHA_CHAVE_SUPER_SECRETA_123";
-            $assinatura = hash_hmac('sha256', $tokenPayload, $chave_secreta);
-
-            $tokenFinal = $tokenPayload . "." . $assinatura;
+            $assinatura   = hash_hmac('sha256', $tokenPayload, JWT_SECRET);
+            $tokenFinal   = $tokenPayload . "." . $assinatura;
 
             http_response_code(200);
             echo json_encode([

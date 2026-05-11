@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/app_config.php';
 if (!function_exists('getallheaders')) {
     function getallheaders() 
     {
@@ -16,7 +17,7 @@ function verificarAutenticacao()
 {
     $headers = getallheaders();
 
-    $chave_secreta = "MINHA_CHAVE_SUPER_SECRETA_123";
+    $chave_secreta = JWT_SECRET;
 
     $authHeader = null;
     if (isset($headers['Authorization'])) {
