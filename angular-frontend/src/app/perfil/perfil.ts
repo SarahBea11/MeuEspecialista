@@ -1,6 +1,7 @@
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Medico, Paciente } from '../models/usuario.model';
 
 @Component({
   selector: 'app-perfil',
@@ -9,10 +10,10 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
   styleUrl: './perfil.css',
 })
 export class Perfil implements OnInit {
-  usuario: any = {
+  usuario: Medico & Paciente = {
     nome: '',
     email: '',
-    tipo: '',
+    tipo: 'paciente',
     cidade: '',
     endereco: '',
     telefone: '',
@@ -28,7 +29,7 @@ export class Perfil implements OnInit {
     private authService: AuthService,
     private router: Router,
     private cdr: ChangeDetectorRef,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.carregarUsuario();

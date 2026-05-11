@@ -1,26 +1,25 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { LoginResponse, PerfilResponse } from '../models/auth.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost/MeuEspecialista/php-backend/api/login.php';
+  private apiUrl = 'http://localhost/MeuEspecialista/php-backend/api/';
 
   constructor(private http: HttpClient) {}
 
-  login(dados: any): Observable<any> {
-    return this.http.post(this.apiUrl, dados);
+  login(dados: any): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.apiUrl}login.php`, dados);
   }
 
-  getPerfil() {
-    return this.http.get('http://localhost/MeuEspecialista/php-backend/api/perfil.php');
+  getPerfil(): Observable<PerfilResponse> {
+    return this.http.get<PerfilResponse>(`${this.apiUrl}perfil.php`);
   }
-  atualizarPerfil(dados: any) {
-    return this.http.post(
-      'http://localhost/MeuEspecialista/php-backend/api/atualizar_perfil.php',
-      dados,
-    );
+
+  atualizarPerfil(dados: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}atualizar_perfil.php`, dados);
   }
 }

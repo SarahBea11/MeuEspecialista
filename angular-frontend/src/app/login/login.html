@@ -25,7 +25,10 @@
 
       <a href="#" class="forgot">Esqueceu a senha?</a>
 
-      <button type="button" class="btn btn-entrar" (click)="logar()">Entrar</button>
+      <button type="button" class="btn btn-entrar" (click)="logar()" [disabled]="loading">
+        <div class="spinner" *ngIf="loading"></div>
+        {{ loading ? 'Entrando...' : 'Entrar' }}
+      </button>
 
       <button type="button" class="btn btn-cadastro" routerLink="/cadastro">Cadastrar-se</button>
     </div>

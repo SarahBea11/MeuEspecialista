@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { MedicoService } from '../services/medico.service';
+import { Medico } from '../models/usuario.model';
 
 @Component({
   selector: 'app-buscar',
@@ -20,8 +21,8 @@ export class Buscar {
   convenioSelecionado: string = '';
   especialidadeSelecionada: string = '';
 
-  resultados: any[] = [];
-  termoBusca: any;
+  resultados: Medico[] = [];
+  termoBusca: string = '';
   userName: string = '';
 
   constructor(
