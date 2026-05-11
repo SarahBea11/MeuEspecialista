@@ -24,20 +24,29 @@ $usuario = new Usuario($db);
 
 $data = json_decode(file_get_contents("php://input"));
 
-if (!empty($data->email) && !empty($data->senha)) {
+$email = isset($data->email) ? trim($data->email) : "";
+$senha = isset($data->senha) ? $data->senha : "";
 
-    $usuario->email = $data->email;
+if (!empty($email) && !empty($senha)) {
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        http_response_code(400);
+        echo json_encode(["status" => "error", "message" => "Formato de e-mail inválido."]);
+        exit();
+    }
+
+    $usuario->email = $email;
     $stmt = $usuario->findByEmail();
     $num = $stmt->rowCount();
 
     if ($num > 0) {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if (password_verify($data->senha, $row['senha'])) {
+        if (password_verify($senha, $row['senha'])) {
 
             $payload = [
                 "id"    => $row['id'],
-                "email" => $data->email,
+                "email" => $email,
                 "tipo"  => $row['tipo'],
                 "exp"   => time() + JWT_EXPIRACAO
             ];

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MedicoService } from '../services/medico.service';
 
 @Component({
@@ -21,9 +21,15 @@ export class Buscar {
   especialidadeSelecionada: string = '';
 
   resultados: any[] = [];
-termoBusca: any;
+  termoBusca: any;
+  userName: string = '';
 
-  constructor(private medicoService: MedicoService) {}
+  constructor(
+    private medicoService: MedicoService,
+    private router: Router
+  ) {
+    this.userName = localStorage.getItem('user_name') || '';
+  }
 
   buscarMedicos() {
     this.medicoService.buscar(this.cidadeSelecionada, this.especialidadeSelecionada).subscribe({
@@ -34,5 +40,10 @@ termoBusca: any;
         console.error(err);
       },
     });
+  }
+
+  sair() {
+    localStorage.clear();
+    this.router.navigate(['/']);
   }
 }

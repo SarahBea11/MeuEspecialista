@@ -9,6 +9,10 @@
     <div class="form-wrapper">
       <h1>Login</h1>
 
+      <div class="error-alert" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
       <div class="input-group">
         <label>E-mail</label>
         <input type="email" name="email" [(ngModel)]="loginData.email" placeholder="seu@email.com" />

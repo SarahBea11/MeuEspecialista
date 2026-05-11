@@ -4,9 +4,10 @@
   </div>
 
   <div class="menu">
+    <span class="boas-vindas" *ngIf="userName">Olá, {{ userName }}</span>
     <a class="ativo" routerLink="/buscar">Buscar</a>
     <a routerLink="/perfil"> Meu perfil</a>
-    <a routerLink="/" style="cursor: pointer;">Sair</a>
+    <a (click)="sair()" style="cursor: pointer;">Sair</a>
   </div>
 </nav>
 
