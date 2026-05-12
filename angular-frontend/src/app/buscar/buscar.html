@@ -47,9 +47,16 @@
     </div>
 
     <div class="resultados">
-      <div *ngIf="resultados.length === 0" class="sem-resultados">
+      <div *ngIf="carregando" class="carregando">
+        <div class="spinner"></div>
+        Buscando especialistas...
+      </div>
+
+      <div *ngIf="!carregando && resultados.length === 0" class="sem-resultados">
         Nenhum médico encontrado com esses filtros.
       </div>
+
+      <div *ngIf="!carregando" class="lista-medicos">
 
       <div *ngFor="let medico of resultados" class="card-medico">
         <h3>{{ medico.nome }}</h3>
@@ -58,6 +65,7 @@
         <p><strong>Telefone:</strong> {{ medico.telefone }}</p>
         <p><strong>CRM:</strong> {{ medico.crm }}</p>
 
+      </div>
       </div>
     </div>
   </div>

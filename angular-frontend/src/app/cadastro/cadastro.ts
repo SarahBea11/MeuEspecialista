@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
+import { environment } from '../environments';
+
 @Component({
   selector: 'app-cadastro',
   standalone: true,
@@ -14,6 +16,8 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 })
 export class Cadastro {
   tipoUsuario: string = '';
+  carregando: boolean = false;
+  private apiUrl = `${environment.apiUrl}cadastro.php`;
 
   cidades = [
     { id: 1, nome: 'Campinas' },
@@ -60,14 +64,17 @@ export class Cadastro {
       convenio_id: form.value.convenio, // Pega o ID selecionado no select
     };
 
+    this.carregando = true;
     this.http
-      .post('http://localhost/MeuEspecialista/php-backend/api/cadastro.php', dados)
+      .post(this.apiUrl, dados)
       .subscribe({
         next: (res: any) => {
+          this.carregando = false;
           alert(res.message);
           this.router.navigate(['/login']);
         },
         error: (err) => {
+          this.carregando = false;
           console.error(err);
           alert(
             'Erro ao cadastrar: ' + (err.error?.message || 'Verifique a conexão com o servidor.'),

@@ -24,6 +24,7 @@ export class Buscar implements OnInit {
   resultados: Medico[] = [];
   termoBusca: string = '';
   userName: string = '';
+  carregando: boolean = false;
 
   constructor(
     private medicoService: MedicoService,
@@ -38,15 +39,19 @@ export class Buscar implements OnInit {
   }
 
   buscarMedicos() {
+    this.carregando = true;
     this.medicoService
       .buscar(this.cidadeSelecionada, this.especialidadeSelecionada, this.termoBusca)
       .subscribe({
         next: (res) => {
           this.resultados = res;
+          this.carregando = false;
           this.cdr.detectChanges();
         },
         error: (err) => {
           console.error('Erro na busca de médicos:', err);
+          this.carregando = false;
+          this.cdr.detectChanges();
         },
       });
   }

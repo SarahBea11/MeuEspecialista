@@ -153,3 +153,45 @@ body {
 .card-medico strong {
     color: #333;
 }
+
+.carregando {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 50px;
+    color: #666;
+    font-style: italic;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(4, 79, 35, 0.1);
+    border-left-color: #044F23;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.sem-resultados {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 50px;
+    background: #fff;
+    border-radius: 15px;
+    color: #666;
+    border: 1px dashed #ccc;
+}
+
+.lista-medicos {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}

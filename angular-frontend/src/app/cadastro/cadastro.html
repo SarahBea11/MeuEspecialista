@@ -91,7 +91,9 @@
     </div>
 
     <div class="botoes">
-      <button type="submit" class="criar" [disabled]="!cadastroForm.valid">Criar</button>
+      <button type="submit" class="criar" [disabled]="!cadastroForm.valid || carregando">
+        {{ carregando ? 'Criando...' : 'Criar' }}
+      </button>
       <button type="button" class="limpar" (click)="limpar(cadastroForm)">Limpar</button>
       <button type="button" class="cancelar" (click)="cancelar()">Cancelar</button>
     </div>
