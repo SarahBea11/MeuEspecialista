@@ -1,13 +1,5 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST, OPTIONS");
-header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
- 
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit;
-}
+require_once __DIR__ . '/../config/cors.php';
 
 include_once '../config/database.php';
 include_once '../config/auth_middleware.php';
@@ -98,7 +90,7 @@ try {
 
     if (!empty($data->senha)) {
         if (strlen($data->senha) < 6) {
-             throw new Exception("A nova senha deve ter pelo menos 6 caracteres.");
+            throw new Exception("A nova senha deve ter pelo menos 6 caracteres.");
         }
         if ($data->senha === ($data->confirmarSenha ?? "")) {
             $senhaHash = password_hash($data->senha, PASSWORD_DEFAULT);
@@ -106,7 +98,7 @@ try {
             $stmtSenha = $db->prepare($querySenha);
             $stmtSenha->execute([':senha' => $senhaHash, ':id' => $idUsuario]);
         } else {
-             throw new Exception("As senhas não coincidem.");
+            throw new Exception("As senhas não coincidem.");
         }
     }
 
@@ -116,6 +108,6 @@ try {
     if ($db->inTransaction()) {
         $db->rollBack();
     }
-    http_response_code(400); 
+    http_response_code(400);
     echo json_encode(["status" => "error", "message" => $e->getMessage()]);
 }

@@ -1,7 +1,6 @@
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { Medico, Paciente } from '../models/usuario.model';
 
 @Component({
   selector: 'app-perfil',
@@ -10,7 +9,7 @@ import { Medico, Paciente } from '../models/usuario.model';
   styleUrl: './perfil.css',
 })
 export class Perfil implements OnInit {
-  usuario: Medico & Paciente = {
+  usuario: any = {
     nome: '',
     email: '',
     tipo: 'paciente',
@@ -21,15 +20,18 @@ export class Perfil implements OnInit {
     cpf: '',
     crm: '',
     especialidade: '',
+    senha: '',
+    confirmarSenha: '',
   };
   usuarioOriginal: any = {};
   editando: boolean = false;
+  loading: boolean = false;
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private cdr: ChangeDetectorRef,
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.carregarUsuario();
@@ -39,12 +41,9 @@ export class Perfil implements OnInit {
     this.authService.getPerfil().subscribe({
       next: (res: any) => {
         if (res.status === 'success') {
-          this.usuario = { ...res.dados };
-          this.usuarioOriginal = { ...res.dados };
-
+          this.usuario = { ...res.dados, senha: '', confirmarSenha: '' };
+          this.usuarioOriginal = { ...res.dados, senha: '', confirmarSenha: '' };
           this.cdr.detectChanges();
-
-          console.log('Dados carregados com sucesso no F5');
         }
       },
       error: (err) => {
@@ -64,15 +63,18 @@ export class Perfil implements OnInit {
   }
 
   salvar() {
+    this.loading = true;
     this.authService.atualizarPerfil(this.usuario).subscribe({
       next: (res: any) => {
-        alert('Perfil atualizado!');
+        this.loading = false;
+        alert('Perfil atualizado com sucesso!');
         this.usuarioOriginal = { ...this.usuario };
         this.editando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        alert('Erro ao salvar');
+        this.loading = false;
+        alert(err.error?.message || 'Erro ao salvar perfil.');
       },
     });
   }

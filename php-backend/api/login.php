@@ -1,19 +1,6 @@
 <?php
 require_once __DIR__ . '/../config/app_config.php';
-if (isset($_SERVER['HTTP_ORIGIN'])) {
-    header("Access-Control-Max-Age: 86400");
-    header("Access-Control-Allow-Credentials: true");
-    header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
-}
-
-header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
-
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit(0);
-}
+require_once __DIR__ . '/../config/cors.php';
 
 include_once '../config/database.php';
 include_once '../models/Usuario.php';
@@ -45,15 +32,15 @@ if (!empty($email) && !empty($senha)) {
         if (password_verify($senha, $row['senha'])) {
 
             $payload = [
-                "id"    => $row['id'],
+                "id" => $row['id'],
                 "email" => $email,
-                "tipo"  => $row['tipo'],
-                "exp"   => time() + JWT_EXPIRACAO
+                "tipo" => $row['tipo'],
+                "exp" => time() + JWT_EXPIRACAO
             ];
 
             $tokenPayload = base64_encode(json_encode($payload));
-            $assinatura   = hash_hmac('sha256', $tokenPayload, JWT_SECRET);
-            $tokenFinal   = $tokenPayload . "." . $assinatura;
+            $assinatura = hash_hmac('sha256', $tokenPayload, JWT_SECRET);
+            $tokenFinal = $tokenPayload . "." . $assinatura;
 
             http_response_code(200);
             echo json_encode([
@@ -75,4 +62,3 @@ if (!empty($email) && !empty($senha)) {
     http_response_code(400);
     echo json_encode(["status" => "error", "message" => "Preencha todos os campos"]);
 }
- 

@@ -1,13 +1,14 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../environments';
 import { LoginResponse, PerfilResponse } from '../models/auth.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost/MeuEspecialista/php-backend/api/';
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 

@@ -14,14 +14,16 @@ export class Login {
     senha: '',
   };
   errorMessage: string = '';
+  loading: boolean = false;
 
   constructor(
     private authService: AuthService,
     private router: Router,
-  ) { }
+  ) {}
 
   logar() {
     this.errorMessage = '';
+    this.loading = true;
     this.authService.login(this.loginData).subscribe({
       next: (res) => {
         localStorage.setItem('token', res.token);
@@ -29,10 +31,12 @@ export class Login {
         localStorage.setItem('user_name', res.nome || '');
 
         this.router.navigate(['/buscar']);
+        this.loading = false;
       },
       error: (err) => {
         this.errorMessage = err.error?.message || 'Erro ao realizar login. Tente novamente.';
         console.error('Login error:', err);
+        this.loading = false;
       },
     });
   }

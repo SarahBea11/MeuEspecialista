@@ -1,13 +1,5 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
-
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit(0);
-}
+require_once __DIR__ . '/../config/cors.php';
 
 include_once '../config/database.php';
 include_once '../config/auth_middleware.php';
@@ -49,7 +41,7 @@ if (!empty($especialidade)) {
     $especialidadeParam = "%{$especialidade}%";
     $stmt->bindParam(":especialidade", $especialidadeParam);
 }
- 
+
 if (!empty($termo)) {
     $termoParam = "%{$termo}%";
     $stmt->bindParam(":termo", $termoParam);

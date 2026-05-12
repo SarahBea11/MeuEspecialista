@@ -18,28 +18,31 @@ export class Cadastro {
   cidades = [
     { id: 1, nome: 'Campinas' },
     { id: 2, nome: 'Indaiatuba' },
-    { id: 3, nome: 'Itu' }
+    { id: 3, nome: 'Itu' },
   ];
 
   especialidades = [
     { id: 1, nome: 'Cardiologia' },
     { id: 2, nome: 'Pediatria' },
-    { id: 3, nome: 'Psiquiatria' }
+    { id: 3, nome: 'Psiquiatria' },
   ];
 
   convenios = [
     { id: 1, nome: 'Não conveniado' },
     { id: 2, nome: 'Amil' },
     { id: 3, nome: 'Intermédica' },
-    { id: 4, nome: 'Unimed' }
+    { id: 4, nome: 'Unimed' },
   ];
 
-  constructor(private router: Router, private http: HttpClient) { }
+  constructor(
+    private router: Router,
+    private http: HttpClient,
+  ) {}
 
   criarConta(form: NgForm) {
     // Verificação básica de senha
     if (form.value.senha !== form.value.confirmaSenha) {
-      alert("As senhas não coincidem!");
+      alert('As senhas não coincidem!');
       return;
     }
 
@@ -54,7 +57,7 @@ export class Cadastro {
       especialidade: form.value.especialidade,
       crm: form.value.crm,
       cpf: form.value.cpf,
-      convenio_id: form.value.convenio // Pega o ID selecionado no select
+      convenio_id: form.value.convenio, // Pega o ID selecionado no select
     };
 
     this.http
@@ -66,7 +69,9 @@ export class Cadastro {
         },
         error: (err) => {
           console.error(err);
-          alert('Erro ao cadastrar: ' + (err.error?.message || 'Verifique a conexão com o servidor.'));
+          alert(
+            'Erro ao cadastrar: ' + (err.error?.message || 'Verifique a conexão com o servidor.'),
+          );
         },
       });
   }

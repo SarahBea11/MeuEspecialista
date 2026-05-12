@@ -1,13 +1,5 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST, OPTIONS");
-header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
-
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit();
-}
+require_once __DIR__ . '/../config/cors.php';
 
 include_once '../models/Usuario.php';
 include_once '../config/database.php';
@@ -78,7 +70,7 @@ try {
 
         $queryMed = "INSERT INTO medicos_perfil (usuario_id, crm, especialidade, telefone, cidade, endereco) 
                      VALUES (:usuario_id, :crm, :especialidade, :telefone, :cidade, :endereco)";
-        
+
         $stmtMed = $db->prepare($queryMed);
         $stmtMed->bindParam(":usuario_id", $usuario_id);
         $stmtMed->bindParam(":crm", $data->crm);
@@ -87,19 +79,18 @@ try {
         $stmtMed->bindParam(":cidade", $data->cidade);
         $stmtMed->bindParam(":endereco", $data->endereco);
         $stmtMed->execute();
-    } 
-    else if ($tipo === 'paciente') {
+    } else if ($tipo === 'paciente') {
         if (empty($data->cpf)) {
             throw new Exception("CPF é obrigatório para pacientes.");
         }
 
         $queryPac = "INSERT INTO pacientes_perfil (usuario_id, cpf, convenio_id) 
                      VALUES (:usuario_id, :cpf, :convenio_id)";
-        
+
         $stmtPac = $db->prepare($queryPac);
         $stmtPac->bindParam(":usuario_id", $usuario_id);
         $stmtPac->bindParam(":cpf", $data->cpf);
-        
+
         $conv_id = !empty($data->convenio_id) ? $data->convenio_id : null;
         $stmtPac->bindParam(":convenio_id", $conv_id);
         $stmtPac->execute();

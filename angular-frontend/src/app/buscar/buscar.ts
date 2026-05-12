@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
@@ -12,7 +12,7 @@ import { Medico } from '../models/usuario.model';
   templateUrl: './buscar.html',
   styleUrl: './buscar.css',
 })
-export class Buscar {
+export class Buscar implements OnInit {
   especialidades = ['Cardiologia', 'Pediatria', 'Psiquiatria'];
   cidades = ['Campinas', 'Indaiatuba', 'Itu'];
   convenios = ['Amil', 'Intermédica', 'Unimed'];
@@ -27,24 +27,32 @@ export class Buscar {
 
   constructor(
     private medicoService: MedicoService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef,
   ) {
     this.userName = localStorage.getItem('user_name') || '';
   }
 
+  ngOnInit(): void {
+    this.buscarMedicos();
+  }
+
   buscarMedicos() {
-    this.medicoService.buscar(this.cidadeSelecionada, this.especialidadeSelecionada).subscribe({
-      next: (res) => {
-        this.resultados = res;
-      },
-      error: (err) => {
-        console.error(err);
-      },
-    });
+    this.medicoService
+      .buscar(this.cidadeSelecionada, this.especialidadeSelecionada, this.termoBusca)
+      .subscribe({
+        next: (res) => {
+          this.resultados = res;
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error('Erro na busca de médicos:', err);
+        },
+      });
   }
 
   sair() {
     localStorage.clear();
-    this.router.navigate(['/']);
+    this.router.navigate(['/login']);
   }
 }

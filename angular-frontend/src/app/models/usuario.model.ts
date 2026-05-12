@@ -4,6 +4,7 @@ export interface Usuario {
   email: string;
   tipo: 'medico' | 'paciente';
   senha?: string;
+  confirmarSenha?: string;
 }
 
 export interface Medico extends Usuario {
