@@ -1,6 +1,7 @@
 <?php
-require_once __DIR__ . '/../config/app_config.php';
 require_once __DIR__ . '/../config/cors.php';
+require_once __DIR__ . '/../config/app_config.php';
+
 
 include_once '../config/database.php';
 include_once '../models/Usuario.php';
