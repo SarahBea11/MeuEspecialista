@@ -5,7 +5,7 @@
 Sistema web para busca e gerenciamento de médicos, desenvolvido com Angular (frontend) e PHP (backend).
 
 </p>
-
+ 
 <p align="center">
   <img src="https://img.shields.io/badge/status-em%20desenvolvimento-yellow"/>
   <img src="https://img.shields.io/badge/version-1.0-blue"/>
@@ -25,7 +25,7 @@ Este projeto foi desenvolvido como prática acadêmica, focando em desenvolvimen
 
 - ✅ Cadastro de usuários
 - ✅ Login com autenticação
-- 🚧 Listagem de especialistas
+- ✅ Listagem de especialistas
 - 🚧 Busca por serviços
 - 🚧 Sistema de agendamento (Atualizações futuras)
 
@@ -59,11 +59,11 @@ Antes de começar, verifique se você tem as seguintes versões instaladas:
 
 | Tecnologia  | Versão Mínima | Comando para verificar   |
 | :---------- | :------------ | :----------------------- |
-| **Angular** | 21.2.4       | `ng version`             |
+| **Angular** | 21.2.4        | `ng version`             |
 | **Node.js** | 24.14.1       | `node -v`                |
-| **PHP**     | 8.2.0        | `php -v`                 |
-| **MySQL**   | 8.0.0        | `mysql --version`        |
-| **XAMPP**   | 3.3.0       | (Ver painel de controle) |
+| **PHP**     | 8.2.0         | `php -v`                 |
+| **MySQL**   | 8.0.0         | `mysql --version`        |
+| **XAMPP**   | 3.3.0         | (Ver painel de controle) |
 
 ---
 
@@ -75,33 +75,36 @@ Antes de começar, verifique se você tem as seguintes versões instaladas:
 git clone https://github.com/SarahBea11/MeuEspecialista.git
 ```
 
-1. Coloque a pasta no `htdocs` do XAMPP
-2. Inicie o Apache e MySQL
-3. Acesse:
-   http://localhost/MeuEspecialista/php-backend/api/login.php
+### 2. Configuração do Backend (PHP)
 
-### 2. Acesse a pasta
+1. Mova a pasta do projeto para o diretório `htdocs` do seu XAMPP.
+2. Certifique-se de que o **Apache** e o **MySQL** estão ativos no Painel de Controle do XAMPP.
+3. Configure as variáveis de ambiente:
+   - Navegue até `php-backend/config/`.
+   - Copie o arquivo `app_config.example.php` e renomeie para `app_config.php`.
+   - Abra o `app_config.php` e defina uma chave segura para `JWT_SECRET`.
+4. Importe o banco de dados (se houver um arquivo `.sql`, utilize o phpMyAdmin).
 
-```bash
- cd /c/xampp/htdocs/MeuEspecialista
-```
 
-### 3. Rode o projeto
+### 3. Configuração do Frontend (Angular)
 
-```bash
-code .
-```
+1. Abra o terminal na pasta do projeto.
+2. Navegue até a pasta do frontend:
+   ```bash
+   cd angular-frontend
+   ```
+3. Instale as dependências:
+   ```bash
+   npm install
+   ```
+4. Inicie o servidor de desenvolvimento:
+   ```bash
+   ng serve -o
+   ```
 
-### 4. Dentro do vscode
+O frontend estará disponível em: `http://localhost:4200`
+A API estará acessível em: `http://localhost/MeuEspecialista/php-backend/api/`
 
-```bash
-cd angular-frontend
-npm install
-ng serve -o
-```
-
-Acesse:
-http://localhost:4200
 
 ## Estrutura do projeto
 

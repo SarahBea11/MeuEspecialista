@@ -4,33 +4,25 @@
   </div>
 
   <div class="menu">
+    <span class="boas-vindas" *ngIf="userName">Olá, {{ userName }}</span>
     <a class="ativo" routerLink="/buscar">Buscar</a>
     <a routerLink="/perfil"> Meu perfil</a>
-    <a routerLink="">Sair</a>
+    <a (click)="sair()" style="cursor: pointer;">Sair</a>
   </div>
 </nav>
 
 <div class="container-busca">
   <div class="barra-busca">
-    <input type="text" placeholder="Digite nome ou CRM do médico" />
+    <input type="text" [(ngModel)]="termoBusca" placeholder="Digite nome ou CRM do médico" />
     <button (click)="buscarMedicos()">Buscar</button>
   </div>
 
   <div class="conteudo">
-    <div class="resultados">
-      <div *ngFor="let medico of resultados" class="card-medico">
-        <h3>{{ medico.nome }}</h3>
-        <p><strong>Especialidade:</strong> {{ medico.especialidade }}</p>
-        <p><strong>Cidade:</strong> {{ medico.cidade }}</p>
-        <p><strong>Telefone:</strong> {{ medico.telefone }}</p>
-      </div>
-    </div>
-
     <div class="filtro">
       <div class="titulo">Filtrar por</div>
 
       <label>Cidade</label>
-      <select [(ngModel)]="cidadeSelecionada">
+      <select [(ngModel)]="cidadeSelecionada" (change)="buscarMedicos()">
         <option value="">Todas</option>
         <option *ngFor="let cidade of cidades" [value]="cidade">
           {{ cidade }}
@@ -38,7 +30,7 @@
       </select>
 
       <label>Convênio</label>
-      <select [(ngModel)]="convenioSelecionado">
+      <select [(ngModel)]="convenioSelecionado" (change)="buscarMedicos()">
         <option value="">Todos</option>
         <option *ngFor="let c of convenios" [value]="c">
           {{ c }}
@@ -46,12 +38,35 @@
       </select>
 
       <label>Especialidade</label>
-      <select [(ngModel)]="especialidadeSelecionada">
+      <select [(ngModel)]="especialidadeSelecionada" (change)="buscarMedicos()">
         <option value="">Todas</option>
         <option *ngFor="let esp of especialidades" [value]="esp">
           {{ esp }}
         </option>
       </select>
+    </div>
+
+    <div class="resultados">
+      <div *ngIf="carregando" class="carregando">
+        <div class="spinner"></div>
+        Buscando especialistas...
+      </div>
+
+      <div *ngIf="!carregando && resultados.length === 0" class="sem-resultados">
+        Nenhum médico encontrado com esses filtros.
+      </div>
+
+      <div *ngIf="!carregando" class="lista-medicos">
+
+      <div *ngFor="let medico of resultados" class="card-medico">
+        <h3>{{ medico.nome }}</h3>
+        <p><strong>Especialidade:</strong> {{ medico.especialidade }}</p>
+        <p><strong>Cidade:</strong> {{ medico.cidade }}</p>
+        <p><strong>Telefone:</strong> {{ medico.telefone }}</p>
+        <p><strong>CRM:</strong> {{ medico.crm }}</p>
+
+      </div>
+      </div>
     </div>
   </div>
 </div>

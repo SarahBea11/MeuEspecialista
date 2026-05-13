@@ -1,0 +1,41 @@
+# ============================================================
+# MeuEspecialista — .gitignore raiz
+# ============================================================
+
+# ------------------------------------------------------------------
+# PHP Backend — arquivos de configuração sensíveis
+# ------------------------------------------------------------------
+php-backend/config/app_config.php
+php-backend/teste.php
+
+# ------------------------------------------------------------------
+# Angular Frontend — gerados automaticamente
+# ------------------------------------------------------------------
+angular-frontend/node_modules/
+angular-frontend/dist/
+angular-frontend/.angular/cache/
+angular-frontend/coverage/
+
+# ------------------------------------------------------------------
+# Editores e IDEs
+# ------------------------------------------------------------------
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.sublime-workspace
+
+# ------------------------------------------------------------------
+# Sistema operacional
+# ------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+
+# ------------------------------------------------------------------
+# Logs
+# ------------------------------------------------------------------
+*.log
+npm-debug.log*
+yarn-error.log*

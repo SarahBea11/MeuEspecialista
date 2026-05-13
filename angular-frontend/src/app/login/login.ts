@@ -13,6 +13,8 @@ export class Login {
     email: '',
     senha: '',
   };
+  errorMessage: string = '';
+  loading: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -20,22 +22,21 @@ export class Login {
   ) {}
 
   logar() {
+    this.errorMessage = '';
+    this.loading = true;
     this.authService.login(this.loginData).subscribe({
       next: (res) => {
-        console.log('Sucesso!', res);
-
         localStorage.setItem('token', res.token);
-
-        localStorage.setItem('tipoUsuario', res.tipo);
-
-        localStorage.setItem('usuarioLogado', 'true');
+        localStorage.setItem('user_type', res.tipo);
+        localStorage.setItem('user_name', res.nome || '');
 
         this.router.navigate(['/buscar']);
+        this.loading = false;
       },
       error: (err) => {
-        console.error('Erro!', err);
-        const mensagem = err.error?.message || 'E-mail ou senha incorretos.';
-        alert(mensagem);
+        this.errorMessage = err.error?.message || 'Erro ao realizar login. Tente novamente.';
+        console.error('Login error:', err);
+        this.loading = false;
       },
     });
   }

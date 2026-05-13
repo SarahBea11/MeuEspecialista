@@ -156,7 +156,9 @@
       </button>
 
       <ng-container *ngIf="editando">
-        <button type="submit" class="btn-salvar" (click)="salvar()">Salvar Alterações</button>
+        <button type="submit" class="btn-salvar" (click)="salvar()" [disabled]="loading">
+          {{ loading ? 'Salvando...' : 'Salvar Alterações' }}
+        </button>
 
         <button type="button" class="btn-cancelar" (click)="cancelar()">Cancelar</button>
       </ng-container>

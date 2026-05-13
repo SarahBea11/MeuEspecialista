@@ -24,7 +24,7 @@ h1 {
     font-family: Arial;
     font-weight: bold;
     font-size: 65px;
-    color: #044F23;
+    color: black;
     margin-bottom: 10px;
 }
 
@@ -55,7 +55,6 @@ p {
 
 
 button {
-    width: 150px;
     padding: 14px 30px;
     border-radius: 25px;
     font-weight: bold;
@@ -74,15 +73,15 @@ button {
 
 
 .btn-entrar {
-    background:#033a1a;
-    color: white;
-    border: 2px solid #1c5c36;
+    background: rgb(236, 226, 226);
+    color: black;
+    border: 2px solid #044F23;
 }
 
 
 .btn-cadastro:hover {
-    background: rgb(236, 226, 226);
-    color: black;
+    background: #033a1a;
+    color: white;
     transform: scale(1.05);
 }
 
