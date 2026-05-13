@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -7,5 +7,19 @@ import { Component, signal } from '@angular/core';
   styleUrl: './app.css',
 })
 export class App {
-  protected readonly title = signal('meu-especialista');
+  showScroll: boolean = false;
+
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    // Mostra o botão se a rolagem passar de 300px
+    this.showScroll = window.scrollY > 300;
+  }
+
+  scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
 }
+

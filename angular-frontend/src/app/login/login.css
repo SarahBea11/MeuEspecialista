@@ -1,41 +1,39 @@
 .login-container {
     display: flex;
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
     padding: 0;
     font-family: Arial, Helvetica, sans-serif;
 }
 
-
 .login-esquerda {
     width: 50%;
-    height: 100%;
     background-color: #044F23;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 40px;
 }
 
-
 .logo-box {
-    width: 350px;
+    width: 100%;
+    max-width: 350px;
 }
 
 .logo-box img {
     width: 100%;
+    height: auto;
 }
-
 
 .login-direita {
     width: 50%;
-    height: 100%;
     background-color: white;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 40px 20px;
 }
-
 
 .form-wrapper {
     width: 100%;
@@ -43,21 +41,10 @@
     display: flex;
     flex-direction: column;
 }
-
-
-.form-wrapper {
-    width: 100%;
-    max-width: 320px;
-    display: flex;
-    flex-direction: column;
-    margin: auto;
-}
-
 
 .input-group {
     margin-bottom: 15px;
 }
-
 
 .input-group label {
     display: block;
@@ -66,15 +53,14 @@
     font-size: 14px;
 }
 
-
 .input-group input {
     width: 100%;
     padding: 12px;
     border: none;
     background-color: #e0e0e0;
     border-radius: 4px;
+    font-size: 16px;
 }
-
 
 .forgot {
     text-align: right;
@@ -84,7 +70,6 @@
     margin-bottom: 25px;
 }
 
-
 .btn {
     padding: 12px;
     margin-bottom: 12px;
@@ -93,17 +78,50 @@
     cursor: pointer;
     border: 2px solid #0d4d2b;
     font-size: 16px;
-
+    transition: 0.3s;
 }
 
+.btn:hover {
+    opacity: 0.9;
+}
 
 .btn-entrar {
-    background-color: rgb(216, 209, 209);
-    color: black;
+    background-color: #044F23;
+    color: white;
 }
-
 
 .btn-cadastro {
-    background-color: rgb(216, 209, 209);
-    color: black;
+    background-color: white;
+    color: #044F23;
 }
+
+.error-alert {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .login-container {
+        flex-direction: column;
+    }
+
+    .login-esquerda {
+        width: 100%;
+        height: auto;
+        padding: 30px;
+    }
+
+    .logo-box {
+        max-width: 150px;
+    }
+
+    .login-direita {
+        width: 100%;
+        padding: 40px 20px;
+    }
+}

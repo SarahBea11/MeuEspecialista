@@ -1,1 +1,11 @@
 <router-outlet></router-outlet>
+
+<button 
+  class="scroll-top" 
+  [class.show]="showScroll" 
+  (click)="scrollToTop()"
+  title="Voltar ao topo"
+>
+  ↑
+</button>
+

@@ -21,30 +21,39 @@
     <div class="filtro">
       <div class="titulo">Filtrar por</div>
 
-      <label>Cidade</label>
-      <select [(ngModel)]="cidadeSelecionada" (change)="buscarMedicos()">
-        <option value="">Todas</option>
-        <option *ngFor="let cidade of cidades" [value]="cidade">
-          {{ cidade }}
-        </option>
-      </select>
+      <div class="filtros-wrapper">
+        <div class="campo-filtro">
+          <label>Cidade</label>
+          <select [(ngModel)]="cidadeSelecionada" (change)="buscarMedicos()">
+            <option value="">Todas</option>
+            <option *ngFor="let cidade of cidades" [value]="cidade">
+              {{ cidade }}
+            </option>
+          </select>
+        </div>
 
-      <label>Convênio</label>
-      <select [(ngModel)]="convenioSelecionado" (change)="buscarMedicos()">
-        <option value="">Todos</option>
-        <option *ngFor="let c of convenios" [value]="c">
-          {{ c }}
-        </option>
-      </select>
+        <div class="campo-filtro">
+          <label>Convênio</label>
+          <select [(ngModel)]="convenioSelecionado" (change)="buscarMedicos()">
+            <option value="">Todos</option>
+            <option *ngFor="let c of convenios" [value]="c">
+              {{ c }}
+            </option>
+          </select>
+        </div>
 
-      <label>Especialidade</label>
-      <select [(ngModel)]="especialidadeSelecionada" (change)="buscarMedicos()">
-        <option value="">Todas</option>
-        <option *ngFor="let esp of especialidades" [value]="esp">
-          {{ esp }}
-        </option>
-      </select>
+        <div class="campo-filtro">
+          <label>Especialidade</label>
+          <select [(ngModel)]="especialidadeSelecionada" (change)="buscarMedicos()">
+            <option value="">Todas</option>
+            <option *ngFor="let esp of especialidades" [value]="esp">
+              {{ esp }}
+            </option>
+          </select>
+        </div>
+      </div>
     </div>
+
 
     <div class="resultados">
       <div *ngIf="carregando" class="carregando">

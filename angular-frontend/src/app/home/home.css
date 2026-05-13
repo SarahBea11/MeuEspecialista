@@ -9,53 +9,49 @@
     padding: 20px;
 }
 
-
 .card-home {
     background: rgb(216, 209, 209);
-    padding: 50px;
+    padding: 40px 20px;
     border-radius: 15px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     max-width: 800px;
-    width: 90%;
+    width: 100%;
 }
 
-
 h1 {
-    font-family: Arial;
+    font-family: Arial, sans-serif;
     font-weight: bold;
-    font-size: 70px;
+    font-size: clamp(40px, 10vw, 70px);
     color: #044F23;
     margin-bottom: 10px;
 }
 
-
 h2 {
-    font-family: Arial;
+    font-family: Arial, sans-serif;
     font-weight: bold;
-    font-size: 35px;
+    font-size: clamp(24px, 5vw, 35px);
     color: black;
     margin-bottom: 15px;
 }
 
-
 p {
-    font-size: 21px;
+    font-size: 18px;
     color: black;
     max-width: 500px;
     margin: 0 auto 30px;
 }
-
 
 .botoes {
     display: flex;
     justify-content: center;
     gap: 20px;
     margin-top: 20px;
+    flex-wrap: wrap;
 }
 
-
 button {
-    width: 150px;
+    width: 100%;
+    max-width: 200px;
     padding: 14px 30px;
     border-radius: 25px;
     font-weight: bold;
@@ -65,30 +61,31 @@ button {
     transition: 0.3s;
 }
 
-
 .btn-cadastro {
     background: rgb(236, 226, 226);
     color: black;
-    border: 2px solid #044F23;
 }
-
 
 .btn-entrar {
     background: #033a1a;
     color: white;
-    border: 2px solid #044F23;
 }
 
-
-.btn-cadastro:hover {
-    background: rgb(236, 226, 226);
-    color: black;
+.btn-cadastro:hover, .btn-entrar:hover {
     transform: scale(1.05);
 }
 
-
-.btn-entrar:hover {
-    background: #033a1a;
-    color: white;
-    transform: scale(1.05);
-}
+@media (max-width: 480px) {
+    .card-home {
+        padding: 30px 15px;
+    }
+    
+    .botoes {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    button {
+        max-width: 100%;
+    }
+}
