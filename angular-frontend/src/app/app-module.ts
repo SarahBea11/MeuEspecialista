@@ -9,9 +9,10 @@ import { AppRoutingModule } from './app-routing-module';
 import { BrowserModule } from '@angular/platform-browser';
 import { AuthInterceptor } from './services/auth.interceptor';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { EsqueceuSenha } from './esqueceu-senha/esqueceu-senha';
 
 @NgModule({
-  declarations: [App, Login, Home, Perfil],
+  declarations: [App, Login, Home, Perfil, EsqueceuSenha],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, Cadastro],
   providers: [
     {

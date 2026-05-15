@@ -26,6 +26,7 @@
     height: auto;
 }
 
+
 .login-direita {
     width: 50%;
     background-color: white;
@@ -35,34 +36,35 @@
     padding: 40px 20px;
 }
 
-.form-wrapper {
-    width: 100%;
-    max-width: 320px;
+
+.form-box {
+    width: 320px;
     display: flex;
     flex-direction: column;
 }
 
-.input-group {
+.form-box h2 {
+    font-size: 28px;
     margin-bottom: 15px;
 }
 
-.input-group label {
-    display: block;
-    margin-bottom: 5px;
-    color: #666;
+.form-box label {
+    font-size: 13px;
+    color: #555;
+    margin-top: 10px;
+}
+
+.form-box input {
+    margin-top: 5px;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    background: #ddd;
     font-size: 14px;
 }
 
-.input-group input {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    background-color: #e0e0e0;
-    border-radius: 4px;
-    font-size: 16px;
-}
 
-.forgot {
+.back {
     font-size: 12px;
     text-align: right;
     margin-top: 10px;
@@ -70,6 +72,7 @@
     color: #333;
     cursor: pointer;
 }
+
 
 .btn {
     padding: 12px;
@@ -82,47 +85,36 @@
     transition: 0.3s;
 }
 
+
 .btn:hover {
     opacity: 0.9;
 }
 
-.btn-entrar {
+
+.btn-primary {
     background-color: #044F23;
     color: white;
+
 }
 
-.btn-cadastro {
+
+.btn-secondary {
     background-color: white;
     color: #044F23;
 }
 
-.error-alert {
-    background-color: #f8d7da;
-    color: #721c24;
-    padding: 10px;
-    border-radius: 4px;
-    margin-bottom: 15px;
-    font-size: 14px;
-    text-align: center;
-}
 
 @media (max-width: 768px) {
-    .login-container {
+    .container {
         flex-direction: column;
     }
 
-    .login-esquerda {
+    .left, .right {
         width: 100%;
-        height: auto;
         padding: 30px;
     }
 
-    .logo-box {
-        max-width: 150px;
-    }
-
-    .login-direita {
-        width: 100%;
-        padding: 40px 20px;
+    .logo img {
+        width: 100px;
     }
 }
