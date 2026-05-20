@@ -73,9 +73,56 @@
         <p><strong>Cidade:</strong> {{ medico.cidade }}</p>
         <p><strong>Telefone:</strong> {{ medico.telefone }}</p>
         <p><strong>CRM:</strong> {{ medico.crm }}</p>
+        <div class="card-actions">
+          <button class="btn-ver-perfil" (click)="abrirPerfil(medico)">Ver Perfil</button>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
 
+<!-- Modal de Perfil do Médico -->
+<div class="modal-overlay" *ngIf="medicoSelecionado" (click)="fecharPerfil()">
+  <div class="modal-card" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Perfil do Especialista</h2>
+      <button class="btn-fechar" (click)="fecharPerfil()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="medico-perfil-card">
+        <div class="medico-avatar">
+          <span class="icon-avatar">🩺</span>
+        </div>
+        <h3 class="medico-nome">{{ medicoSelecionado.nome }}</h3>
+        <p class="medico-especialidade-tag">{{ medicoSelecionado.especialidade }}</p>
+        
+        <div class="medico-detalhes-grid">
+          <div class="detalhe-item">
+            <span class="detalhe-label">CRM</span>
+            <span class="detalhe-valor">{{ medicoSelecionado.crm }}</span>
+          </div>
+          <div class="detalhe-item">
+            <span class="detalhe-label">Telefone</span>
+            <span class="detalhe-valor">{{ medicoSelecionado.telefone }}</span>
+          </div>
+          <div class="detalhe-item">
+            <span class="detalhe-label">Cidade</span>
+            <span class="detalhe-valor">{{ medicoSelecionado.cidade }}</span>
+          </div>
+          <div class="detalhe-item">
+            <span class="detalhe-label">E-mail</span>
+            <span class="detalhe-valor" style="word-break: break-all;">{{ medicoSelecionado.email }}</span>
+          </div>
+          <div class="detalhe-item full-width" *ngIf="medicoSelecionado.endereco">
+            <span class="detalhe-label">Endereço do Consultório</span>
+            <span class="detalhe-valor-endereco">{{ medicoSelecionado.endereco }}</span>
+          </div>
+        </div>
       </div>
-      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-acao-modal" (click)="fecharPerfil()">Voltar para a Busca</button>
     </div>
   </div>
 </div>

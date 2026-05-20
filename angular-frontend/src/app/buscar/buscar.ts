@@ -25,6 +25,7 @@ export class Buscar implements OnInit {
   termoBusca: string = '';
   userName: string = '';
   carregando: boolean = false;
+  medicoSelecionado: Medico | null = null;
 
   constructor(
     private medicoService: MedicoService,
@@ -32,6 +33,16 @@ export class Buscar implements OnInit {
     private cdr: ChangeDetectorRef,
   ) {
     this.userName = localStorage.getItem('user_name') || '';
+  }
+
+  abrirPerfil(medico: Medico): void {
+    this.medicoSelecionado = medico;
+    this.cdr.detectChanges();
+  }
+
+  fecharPerfil(): void {
+    this.medicoSelecionado = null;
+    this.cdr.detectChanges();
   }
 
   ngOnInit(): void {
