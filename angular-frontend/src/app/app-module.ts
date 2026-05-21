@@ -12,8 +12,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { EsqueceuSenha } from './esqueceu-senha/esqueceu-senha';
 
 @NgModule({
-  declarations: [App, Login, Home, Perfil, EsqueceuSenha],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, Cadastro],
+  declarations: [App, Login, Perfil, EsqueceuSenha],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, Cadastro, Home],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

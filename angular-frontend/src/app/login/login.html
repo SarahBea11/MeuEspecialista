@@ -1,43 +1,73 @@
-<div class="login-container">
-  <div class="login-esquerda">
-    <div class="logo-box">
-      <img src="assets/logo-especialista.png" alt="Meu Especialista" />
+<div class="login-page">
+  <div class="login-card">
+
+    <div class="login-header">
+      <div class="login-logo">
+        <img src="assets/logo-especialista.png" alt="Meu Especialista" />
+      </div>
+      <h1>Meu Especialista</h1>
+      <p class="login-subtitulo">Acesse sua conta para continuar</p>
     </div>
-  </div>
 
-  <div class="login-direita">
-    <div class="form-wrapper">
-      <h1>Login</h1>
+    <div class="login-body">
 
+      <!-- Alerta de erro -->
       <div class="error-alert" *ngIf="errorMessage">
+        <span class="error-icon">⚠️</span>
         {{ errorMessage }}
       </div>
 
-      <div class="input-group">
-        <label>E-mail</label>
-        <input
-          type="email"
-          name="email"
-          [(ngModel)]="loginData.email"
-          placeholder="seu@email.com"
-        />
+      <!-- Campo E-mail -->
+      <div class="campo">
+        <label class="campo-label">E-mail</label>
+        <div class="input-wrapper">
+          <span class="input-icon">✉️</span>
+          <input
+            type="email"
+            name="email"
+            [(ngModel)]="loginData.email"
+            placeholder="seu@email.com"
+          />
+        </div>
       </div>
 
-      <div class="input-group">
-        <label>Senha</label>
-        <input type="password" name="password" [(ngModel)]="loginData.senha" placeholder="******" />
+      <!-- Campo Senha -->
+      <div class="campo">
+        <label class="campo-label">Senha</label>
+        <div class="input-wrapper">
+          <span class="input-icon">🔒</span>
+          <input
+            type="password"
+            name="password"
+            [(ngModel)]="loginData.senha"
+            placeholder="Digite sua senha"
+          />
+        </div>
       </div>
 
-      <a routerLink="/esqueceu-senha" class="forgot">
+      <!-- Esqueceu a senha -->
+      <a routerLink="/esqueceu-senha" class="forgot-link">
         Esqueceu a senha?
       </a>
 
-      <button type="button" class="btn btn-entrar" (click)="logar()" [disabled]="loading">
-        <div class="spinner" *ngIf="loading"></div>
-        {{ loading ? 'Entrando...' : 'Entrar' }}
+      <!-- Botão Entrar -->
+      <button class="btn-entrar" (click)="logar()" [disabled]="loading">
+        <div class="btn-conteudo">
+          <div *ngIf="loading" class="btn-spinner"></div>
+          <span>{{ loading ? 'Entrando...' : 'Entrar' }}</span>
+        </div>
       </button>
 
-      <button type="button" class="btn btn-cadastro" routerLink="/cadastro">Cadastrar-se</button>
+      <!-- Divisor -->
+      <div class="divisor">
+        <span>Não tem uma conta?</span>
+      </div>
+
+      <!-- Botão Cadastro -->
+      <button class="btn-cadastro" routerLink="/">
+        Criar Minha Conta
+      </button>
+
     </div>
   </div>
 </div>

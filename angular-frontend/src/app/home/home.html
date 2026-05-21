@@ -13,20 +13,281 @@
                 pacientes podem criar um perfil para encontrar o
                 profissional ideal.
             </p>
-
         </div>
 
         <div class="botoes">
-            <button routerLink="/cadastro" class="btn btn-cadastro">
+            <button (click)="abrirModal()" class="btn btn-cadastro">
                 Criar Conta
             </button>
 
             <button routerLink="/login" class="btn btn-entrar">
                 Entrar
             </button>
-            
         </div>
+    </div>
+</div>
 
+<!-- Modal de Cadastro -->
+<div class="modal-overlay" *ngIf="modalAberto" (click)="fecharModal()">
+  <div class="modal-card" (click)="$event.stopPropagation()">
+
+    <div class="modal-header">
+      <h2>Criar Conta</h2>
+      <button class="btn-fechar" (click)="fecharModal()">&times;</button>
     </div>
 
+    <div class="modal-body">
+      <form (ngSubmit)="criarConta(cadastroForm)" #cadastroForm="ngForm">
+
+        <!-- Seleção de Tipo de Usuário -->
+        <div class="tipo-usuario-secao">
+          <p class="secao-label">Como deseja se cadastrar?</p>
+          <div class="opcoes-alinhadas">
+            <label class="opcao-card" [class.ativo]="tipoUsuario === 'medico'">
+              <input type="radio" name="perfil" value="medico" [(ngModel)]="tipoUsuario" required class="opcao-radio-input" />
+              <div class="opcao-card-content">
+                <span class="opcao-icon">🩺</span>
+                <span class="opcao-titulo">Sou Médico</span>
+                <span class="opcao-desc">Para profissionais da saúde</span>
+              </div>
+            </label>
+
+            <label class="opcao-card" [class.ativo]="tipoUsuario === 'paciente'">
+              <input type="radio" name="perfil" value="paciente" [(ngModel)]="tipoUsuario" required class="opcao-radio-input" />
+              <div class="opcao-card-content">
+                <span class="opcao-icon">👤</span>
+                <span class="opcao-titulo">Sou Paciente</span>
+                <span class="opcao-desc">Para agendamento e consultas</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Campos visíveis após selecionar tipo -->
+        <div class="cadastro-campos-fade" *ngIf="tipoUsuario">
+
+          <h3 class="dados-titulo">Informações Pessoais</h3>
+
+          <div class="grid-campos">
+            <div class="campo full-width">
+              <label class="campo-label">Nome Completo</label>
+              <div class="input-wrapper">
+                <span class="input-icon">👤</span>
+                <input type="text" name="nome" placeholder="Digite seu nome completo" ngModel required />
+              </div>
+            </div>
+
+            <div class="campo full-width">
+              <label class="campo-label">E-mail</label>
+              <div class="input-wrapper">
+                <span class="input-icon">✉️</span>
+                <input type="email" name="email" placeholder="Digite seu melhor e-mail" ngModel required />
+              </div>
+            </div>
+
+            <div class="campo">
+              <label class="campo-label">Senha</label>
+              <div class="input-wrapper">
+                <span class="input-icon">🔒</span>
+                <input type="password" name="senha" placeholder="Mínimo 6 caracteres" ngModel required />
+              </div>
+            </div>
+
+            <div class="campo">
+              <label class="campo-label">Confirmar Senha</label>
+              <div class="input-wrapper">
+                <span class="input-icon">🔒</span>
+                <input type="password" name="confirmaSenha" placeholder="Confirme a senha" ngModel required />
+              </div>
+            </div>
+
+            <div class="campo">
+              <label class="campo-label">Telefone</label>
+              <div class="input-wrapper">
+                <span class="input-icon">📞</span>
+                <input type="text" name="telefone" placeholder="(11) 99999-9999" ngModel required />
+              </div>
+            </div>
+
+            <div class="campo" *ngIf="tipoUsuario === 'medico'">
+              <label class="campo-label">CRM</label>
+              <div class="input-wrapper">
+                <span class="input-icon">🆔</span>
+                <input type="text" name="crm" placeholder="Digite seu CRM" ngModel required />
+              </div>
+            </div>
+
+            <div class="campo" *ngIf="tipoUsuario === 'paciente'">
+              <label class="campo-label">CPF</label>
+              <div class="input-wrapper">
+                <span class="input-icon">🆔</span>
+                <input type="text" name="cpf" placeholder="Digite seu CPF" ngModel required />
+              </div>
+            </div>
+          </div>
+
+          <!-- Seção Endereço -->
+          <h3 class="dados-titulo">{{ tipoUsuario === 'medico' ? 'Endereço do Consultório' : 'Endereço' }}</h3>
+
+          <div class="grid-campos">
+
+            <!-- CEP com busca -->
+            <div class="campo cep-campo">
+              <label class="campo-label">CEP</label>
+              <div class="input-wrapper">
+                <span class="input-icon">📮</span>
+                <input
+                  type="text"
+                  name="cep"
+                  placeholder="00000-000"
+                  [(ngModel)]="cepValue"
+                  (ngModelChange)="buscarCep($event)"
+                  maxlength="9"
+                  class="input-cep"
+                />
+                <span class="cep-spinner" *ngIf="cepCarregando">⏳</span>
+              </div>
+              <span class="cep-erro" *ngIf="cepErro">{{ cepErro }}</span>
+            </div>
+
+            <!-- UF preenchida automaticamente -->
+            <div class="campo">
+              <label class="campo-label">Estado (UF)</label>
+              <div class="input-wrapper">
+                <span class="input-icon">🗺️</span>
+                <input
+                  type="text"
+                  name="uf"
+                  placeholder="Preenchido pelo CEP"
+                  [(ngModel)]="enderecoUF"
+                  readonly
+                  class="input-readonly"
+                />
+              </div>
+            </div>
+
+            <!-- Logradouro preenchido automaticamente -->
+            <div class="campo full-width">
+              <label class="campo-label">Logradouro (Rua / Av.)</label>
+              <div class="input-wrapper">
+                <span class="input-icon">🏠</span>
+                <input
+                  type="text"
+                  name="logradouro"
+                  placeholder="Preenchido pelo CEP"
+                  [(ngModel)]="enderecoLogradouro"
+                  class="input-readonly-editavel"
+                />
+              </div>
+            </div>
+
+            <!-- Número -->
+            <div class="campo">
+              <label class="campo-label">Número</label>
+              <div class="input-wrapper">
+                <span class="input-icon">#️⃣</span>
+                <input
+                  type="text"
+                  name="numero"
+                  placeholder="Ex: 123"
+                  [(ngModel)]="enderecoNumero"
+                  required
+                />
+              </div>
+            </div>
+
+            <!-- Complemento -->
+            <div class="campo">
+              <label class="campo-label">Complemento</label>
+              <div class="input-wrapper">
+                <span class="input-icon">🏢</span>
+                <input
+                  type="text"
+                  name="complemento"
+                  placeholder="Apto, sala, bloco..."
+                  [(ngModel)]="enderecoComplemento"
+                />
+              </div>
+            </div>
+
+            <!-- Bairro preenchido automaticamente -->
+            <div class="campo">
+              <label class="campo-label">Bairro</label>
+              <div class="input-wrapper">
+                <span class="input-icon">🏘️</span>
+                <input
+                  type="text"
+                  name="bairro"
+                  placeholder="Preenchido pelo CEP"
+                  [(ngModel)]="enderecoBairro"
+                  class="input-readonly-editavel"
+                />
+              </div>
+            </div>
+
+            <!-- Cidade preenchida automaticamente -->
+            <div class="campo">
+              <label class="campo-label">Cidade</label>
+              <div class="input-wrapper">
+                <span class="input-icon">📍</span>
+                <input
+                  type="text"
+                  name="cidadeEndereco"
+                  placeholder="Preenchida pelo CEP"
+                  [(ngModel)]="enderecoCidade"
+                  class="input-readonly-editavel"
+                />
+              </div>
+            </div>
+
+            <!-- Convênio -->
+            <div class="campo full-width" *ngIf="tipoUsuario === 'medico'">
+              <label class="campo-label">Especialidade Médica</label>
+              <div class="input-wrapper">
+                <span class="input-icon">🩺</span>
+                <select name="especialidade" ngModel required>
+                  <option value="">Selecione sua especialidade</option>
+                  <option *ngFor="let esp of especialidades" [value]="esp.nome">{{ esp.nome }}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="campo full-width">
+              <label class="campo-label">Convênio (Opcional)</label>
+              <div class="input-wrapper">
+                <span class="input-icon">💳</span>
+                <select name="convenio" ngModel>
+                  <option value="">Selecione o convênio</option>
+                  <option *ngFor="let conv of convenios" [value]="conv.id">{{ conv.nome }}</option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Preview do endereço montado -->
+          <div class="endereco-preview" *ngIf="enderecoCompleto">
+            <span class="preview-label">📋 Endereço que será salvo:</span>
+            <span class="preview-valor">{{ enderecoCompleto }}</span>
+          </div>
+
+          <!-- Ações -->
+          <div class="botoes-secao">
+            <button type="submit" class="btn-criar" [disabled]="!cadastroForm.valid || carregando || !enderecoNumero">
+              <div class="btn-conteudo">
+                <div *ngIf="carregando" class="btn-spinner"></div>
+                <span>{{ carregando ? 'Criando Conta...' : 'Criar Minha Conta' }}</span>
+              </div>
+            </button>
+
+            <div class="botoes-secundarios">
+              <button type="button" class="btn-limpar" (click)="limpar(cadastroForm)">Limpar</button>
+              <button type="button" class="btn-cancelar" (click)="fecharModal()">Cancelar</button>
+            </div>
+          </div>
+
+        </div>
+      </form>
+    </div>
+  </div>
 </div>

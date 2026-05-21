@@ -1,101 +1,196 @@
-<nav class="navbar">
+<nav class="nav-bar">
   <div class="logo">
     <img src="assets/logo-especialista.png" alt="Meu Especialista" />
   </div>
 
   <div class="menu">
-    <a routerLink="">Sair</a>
+    <a routerLink="/" class="btn-sair">Sair</a>
   </div>
 </nav>
 
-<div class="container">
-  <h1>Cadastrar-se</h1>
-
-  <form (ngSubmit)="criarConta(cadastroForm)" #cadastroForm="ngForm">
-    <div class="tipo-usuario">
-      <p>Escolha uma opção:</p>
-      <div class="opcoes-alinhadas">
-        <label>
-          <input type="radio" name="perfil" value="medico" [(ngModel)]="tipoUsuario" required />
-          Sou Médico
-        </label>
-
-        <label>
-          <input type="radio" name="perfil" value="paciente" [(ngModel)]="tipoUsuario" required />
-          Sou Paciente
-        </label>
-      </div>
+<div class="container-cadastro">
+  <div class="cadastro-card">
+    
+    <div class="cadastro-header">
+      <h2>Cadastrar-se</h2>
+      <p class="cadastro-subtitulo">Preencha os campos abaixo para criar sua conta</p>
     </div>
 
-    <div class="campo">
-      <input type="text" name="nome" placeholder="Nome Completo:" ngModel required />
+    <div class="cadastro-body">
+      <form (ngSubmit)="criarConta(cadastroForm)" #cadastroForm="ngForm">
+        
+        <!-- Seleção de Tipo de Usuário -->
+        <div class="tipo-usuario-secao">
+          <p class="secao-label">Como deseja se cadastrar?</p>
+          <div class="opcoes-alinhadas">
+            <label class="opcao-card" [class.ativo]="tipoUsuario === 'medico'">
+              <input type="radio" name="perfil" value="medico" [(ngModel)]="tipoUsuario" required class="opcao-radio-input" />
+              <div class="opcao-card-content">
+                <span class="opcao-icon">🩺</span>
+                <span class="opcao-titulo">Sou Médico</span>
+                <span class="opcao-desc">Para profissionais da saúde</span>
+              </div>
+            </label>
+
+            <label class="opcao-card" [class.ativo]="tipoUsuario === 'paciente'">
+              <input type="radio" name="perfil" value="paciente" [(ngModel)]="tipoUsuario" required class="opcao-radio-input" />
+              <div class="opcao-card-content">
+                <span class="opcao-icon">👤</span>
+                <span class="opcao-titulo">Sou Paciente</span>
+                <span class="opcao-desc">Para agendamento e consultas</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Campos de Dados se tipoUsuario estiver selecionado -->
+        <div class="cadastro-campos-fade" *ngIf="tipoUsuario">
+          
+          <h3 class="dados-titulo">Informações Pessoais</h3>
+          
+          <div class="grid-campos">
+            <!-- Nome -->
+            <div class="campo full-width">
+              <label class="campo-label">Nome Completo</label>
+              <div class="input-wrapper">
+                <span class="input-icon">👤</span>
+                <input type="text" name="nome" placeholder="Digite seu nome completo" ngModel required />
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="campo full-width">
+              <label class="campo-label">E-mail</label>
+              <div class="input-wrapper">
+                <span class="input-icon">✉️</span>
+                <input type="email" name="email" placeholder="Digite seu melhor e-mail" ngModel required />
+              </div>
+            </div>
+
+            <!-- Senha -->
+            <div class="campo">
+              <label class="campo-label">Senha</label>
+              <div class="input-wrapper">
+                <span class="input-icon">🔒</span>
+                <input type="password" name="senha" placeholder="Digite sua senha" ngModel required />
+              </div>
+            </div>
+
+            <!-- Confirmar Senha -->
+            <div class="campo">
+              <label class="campo-label">Confirmar Senha</label>
+              <div class="input-wrapper">
+                <span class="input-icon">🔒</span>
+                <input type="password" name="confirmaSenha" placeholder="Confirme a senha" ngModel required />
+              </div>
+            </div>
+
+            <!-- Telefone -->
+            <div class="campo">
+              <label class="campo-label">Telefone</label>
+              <div class="input-wrapper">
+                <span class="input-icon">📞</span>
+                <input type="text" name="telefone" placeholder="Ex: (11) 99999-9999" ngModel required />
+              </div>
+            </div>
+
+            <!-- CRM (Apenas Médico) -->
+            <div class="campo" *ngIf="tipoUsuario === 'medico'">
+              <label class="campo-label">CRM</label>
+              <div class="input-wrapper">
+                <span class="input-icon">🆔</span>
+                <input type="text" name="crm" placeholder="Digite seu CRM" ngModel required />
+              </div>
+            </div>
+
+            <!-- CPF (Apenas Paciente) -->
+            <div class="campo" *ngIf="tipoUsuario === 'paciente'">
+              <label class="campo-label">CPF</label>
+              <div class="input-wrapper">
+                <span class="input-icon">🆔</span>
+                <input type="text" name="cpf" placeholder="Digite seu CPF" ngModel required />
+              </div>
+            </div>
+          </div>
+
+          <h3 class="dados-titulo">Localização & Atendimento</h3>
+
+          <div class="grid-campos">
+            <!-- Cidade -->
+            <div class="campo">
+              <label class="campo-label">Cidade</label>
+              <div class="input-wrapper">
+                <span class="input-icon">📍</span>
+                <select name="cidade" ngModel required>
+                  <option value="">Selecione sua cidade</option>
+                  <option *ngFor="let cidade of cidades" [value]="cidade.nome">
+                    {{ cidade.nome }}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Endereço -->
+            <div class="campo">
+              <label class="campo-label">{{ tipoUsuario === 'medico' ? 'Endereço do Consultório' : 'Endereço Residencial' }}</label>
+              <div class="input-wrapper">
+                <span class="input-icon">🏠</span>
+                <input type="text" name="endereco" placeholder="Rua, número, bairro" ngModel required />
+              </div>
+            </div>
+
+            <!-- Especialidade (Apenas Médico) -->
+            <div class="campo full-width" *ngIf="tipoUsuario === 'medico'">
+              <label class="campo-label">Especialidade Médica</label>
+              <div class="input-wrapper">
+                <span class="input-icon">🩺</span>
+                <select name="especialidade" ngModel required>
+                  <option value="">Selecione sua especialidade</option>
+                  <option *ngFor="let esp of especialidades" [value]="esp.nome">
+                    {{ esp.nome }}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Convênio (Opcional) -->
+            <div class="campo full-width">
+              <label class="campo-label">Convênio Atendido / Utilizado</label>
+              <div class="input-wrapper">
+                <span class="input-icon">💳</span>
+                <select name="convenio" ngModel>
+                  <option value="">Selecione o convênio (Opcional)</option>
+                  <option *ngFor="let conv of convenios" [value]="conv.id">
+                    {{ conv.nome }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ações do Formulário -->
+          <div class="botoes-secao">
+            <button type="submit" class="btn-criar" [disabled]="!cadastroForm.valid || carregando">
+              <div class="btn-conteudo">
+                <div *ngIf="carregando" class="btn-spinner"></div>
+                <span>{{ carregando ? 'Criando Conta...' : 'Criar Minha Conta' }}</span>
+              </div>
+            </button>
+            
+            <div class="botoes-secundarios">
+              <button type="button" class="btn-limpar" (click)="limpar(cadastroForm)">
+                Limpar
+              </button>
+              <button type="button" class="btn-cancelar" (click)="cancelar()">
+                Cancelar
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </form>
     </div>
 
-    <div class="campo">
-      <input type="email" name="email" placeholder="E-mail:" ngModel required />
-    </div>
-
-    <div class="duas-colunas">
-      <input type="password" name="senha" placeholder="Senha:" ngModel required />
-      <input
-        type="text"
-        name="crm"
-        placeholder="CRM:"
-        ngModel
-        [disabled]="tipoUsuario === 'paciente'"
-      />
-    </div>
-
-    <div class="duas-colunas">
-      <input type="password" name="confirmaSenha" placeholder="Confirmar Senha:" ngModel required />
-      <input
-        type="text"
-        name="cpf"
-        placeholder="CPF:"
-        ngModel
-        [disabled]="tipoUsuario === 'medico'"
-      />
-    </div>
-
-    <div class="campo">
-      <input type="text" name="telefone" placeholder="Telefone:" ngModel required />
-    </div>
-
-    <div class="duas-colunas">
-      <select name="cidade" ngModel required>
-        <option value="">Selecione a cidade:</option>
-        <option *ngFor="let cidade of cidades" [value]="cidade.nome">
-          {{ cidade.nome }}
-        </option>
-      </select>
-
-      <input type="text" name="endereco" placeholder="Endereço:" ngModel required />
-    </div>
-
-    <div class="campo">
-      <select name="especialidade" ngModel [disabled]="tipoUsuario === 'paciente'">
-        <option value="">Selecione a especialidade:</option>
-        <option *ngFor="let esp of especialidades" [value]="esp.nome">
-          {{ esp.nome }}
-        </option>
-      </select>
-    </div>
-
-    <div class="campo">
-      <select name="convenio" ngModel>
-        <option value="">Selecione o convênio (Opcional):</option>
-        <option *ngFor="let conv of convenios" [value]="conv.id">
-          {{ conv.nome }}
-        </option>
-      </select>
-    </div>
-
-    <div class="botoes">
-      <button type="submit" class="criar" [disabled]="!cadastroForm.valid || carregando">
-        {{ carregando ? 'Criando...' : 'Criar' }}
-      </button>
-      <button type="button" class="limpar" (click)="limpar(cadastroForm)">Limpar</button>
-      <button type="button" class="cancelar" (click)="cancelar()">Cancelar</button>
-    </div>
-  </form>
+  </div>
 </div>
