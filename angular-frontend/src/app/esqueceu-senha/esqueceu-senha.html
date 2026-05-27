@@ -5,25 +5,43 @@
     </div>
   </div>
 
-  <!-- LADO DIREITO -->
   <div class="login-direita">
     <div class="form-box">
-      <h1>Redefinindo Senha</h1>
 
-      <label>Código de Recuperação (verifique seu e-mail)</label>
-      <input type="text" placeholder="" />
+      <!-- Estado inicial: formulário de e-mail -->
+      <ng-container *ngIf="!enviado">
+        <h1>Esqueci minha senha</h1>
+        <p class="subtitulo">Digite seu e-mail e enviaremos um link para redefinir sua senha.</p>
 
-      <label>Nova Senha</label>
-      <input type="password" />
+        <label>E-mail cadastrado</label>
+        <input
+          type="email"
+          placeholder="seu@email.com"
+          [(ngModel)]="email"
+          (keyup.enter)="enviar()"
+        />
 
-      <label>Confirmar Nova Senha</label>
-      <input type="password" />
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="enviar()"
+          [disabled]="carregando"
+        >
+          <span *ngIf="!carregando">Enviar link de recuperação</span>
+          <span *ngIf="carregando">Enviando... ⏳</span>
+        </button>
+      </ng-container>
 
-      <a class="back" routerLink="/login">Voltar para o Login</a>
+      <!-- Estado após envio -->
+      <ng-container *ngIf="enviado">
+        <div class="sucesso-box">
+          <span class="icone-sucesso">✉️</span>
+          <h2>E-mail enviado!</h2>
+          <p>Verifique sua caixa de entrada e spam. O link de recuperação expira em <strong>1 hora</strong>.</p>
+        </div>
+      </ng-container>
 
-      <button type="button" class="btn btn-primary" routerLink="/login">Redefinir Senha</button>
-      <button type="button" class="btn btn-secondary" routerLink="/cadastro">Cadastrar-se</button>
+      <a class="back" routerLink="/login">← Voltar para o Login</a>
     </div>
   </div>
-
 </div>

@@ -1,0 +1,64 @@
+<div class="login-container">
+  <div class="login-esquerda">
+    <div class="logo-box">
+      <img src="assets/logo-especialista.png" alt="Meu Especialista" />
+    </div>
+  </div>
+
+  <div class="login-direita">
+    <div class="form-box">
+
+      <!-- Token inválido -->
+      <ng-container *ngIf="tokenInvalido">
+        <div class="erro-box">
+          <span class="icone-erro">⛔</span>
+          <h2>Link inválido ou expirado</h2>
+          <p>Este link de recuperação não é mais válido. Solicite um novo.</p>
+          <a class="btn btn-primary" routerLink="/esqueceu-senha">Solicitar novo link</a>
+        </div>
+      </ng-container>
+
+      <!-- Formulário de redefinição -->
+      <ng-container *ngIf="!tokenInvalido && !concluido">
+        <h1>Redefinir Senha</h1>
+        <p class="subtitulo">Escolha uma nova senha segura para sua conta.</p>
+
+        <label>Nova Senha</label>
+        <input
+          type="password"
+          placeholder="Mínimo 6 caracteres"
+          [(ngModel)]="novaSenha"
+        />
+
+        <label>Confirmar Nova Senha</label>
+        <input
+          type="password"
+          placeholder="Repita a nova senha"
+          [(ngModel)]="confirmarSenha"
+          (keyup.enter)="redefinir()"
+        />
+
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="redefinir()"
+          [disabled]="carregando"
+        >
+          <span *ngIf="!carregando">Redefinir Senha</span>
+          <span *ngIf="carregando">Salvando... ⏳</span>
+        </button>
+      </ng-container>
+
+      <!-- Sucesso -->
+      <ng-container *ngIf="concluido">
+        <div class="sucesso-box">
+          <span class="icone-sucesso">✅</span>
+          <h2>Senha redefinida!</h2>
+          <p>Você será redirecionado para o login em instantes...</p>
+        </div>
+      </ng-container>
+
+      <a class="back" routerLink="/login">← Voltar para o Login</a>
+    </div>
+  </div>
+</div>

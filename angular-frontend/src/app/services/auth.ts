@@ -29,4 +29,13 @@ export class AuthService {
     formData.append('foto', file);
     return this.http.post<any>(`${this.apiUrl}upload_foto.php`, formData);
   }
+
+  solicitarResetSenha(email: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}solicitar_reset.php`, { email });
+  }
+
+  redefinirSenha(token: string, nova_senha: string, confirmar_senha: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}redefinir_senha.php`, { token, nova_senha, confirmar_senha });
+  }
 }
+

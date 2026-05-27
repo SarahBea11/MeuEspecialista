@@ -7,14 +7,16 @@ import { Cadastro } from './cadastro/cadastro';
 import { AuthGuard } from './guards/auth-guard';
 import { RouterModule, Routes } from '@angular/router';
 import { EsqueceuSenha } from './esqueceu-senha/esqueceu-senha';
+import { RedefinirSenha } from './redefinir-senha/redefinir-senha';
 
 export const routes: Routes = [
   { path: '', component: Home },
   { path: 'login', component: Login },
   { path: 'cadastro', component: Cadastro },
-  { path: 'perfil', component: Perfil,canActivate: [AuthGuard] },
+  { path: 'perfil', component: Perfil, canActivate: [AuthGuard] },
   { path: 'buscar', component: Buscar, canActivate: [AuthGuard] },
-  { path: 'esqueceu-senha', component: EsqueceuSenha},
+  { path: 'esqueceu-senha', component: EsqueceuSenha },
+  { path: 'redefinir-senha', component: RedefinirSenha },
 ];
 
 @NgModule({
@@ -22,3 +24,4 @@ export const routes: Routes = [
   exports: [RouterModule],
 })
 export class AppRoutingModule { }
+

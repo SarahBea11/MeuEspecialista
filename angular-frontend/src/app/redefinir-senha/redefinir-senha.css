@@ -1,0 +1,20 @@
+.sucesso-box, .erro-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  padding: 24px 0;
+}
+
+.icone-sucesso, .icone-erro {
+  font-size: 52px;
+}
+
+.sucesso-box h2 { color: #044F23; }
+.erro-box h2    { color: #c0392b; }
+
+.sucesso-box p, .erro-box p {
+  color: #555;
+  font-size: 15px;
+}
