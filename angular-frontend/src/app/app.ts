@@ -1,4 +1,5 @@
 import { Component, HostListener } from '@angular/core';
+import { ToastService } from './services/toast';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +9,8 @@ import { Component, HostListener } from '@angular/core';
 })
 export class App {
   showScroll: boolean = false;
+
+  constructor(public toastService: ToastService) {}
 
   @HostListener('window:scroll', [])
   onWindowScroll() {

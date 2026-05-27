@@ -205,13 +205,48 @@ body {
     border: 1px dashed #ccc;
 }
 
-/* --- ESTILOS DO BOTAO NOS CARDS --- */
+/* --- ESTILOS DO BOTAO NOS CARDS E AVATAR --- */
 .card-medico {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.card-avatar-wrapper {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 2.5px solid rgba(4, 79, 35, 0.15);
+    background-color: #f0fdf4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.06);
+    margin-top: 2px;
+}
+
+.card-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card-avatar-placeholder {
+    font-size: 32px;
+    line-height: 1;
+    color: #044F23;
+}
+
+.card-info {
+    flex: 1;
     display: flex;
     flex-direction: column;
 }
 
-.card-medico p:last-of-type {
+.card-info p:last-of-type {
     margin-bottom: 15px;
 }
 
@@ -497,5 +532,25 @@ body {
     .filtros-wrapper {
         grid-template-columns: 1fr;
     }
+
+    .card-medico {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 12px;
+    }
+    
+    .card-avatar-wrapper {
+        margin-top: 0;
+        width: 80px;
+        height: 80px;
+    }
+}
+
+.modal-avatar-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
 }
 

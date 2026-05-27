@@ -6,6 +6,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 import { environment } from '../environments';
+import { ToastService } from '../services/toast';
 
 @Component({
   selector: 'app-cadastro',
@@ -41,12 +42,13 @@ export class Cadastro {
   constructor(
     private router: Router,
     private http: HttpClient,
+    private toastService: ToastService,
   ) {}
 
   criarConta(form: NgForm) {
     // Verificação básica de senha
     if (form.value.senha !== form.value.confirmaSenha) {
-      alert('As senhas não coincidem!');
+      this.toastService.warning('Senha Incorreta', 'As senhas não coincidem!');
       return;
     }
 
@@ -70,15 +72,14 @@ export class Cadastro {
       .subscribe({
         next: (res: any) => {
           this.carregando = false;
-          alert(res.message);
+          this.toastService.success('Sucesso!', res.message || 'Cadastro realizado com sucesso!');
           this.router.navigate(['/login']);
         },
         error: (err) => {
           this.carregando = false;
           console.error(err);
-          alert(
-            'Erro ao cadastrar: ' + (err.error?.message || 'Verifique a conexão com o servidor.'),
-          );
+          const erroMsg = err.error?.message || 'Verifique a conexão com o servidor.';
+          this.toastService.error('Erro ao cadastrar', erroMsg);
         },
       });
   }

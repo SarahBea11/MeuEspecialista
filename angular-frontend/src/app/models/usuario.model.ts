@@ -13,6 +13,7 @@ export interface Medico extends Usuario {
   cidade: string;
   telefone: string;
   endereco: string;
+  foto?: string;
 }
 
 export interface Paciente extends Usuario {

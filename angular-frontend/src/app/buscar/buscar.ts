@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { MedicoService } from '../services/medico.service';
 import { Medico } from '../models/usuario.model';
+import { environment } from '../environments';
 
 @Component({
   selector: 'app-buscar',
@@ -26,6 +27,12 @@ export class Buscar implements OnInit {
   userName: string = '';
   carregando: boolean = false;
   medicoSelecionado: Medico | null = null;
+
+  obterFotoUrl(foto: string): string {
+    if (!foto) return '';
+    const uploadsBase = environment.apiUrl.replace('/api/', '/uploads/');
+    return `${uploadsBase}${foto}`;
+  }
 
   constructor(
     private medicoService: MedicoService,

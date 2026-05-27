@@ -13,6 +13,19 @@
 <div class="container-perfil">
   <h1>Meu Perfil</h1>
 
+  <!-- Seção de Foto de Perfil do Médico -->
+  <div class="avatar-secao" *ngIf="usuario.tipo === 'medico'">
+    <div class="avatar-container" [class.editavel]="editando" (click)="editando && fileInput.click()">
+      <img [src]="obterFotoUrl(usuario.foto)" alt="Foto do Médico" *ngIf="usuario.foto" class="avatar-imagem" />
+      <div class="avatar-placeholder" *ngIf="!usuario.foto">🩺</div>
+      <div class="avatar-overlay" *ngIf="editando">
+        <span>📷 Alterar</span>
+      </div>
+    </div>
+    <input type="file" #fileInput (change)="aoSelecionarArquivo($event)" accept="image/*" style="display: none;" />
+    <p class="avatar-ajuda" *ngIf="editando">Clique na imagem para enviar uma foto (JPG, PNG ou WEBP até 5MB)</p>
+  </div>
+
   <form #perfilForm="ngForm">
     <div class="tipo-usuario">
       <p>Tipo de usuário:</p>

@@ -13,7 +13,7 @@ $cidade = isset($_GET['cidade']) ? trim($_GET['cidade']) : '';
 $especialidade = isset($_GET['especialidade']) ? trim($_GET['especialidade']) : '';
 $termo = isset($_GET['termo']) ? trim($_GET['termo']) : '';
 
-$query = "SELECT u.nome, u.email, m.especialidade, m.cidade, m.telefone, m.crm, m.endereco
+$query = "SELECT u.nome, u.email, m.especialidade, m.cidade, m.telefone, m.crm, m.endereco, m.foto
           FROM usuarios u
           INNER JOIN medicos_perfil m ON u.id = m.usuario_id
           WHERE u.tipo = 'medico'";

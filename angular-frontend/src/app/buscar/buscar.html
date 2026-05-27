@@ -68,13 +68,19 @@
       <div *ngIf="!carregando" class="lista-medicos">
 
       <div *ngFor="let medico of resultados" class="card-medico">
-        <h3>{{ medico.nome }}</h3>
-        <p><strong>Especialidade:</strong> {{ medico.especialidade }}</p>
-        <p><strong>Cidade:</strong> {{ medico.cidade }}</p>
-        <p><strong>Telefone:</strong> {{ medico.telefone }}</p>
-        <p><strong>CRM:</strong> {{ medico.crm }}</p>
-        <div class="card-actions">
-          <button class="btn-ver-perfil" (click)="abrirPerfil(medico)">Ver Perfil</button>
+        <div class="card-avatar-wrapper">
+          <img [src]="obterFotoUrl(medico.foto)" alt="Foto de {{ medico.nome }}" *ngIf="medico.foto" class="card-avatar-img" />
+          <div class="card-avatar-placeholder" *ngIf="!medico.foto">🩺</div>
+        </div>
+        <div class="card-info">
+          <h3>{{ medico.nome }}</h3>
+          <p><strong>Especialidade:</strong> {{ medico.especialidade }}</p>
+          <p><strong>Cidade:</strong> {{ medico.cidade }}</p>
+          <p><strong>Telefone:</strong> {{ medico.telefone }}</p>
+          <p><strong>CRM:</strong> {{ medico.crm }}</p>
+          <div class="card-actions">
+            <button class="btn-ver-perfil" (click)="abrirPerfil(medico)">Ver Perfil</button>
+          </div>
         </div>
       </div>
       </div>
@@ -92,7 +98,8 @@
     <div class="modal-body">
       <div class="medico-perfil-card">
         <div class="medico-avatar">
-          <span class="icon-avatar">🩺</span>
+          <img [src]="obterFotoUrl(medicoSelecionado.foto)" alt="Foto de {{ medicoSelecionado.nome }}" *ngIf="medicoSelecionado.foto" class="modal-avatar-img" />
+          <span class="icon-avatar" *ngIf="!medicoSelecionado.foto">🩺</span>
         </div>
         <h3 class="medico-nome">{{ medicoSelecionado.nome }}</h3>
         <p class="medico-especialidade-tag">{{ medicoSelecionado.especialidade }}</p>

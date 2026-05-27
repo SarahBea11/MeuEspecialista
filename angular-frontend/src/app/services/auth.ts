@@ -23,4 +23,10 @@ export class AuthService {
   atualizarPerfil(dados: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}atualizar_perfil.php`, dados);
   }
+
+  uploadFoto(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('foto', file);
+    return this.http.post<any>(`${this.apiUrl}upload_foto.php`, formData);
+  }
 }

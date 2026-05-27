@@ -5,6 +5,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 import { environment } from '../environments';
+import { ToastService } from '../services/toast';
 
 @Component({
   selector: 'app-home',
@@ -53,6 +54,7 @@ export class Home {
   constructor(
     private router: Router,
     private http: HttpClient,
+    private toastService: ToastService,
   ) {}
 
   abrirModal(): void {
@@ -95,6 +97,7 @@ export class Home {
         this.cepCarregando = false;
         if (res.erro) {
           this.cepErro = 'CEP não encontrado.';
+          this.toastService.warning('CEP não encontrado', 'Verifique o número digitado.');
           return;
         }
         this.enderecoLogradouro = res.logradouro || '';
@@ -105,6 +108,7 @@ export class Home {
       error: () => {
         this.cepCarregando = false;
         this.cepErro = 'Erro ao buscar o CEP. Verifique sua conexão.';
+        this.toastService.error('Erro de CEP', 'Erro ao buscar o CEP. Verifique sua conexão.');
       },
     });
   }
@@ -122,7 +126,7 @@ export class Home {
 
   criarConta(form: NgForm) {
     if (form.value.senha !== form.value.confirmaSenha) {
-      alert('As senhas não coincidem!');
+      this.toastService.warning('Senha Incorreta', 'As senhas não coincidem!');
       return;
     }
 
@@ -144,14 +148,15 @@ export class Home {
     this.http.post(this.apiUrl, dados).subscribe({
       next: (res: any) => {
         this.carregando = false;
-        alert(res.message);
+        this.toastService.success('Sucesso!', res.message || 'Cadastro realizado com sucesso!');
         this.fecharModal();
         this.router.navigate(['/login']);
       },
       error: (err) => {
         this.carregando = false;
         console.error(err);
-        alert('Erro ao cadastrar: ' + (err.error?.message || 'Verifique a conexão com o servidor.'));
+        const erroMsg = err.error?.message || 'Verifique a conexão com o servidor.';
+        this.toastService.error('Erro ao cadastrar', erroMsg);
       },
     });
   }

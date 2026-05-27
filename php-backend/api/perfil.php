@@ -32,7 +32,7 @@ try {
     $dadosExtra = [];
 
     if ($tipo === 'medico') {
-        $queryMed = "SELECT crm, especialidade, cidade, telefone, endereco FROM medicos_perfil WHERE usuario_id = :id";
+        $queryMed = "SELECT crm, especialidade, cidade, telefone, endereco, foto FROM medicos_perfil WHERE usuario_id = :id";
         $stmtMed = $db->prepare($queryMed);
         $stmtMed->bindParam(":id", $id);
         $stmtMed->execute();
