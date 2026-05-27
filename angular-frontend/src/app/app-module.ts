@@ -10,10 +10,22 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AuthInterceptor } from './services/auth.interceptor';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { EsqueceuSenha } from './esqueceu-senha/esqueceu-senha';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   declarations: [App, Login, Perfil, EsqueceuSenha],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, Cadastro, Home],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    Cadastro,
+    Home,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: true,
+      registrationStrategy: 'registerWhenStable:30000'
+    })
+  ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
@@ -24,3 +36,4 @@ import { EsqueceuSenha } from './esqueceu-senha/esqueceu-senha';
   bootstrap: [App],
 })
 export class AppModule {}
+

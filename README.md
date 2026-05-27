@@ -1,33 +1,57 @@
-<h1 align="center">💼 MeuEspecialista</h1>
+<h1 align="center">🩺 MeuEspecialista</h1>
 
 <p align="center">
-
-Sistema web para busca e gerenciamento de médicos, desenvolvido com Angular (frontend) e PHP (backend).
-
+  Plataforma web para busca e conexão com especialistas de saúde, desenvolvida com Angular e PHP.
 </p>
- 
+
 <p align="center">
   <img src="https://img.shields.io/badge/status-em%20desenvolvimento-yellow"/>
-  <img src="https://img.shields.io/badge/version-1.0-blue"/>
+  <img src="https://img.shields.io/badge/version-2.0-blue"/>
+  <img src="https://img.shields.io/badge/PWA-ready-brightgreen?logo=pwa"/>
 </p>
 
 ---
 
-## 📌 Sobre o projeto
+## 📋 Sobre o projeto
 
-O **MeuEspecialista** é um sistema web desenvolvido com o objetivo de conectar usuários a profissionais da área da saúde, facilitando a busca por serviços de forma rápida e eficiente.
-
-Este projeto foi desenvolvido como prática acadêmica, focando em desenvolvimento web e organização de sistemas.
+O **MeuEspecialista** é um sistema web fullstack desenvolvido como projeto acadêmico, com o objetivo de conectar pacientes a profissionais da área da saúde. A plataforma permite que médicos cadastrem seus perfis com foto e convênios aceitos, e que pacientes os encontrem facilmente através de filtros de busca inteligentes.
 
 ---
 
-## 🎯 Funcionalidades
+## ✨ Funcionalidades
 
-- ✅ Cadastro de usuários
-- ✅ Login com autenticação
-- ✅ Listagem de especialistas
-- 🚧 Busca por serviços
-- 🚧 Sistema de agendamento (Atualizações futuras)
+### 👤 Autenticação
+
+- ✅ Cadastro de usuários (médicos e pacientes) com modal integrado na tela inicial
+- ✅ Login com autenticação via **JWT (JSON Web Token)**
+- 🔄 Recuperação de senha (tela criada, envio de e-mail pendente)
+- ✅ Interceptor HTTP automático para envio do token nas requisições
+
+### 🔍 Busca de Especialistas
+
+- ✅ Busca por nome, especialidade e cidade
+- ✅ Filtro por convênio aceito
+- ✅ Cards modernos com foto de perfil do médico
+- ✅ Modal detalhado com informações completas do especialista
+
+### 🩺 Perfil do Médico
+
+- ✅ Cadastro de CRM, especialidade, telefone, endereço e convênios aceitos
+- ✅ **Upload de foto de perfil** (com validação de tipo e tamanho)
+- ✅ Avatar exibido nos cards de busca e no modal de detalhes
+
+### 🔔 UX & Feedback Visual
+
+- ✅ Sistema de **Toast Notifications** (sucesso, erro, aviso)
+- ✅ Spinners de carregamento em todas as ações assíncronas
+- ✅ Layout totalmente **responsivo** (desktop, tablet e mobile)
+
+### 📲 PWA (Progressive Web App)
+
+- ✅ **Instalável** como app no Android, iOS e Desktop
+- ✅ Service Worker configurado para cache offline
+- ✅ Ícones nativos para todas as resoluções
+- ✅ Splash screen e tema verde personalizado
 
 ---
 
@@ -39,35 +63,27 @@ Este projeto foi desenvolvido como prática acadêmica, focando em desenvolvimen
 ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
 ![PHP](https://img.shields.io/badge/php-%23777BB4.svg?style=for-the-badge&logo=php&logoColor=white)
 ![MySQL](https://img.shields.io/badge/mysql-%234479A1.svg?style=for-the-badge&logo=mysql&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)
 ![XAMPP](https://img.shields.io/badge/XAMPP-%23FB7A24.svg?style=for-the-badge&logo=xampp&logoColor=white)
+![PWA](https://img.shields.io/badge/PWA-5A0FC8?style=for-the-badge&logo=pwa&logoColor=white)
 ![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white)
 ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
 
 ---
 
-## 📸 Demonstração
-
-<!-- COLOQUE PRINTS DO SEU SISTEMA AQUI -->
-
-![preview](link-da-imagem)
-
----
-
-## ⚠️ Pré-requisitos
-
-Antes de começar, verifique se você tem as seguintes versões instaladas:
+## 💻 Pré-requisitos
 
 | Tecnologia  | Versão Mínima | Comando para verificar   |
 | :---------- | :------------ | :----------------------- |
-| **Angular** | 21.2.4        | `ng version`             |
-| **Node.js** | 24.14.1       | `node -v`                |
-| **PHP**     | 8.2.0         | `php -v`                 |
-| **MySQL**   | 8.0.0         | `mysql --version`        |
-| **XAMPP**   | 3.3.0         | (Ver painel de controle) |
+| **Angular** | 21.x          | `ng version`             |
+| **Node.js** | 18.x          | `node -v`                |
+| **PHP**     | 8.2.x         | `php -v`                 |
+| **MySQL**   | 8.0.x         | `mysql --version`        |
+| **XAMPP**   | 3.3.x         | (Ver painel de controle) |
 
 ---
 
-## ⚙️ Como executar o projeto
+## 🚀 Como executar o projeto
 
 ### 1. Clone o repositório
 
@@ -77,48 +93,83 @@ git clone https://github.com/SarahBea11/MeuEspecialista.git
 
 ### 2. Configuração do Backend (PHP)
 
-1. Mova a pasta do projeto para o diretório `htdocs` do seu XAMPP.
-2. Certifique-se de que o **Apache** e o **MySQL** estão ativos no Painel de Controle do XAMPP.
-3. Configure as variáveis de ambiente:
-   - Navegue até `php-backend/config/`.
-   - Copie o arquivo `app_config.example.php` e renomeie para `app_config.php`.
-   - Abra o `app_config.php` e defina uma chave segura para `JWT_SECRET`.
-4. Importe o banco de dados (se houver um arquivo `.sql`, utilize o phpMyAdmin).
-
+1. Mova a pasta do projeto para o diretório `htdocs` do XAMPP:
+   ```
+   C:/xampp/htdocs/MeuEspecialista/
+   ```
+2. Inicie o **Apache** e o **MySQL** no Painel de Controle do XAMPP.
+3. Configure o arquivo de ambiente:
+   - Navegue até `php-backend/config/`
+   - Copie `app_config.example.php` e renomeie para `app_config.php`
+   - Defina uma chave secreta forte para `JWT_SECRET`
+4. Importe o banco de dados:
+   - Acesse `http://localhost/phpmyadmin`
+   - Crie um banco chamado `meu_especialista`
+   - Importe o arquivo `banco_estrutura.sql` da raiz do projeto
+5. Certifique-se que a pasta `php-backend/uploads/` tem permissão de escrita.
 
 ### 3. Configuração do Frontend (Angular)
 
-1. Abra o terminal na pasta do projeto.
-2. Navegue até a pasta do frontend:
-   ```bash
-   cd angular-frontend
-   ```
-3. Instale as dependências:
-   ```bash
-   npm install
-   ```
-4. Inicie o servidor de desenvolvimento:
-   ```bash
-   ng serve -o
-   ```
+```bash
+cd angular-frontend
+npm install
+ng serve -o
+```
 
-O frontend estará disponível em: `http://localhost:4200`
+O frontend estará disponível em: `http://localhost:4200`  
 A API estará acessível em: `http://localhost/MeuEspecialista/php-backend/api/`
 
+---
 
-## Estrutura do projeto
+## 📁 Estrutura do projeto
 
 ```
-### 📁 Estrutura
-
 MeuEspecialista/
-├── angular-frontend/
-└── php-backend/
+├── angular-frontend/          # Frontend Angular (PWA)
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── buscar/        # Tela de busca de médicos
+│   │   │   ├── cadastro/      # Modal de cadastro
+│   │   │   ├── home/          # Tela inicial
+│   │   │   ├── login/         # Tela de login
+│   │   │   ├── perfil/        # Perfil do médico (com upload de foto)
+│   │   │   ├── services/      # AuthService, ToastService
+│   │   │   └── models/        # Interfaces TypeScript
+│   │   ├── assets/icons/      # Ícones PWA (72px a 512px)
+│   │   └── manifest.webmanifest
+│   └── ngsw-config.json       # Configuração do Service Worker
+│
+├── php-backend/               # Backend PHP (REST API)
+│   ├── api/                   # Endpoints da API
+│   │   ├── login.php
+│   │   ├── cadastro.php
+│   │   ├── perfil.php
+│   │   ├── atualizar_perfil.php
+│   │   ├── buscar_medicos.php
+│   │   └── upload_foto.php    # Upload de foto de perfil
+│   ├── config/                # Configurações e JWT
+│   └── uploads/               # Fotos de perfil dos médicos
+│
+└── banco_estrutura.sql        # Estrutura do banco de dados
 ```
 
-## 👨‍💻 Autor
+---
+
+## 🗄️ Banco de Dados
+
+O banco de dados possui **5 tabelas** com as seguintes relações:
+
+- `usuarios` → tabela central de autenticação (`medico` | `paciente`)
+- `medicos_perfil` → dados profissionais + foto de perfil
+- `pacientes_perfil` → dados pessoais + convênio
+- `convenios` → catálogo de planos de saúde
+- `medico_convenio` → relacionamento N:M entre médicos e convênios
+
+---
+
+## 👥 Autores
 
 Desenvolvedores:
 
-- Sarah Pina
-- Matheus Prazeres
+- **Sarah Pina** — [@SarahBea11](https://github.com/SarahBea11)
+- **Matheus Prazeres** — [@MathzLabs](https://github.com/MathzLabs)
