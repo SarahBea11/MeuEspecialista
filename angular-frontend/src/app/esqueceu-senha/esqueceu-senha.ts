@@ -23,14 +23,15 @@ export class EsqueceuSenha {
 
     this.carregando = true;
     this.authService.solicitarResetSenha(this.email).subscribe({
-      next: () => {
+      next: (res: any) => {
         this.enviado = true;
         this.carregando = false;
-        this.toast.show('success', 'E-mail Enviado', 'Verifique sua caixa de entrada.');
+        this.toast.show('success', 'E-mail Enviado', res.message || 'Verifique sua caixa de entrada.');
       },
-      error: () => {
+      error: (err: any) => {
         this.carregando = false;
-        this.toast.show('error', 'Erro', 'Erro ao enviar. Tente novamente.');
+        const msg = err?.error?.message || 'Erro ao enviar. Tente novamente.';
+        this.toast.show('error', 'Erro', msg);
       }
     });
   }

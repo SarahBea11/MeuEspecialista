@@ -11,5 +11,5 @@
 
 define('EMAIL_HOST',     'smtp.gmail.com');
 define('EMAIL_PORT',     587);
-define('EMAIL_USERNAME', 'seu_email@gmail.com');   // ← Troque pelo seu Gmail
-define('EMAIL_PASSWORD', 'sua_senha_de_app_aqui'); // ← Senha de App do Gmail (16 chars)
+define('EMAIL_USERNAME', 'matheusnathan320@gmail.com');   // ← Troque pelo seu Gmail
+define('EMAIL_PASSWORD', 'gritmrmcdmclcbom'); // ← Senha de App do Gmail (16 chars)
