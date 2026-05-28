@@ -24,8 +24,9 @@ O **MeuEspecialista** é um sistema web fullstack desenvolvido como projeto acad
 
 - ✅ Cadastro de usuários (médicos e pacientes) com modal integrado na tela inicial
 - ✅ Login com autenticação via **JWT (JSON Web Token)**
-- 🔄 Recuperação de senha (tela criada, envio de e-mail pendente)
+- ✅ Recuperação de senha completa com geração de token seguro e **envio real de e-mail via PHPMailer + Gmail SMTP**
 - ✅ Interceptor HTTP automático para envio do token nas requisições
+- ✅ Proteção de rotas com Guards no frontend Angular
 
 ### 🔍 Busca de Especialistas
 
@@ -44,7 +45,7 @@ O **MeuEspecialista** é um sistema web fullstack desenvolvido como projeto acad
 
 - ✅ Sistema de **Toast Notifications** (sucesso, erro, aviso)
 - ✅ Spinners de carregamento em todas as ações assíncronas
-- ✅ Layout totalmente **responsivo** (desktop, tablet e mobile)
+- ✅ Layout totalmente **responsivo** (desktop, tablet e mobile) com telas de login e redefinição altamente modernas
 
 ### 📲 PWA (Progressive Web App)
 
@@ -98,15 +99,19 @@ git clone https://github.com/SarahBea11/MeuEspecialista.git
    C:/xampp/htdocs/MeuEspecialista/
    ```
 2. Inicie o **Apache** e o **MySQL** no Painel de Controle do XAMPP.
-3. Configure o arquivo de ambiente:
+3. Configure os arquivos de ambiente:
    - Navegue até `php-backend/config/`
    - Copie `app_config.example.php` e renomeie para `app_config.php`
    - Defina uma chave secreta forte para `JWT_SECRET`
-4. Importe o banco de dados:
+4. **Configuração de envio de e-mails (Recuperação de Senha)**:
+   - No diretório `php-backend/config/`, copie o arquivo `email_config.example.php` e renomeie para `email_config.php`.
+   - Abra o `email_config.php` recém-criado e adicione suas credenciais do Gmail SMTP em `EMAIL_USERNAME`.
+   - Gere uma **Senha de App** do Google de 16 caracteres em `myaccount.google.com/apppasswords` e insira em `EMAIL_PASSWORD` (sem espaços).
+5. Importe o banco de dados:
    - Acesse `http://localhost/phpmyadmin`
    - Crie um banco chamado `meu_especialista`
-   - Importe o arquivo `banco_estrutura.sql` da raiz do projeto
-5. Certifique-se que a pasta `php-backend/uploads/` tem permissão de escrita.
+   - Importe o arquivo `banco_estrutura.sql` da raiz do projeto. Ele já possui as tabelas `usuarios` e `password_reset_tokens` prontas para uso.
+6. Certifique-se que a pasta `php-backend/uploads/` tem permissão de escrita.
 
 ### 3. Configuração do Frontend (Angular)
 
@@ -118,6 +123,21 @@ ng serve -o
 
 O frontend estará disponível em: `http://localhost:4200`  
 A API estará acessível em: `http://localhost/MeuEspecialista/php-backend/api/`
+
+### 📲 Como testar/instalar o PWA (Progressive Web App)
+
+Por padrão, o Angular Service Worker **não roda em modo de desenvolvimento (`ng serve`)**. Para testar o suporte offline e instalar o aplicativo como PWA no celular ou desktop:
+
+1. **Gere a build de produção** do frontend:
+   ```bash
+   npm run build --prod
+   ```
+2. **Sirva a build** usando um servidor HTTP estático (ex: `http-server` ou movendo os arquivos de `dist/` para a pasta pública do Apache no XAMPP).
+3. **Requisito HTTPS/Localhost:** O recurso PWA só é ativado em conexões seguras (`https://`) ou em `localhost`. 
+4. **Instalação:**
+   - **No Google Chrome/Edge (Desktop):** Clique no ícone de computador com uma seta para baixo 🖥️ na barra de endereço (lado direito) e clique em **Instalar**.
+   - **No Celular (Android/iOS):** Abra o link no navegador, clique nos três pontinhos (ou no botão de Compartilhar no iOS) e selecione **"Adicionar à tela de início"** ou **"Instalar aplicativo"**.
+
 
 ---
 

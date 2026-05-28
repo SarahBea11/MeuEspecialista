@@ -1,51 +1,65 @@
-<div class="login-container">
-  <div class="login-esquerda">
-    <div class="logo-box">
-      <img src="assets/logo-especialista.png" alt="Meu Especialista" />
+<div class="login-page">
+  <div class="login-card">
+    
+    <div class="login-header">
+      <div class="login-logo">
+        <img src="assets/logo-especialista.png" alt="Meu Especialista" />
+      </div>
+      <h1>Redefinir Senha</h1>
+      <p class="login-subtitulo">Escolha uma nova senha segura para a sua conta.</p>
     </div>
-  </div>
 
-  <div class="login-direita">
-    <div class="form-box">
-
+    <div class="login-body">
       <!-- Token inválido -->
       <ng-container *ngIf="tokenInvalido">
         <div class="erro-box">
           <span class="icone-erro">⛔</span>
           <h2>Link inválido ou expirado</h2>
           <p>Este link de recuperação não é mais válido. Solicite um novo.</p>
-          <a class="btn btn-primary" routerLink="/esqueceu-senha">Solicitar novo link</a>
+          <button class="btn-entrar" routerLink="/esqueceu-senha">
+            Solicitar novo link
+          </button>
         </div>
       </ng-container>
 
       <!-- Formulário de redefinição -->
       <ng-container *ngIf="!tokenInvalido && !concluido">
-        <h1>Redefinir Senha</h1>
-        <p class="subtitulo">Escolha uma nova senha segura para sua conta.</p>
+        <div class="campo">
+          <label class="campo-label">Nova Senha</label>
+          <div class="input-wrapper">
+            <span class="input-icon">🔒</span>
+            <input
+              type="password"
+              placeholder="Mínimo 6 caracteres"
+              [(ngModel)]="novaSenha"
+            />
+          </div>
+        </div>
 
-        <label>Nova Senha</label>
-        <input
-          type="password"
-          placeholder="Mínimo 6 caracteres"
-          [(ngModel)]="novaSenha"
-        />
-
-        <label>Confirmar Nova Senha</label>
-        <input
-          type="password"
-          placeholder="Repita a nova senha"
-          [(ngModel)]="confirmarSenha"
-          (keyup.enter)="redefinir()"
-        />
+        <div class="campo">
+          <label class="campo-label">Confirmar Nova Senha</label>
+          <div class="input-wrapper">
+            <span class="input-icon">🔑</span>
+            <input
+              type="password"
+              placeholder="Repita a nova senha"
+              [(ngModel)]="confirmarSenha"
+              (keyup.enter)="redefinir()"
+            />
+          </div>
+        </div>
 
         <button
           type="button"
-          class="btn btn-primary"
+          class="btn-entrar"
           (click)="redefinir()"
           [disabled]="carregando"
         >
-          <span *ngIf="!carregando">Redefinir Senha</span>
-          <span *ngIf="carregando">Salvando... ⏳</span>
+          <div class="btn-conteudo">
+            <span *ngIf="!carregando">Salvar Nova Senha</span>
+            <span *ngIf="carregando" class="btn-spinner"></span>
+            <span *ngIf="carregando">Salvando...</span>
+          </div>
         </button>
       </ng-container>
 
@@ -58,7 +72,11 @@
         </div>
       </ng-container>
 
-      <a class="back" routerLink="/login">← Voltar para o Login</a>
+      <a class="forgot-link" style="text-align: center; margin-top: 15px; margin-bottom: 0;" routerLink="/login">
+        ← Voltar para o Login
+      </a>
     </div>
+
   </div>
 </div>
+

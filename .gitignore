@@ -6,6 +6,7 @@
 # PHP Backend — arquivos de configuração sensíveis
 # ------------------------------------------------------------------
 php-backend/config/app_config.php
+php-backend/config/email_config.php
 php-backend/teste.php
 
 # ------------------------------------------------------------------

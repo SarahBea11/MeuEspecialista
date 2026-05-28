@@ -3,25 +3,28 @@
  * Endpoint: solicitar_reset.php
  * Recebe o e-mail, gera um token e envia o link por e-mail usando PHPMailer + Gmail.
  */
+ini_set('display_errors', '0');
+ini_set('display_startup_errors', '0');
+error_reporting(0);
 
 require_once __DIR__ . '/../config/cors.php';
 require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../config/email_config.php';
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
-// Carregar PHPMailer (instalado via Composer ou manualmente)
+// Carregar PHPMailer ANTES dos `use` statements
 $autoload = __DIR__ . '/../../vendor/autoload.php';
 if (file_exists($autoload)) {
     require_once $autoload;
 } else {
-    // Fallback: PHPMailer copiado manualmente em /php-backend/libs/
     require_once __DIR__ . '/../libs/PHPMailer/src/Exception.php';
     require_once __DIR__ . '/../libs/PHPMailer/src/PHPMailer.php';
     require_once __DIR__ . '/../libs/PHPMailer/src/SMTP.php';
 }
 
-require_once __DIR__ . '/../config/email_config.php';
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+header('Content-Type: application/json; charset=utf-8');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -38,7 +41,13 @@ if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
     exit();
 }
 
-$pdo = conectarDB();
+$database = new Database();
+$pdo = $database->getConnection();
+if (!$pdo) {
+    http_response_code(500);
+    echo json_encode(["status" => "error", "message" => "Falha na conexão com o banco de dados."]);
+    exit();
+}
 
 // Verificar se o e-mail existe na base
 $stmt = $pdo->prepare("SELECT id, nome FROM usuarios WHERE email = ?");
@@ -97,5 +106,5 @@ try {
 
 } catch (Exception $e) {
     http_response_code(500);
-    echo json_encode(["status" => "error", "message" => "Erro ao enviar e-mail. Tente novamente."]);
+    echo json_encode(["status" => "error", "message" => "Erro ao enviar e-mail. Verifique as configurações SMTP."]);
 }

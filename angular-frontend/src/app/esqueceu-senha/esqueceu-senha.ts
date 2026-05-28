@@ -6,7 +6,7 @@ import { ToastService } from '../services/toast';
   selector: 'app-esqueceu-senha',
   standalone: false,
   templateUrl: './esqueceu-senha.html',
-  styleUrl: './esqueceu-senha.css',
+  styleUrls: ['./esqueceu-senha.css'],
 })
 export class EsqueceuSenha {
   email = '';

@@ -8,7 +8,7 @@ import { environment } from '../environments';
   selector: 'app-perfil',
   standalone: false,
   templateUrl: './perfil.html',
-  styleUrl: './perfil.css',
+  styleUrls: ['./perfil.css'],
 })
 export class Perfil implements OnInit {
   usuario: any = {

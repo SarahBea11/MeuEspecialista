@@ -3,6 +3,9 @@
  * Endpoint: redefinir_senha.php
  * Valida o token e atualiza a senha do usuário.
  */
+ini_set('display_errors', '0');
+ini_set('display_startup_errors', '0');
+error_reporting(0);
 
 require_once __DIR__ . '/../config/cors.php';
 require_once __DIR__ . '/../config/database.php';
@@ -37,7 +40,13 @@ if (strlen($nova_senha) < 6) {
     exit();
 }
 
-$pdo = conectarDB();
+$database = new Database();
+$pdo = $database->getConnection();
+if (!$pdo) {
+    http_response_code(500);
+    echo json_encode(["status" => "error", "message" => "Falha na conexão com o banco de dados."]);
+    exit();
+}
 
 // Buscar token válido e não expirado
 $stmt = $pdo->prepare("

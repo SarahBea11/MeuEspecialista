@@ -11,7 +11,7 @@ import { environment } from '../environments';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './buscar.html',
-  styleUrl: './buscar.css',
+  styleUrls: ['./buscar.css'],
 })
 export class Buscar implements OnInit {
   especialidades = ['Cardiologia', 'Pediatria', 'Psiquiatria'];

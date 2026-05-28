@@ -12,7 +12,7 @@ import { ToastService } from '../services/toast';
   standalone: true,
   imports: [CommonModule, FormsModule, HttpClientModule, RouterModule],
   templateUrl: './home.html',
-  styleUrl: './home.css',
+  styleUrls: ['./home.css'],
 })
 export class Home {
   modalAberto: boolean = false;

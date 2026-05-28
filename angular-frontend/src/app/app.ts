@@ -5,7 +5,7 @@ import { ToastService } from './services/toast';
   selector: 'app-root',
   templateUrl: './app.html',
   standalone: false,
-  styleUrl: './app.css',
+  styleUrls: ['./app.css'],
 })
 export class App {
   showScroll: boolean = false;

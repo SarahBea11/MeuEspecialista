@@ -11,7 +11,7 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './redefinir-senha.html',
-  styleUrl: './redefinir-senha.css',
+  styleUrls: ['./redefinir-senha.css'],
 })
 export class RedefinirSenha implements OnInit {
   token = '';
