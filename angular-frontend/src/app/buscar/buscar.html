@@ -3,19 +3,28 @@
     <img src="assets/logo-especialista.png" alt="Meu Especialista" />
   </div>
 
+  <div class="barra-busca-nav">
+    <div class="barra-busca-inner">
+      <span class="busca-icon">🔍</span>
+      <input
+        type="text"
+        [(ngModel)]="termoBusca"
+        placeholder="Buscar médico por nome, CRM ou especialidade..."
+        (keyup.enter)="buscarMedicos()"
+      />
+    </div>
+    <button class="btn-buscar-nav" (click)="buscarMedicos()">Buscar</button>
+  </div>
+
   <div class="menu">
     <span class="boas-vindas" *ngIf="userName">Olá, {{ userName }}</span>
-    <a class="ativo" routerLink="/buscar">Buscar</a>
-    <a routerLink="/perfil"> Meu perfil</a>
+    <a routerLink="/buscar" class="ativo">Buscar</a>
+    <a routerLink="/perfil">Meu perfil</a>
     <a (click)="sair()" style="cursor: pointer;">Sair</a>
   </div>
 </nav>
 
 <div class="container-busca">
-  <div class="barra-busca">
-    <input type="text" [(ngModel)]="termoBusca" placeholder="Digite nome ou CRM do médico" />
-    <button (click)="buscarMedicos()">Buscar</button>
-  </div>
 
   <div class="conteudo">
     <div class="filtro">

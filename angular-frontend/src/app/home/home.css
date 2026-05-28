@@ -441,6 +441,16 @@ p {
     margin-left: 2px;
 }
 
+.campo-erro {
+    font-size: 0.75rem;
+    color: #e53e3e;
+    font-weight: 600;
+    margin-top: 4px;
+    margin-left: 2px;
+    display: block;
+    animation: fadeIn 0.2s ease;
+}
+
 .input-readonly {
     background: #f1f5f9 !important;
     color: #718096 !important;

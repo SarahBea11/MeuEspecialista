@@ -167,6 +167,9 @@
       <button type="button" class="btn-editar" *ngIf="!editando" (click)="habilitarEdicao()">
         Editar Perfil
       </button>
+      <button type="button" class="btn-excluir" *ngIf="!editando" (click)="abrirModalExclusao()" [disabled]="loading">
+        Excluir Conta
+      </button>
 
       <ng-container *ngIf="editando">
         <button type="submit" class="btn-salvar" (click)="salvar()" [disabled]="loading">
@@ -177,4 +180,25 @@
       </ng-container>
     </div>
   </form>
+</div>
+
+<!-- Modal de Exclusão de Perfil -->
+<div class="modal-overlay" *ngIf="exibirModalExclusao" (click)="fecharModalExclusao()">
+  <div class="modal-card modal-confirmar-exclusao" (click)="$event.stopPropagation()">
+    <div class="modal-header-danger">
+      <h2>Atenção!</h2>
+      <button class="btn-fechar" (click)="fecharModalExclusao()">&times;</button>
+    </div>
+    <div class="modal-body-danger">
+      <div class="alerta-danger-icon">⚠️</div>
+      <h3>Excluir Conta Permanentemente?</h3>
+      <p>Esta ação é <strong>irreversível</strong>. Todos os seus dados pessoais, configurações e fotos associados à sua conta serão excluídos definitivamente de nossos servidores.</p>
+    </div>
+    <div class="modal-footer-danger">
+      <button type="button" class="btn-cancelar-modal" (click)="fecharModalExclusao()">Cancelar</button>
+      <button type="button" class="btn-confirmar-exclusao" (click)="confirmarExclusaoModal()" [disabled]="loading">
+        {{ loading ? 'Excluindo...' : 'Sim, excluir minha conta' }}
+      </button>
+    </div>
+  </div>
 </div>

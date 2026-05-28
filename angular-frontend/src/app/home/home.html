@@ -89,7 +89,7 @@
               <label class="campo-label">Senha</label>
               <div class="input-wrapper">
                 <span class="input-icon">🔒</span>
-                <input type="password" name="senha" placeholder="Mínimo 6 caracteres" ngModel required />
+                <input type="password" name="senha" placeholder="Mín. 8 caracteres (letras, números e símbolo)" ngModel required />
               </div>
             </div>
 
@@ -121,8 +121,18 @@
               <label class="campo-label">CPF</label>
               <div class="input-wrapper">
                 <span class="input-icon">🆔</span>
-                <input type="text" name="cpf" placeholder="Digite seu CPF" ngModel required />
+                <input
+                  type="text"
+                  name="cpf"
+                  placeholder="000.000.000-00"
+                  [value]="cpfFormatado"
+                  (input)="onCpfInput($event)"
+                  maxlength="14"
+                  ngModel
+                  required
+                />
               </div>
+              <span class="campo-erro" *ngIf="cpfErro">{{ cpfErro }}</span>
             </div>
           </div>
 

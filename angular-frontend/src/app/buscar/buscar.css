@@ -10,39 +10,53 @@ body {
 }
 
 .nav-bar {
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
     background: #044F23;
     color: white;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 18px 36px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+    gap: 12px;
 }
 
 .logo {
-    width: 45px;
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
 }
 
 .logo img {
     width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
 }
 
 .menu {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 28px;
 }
 
 .menu a {
-    color: white;
+    color: rgba(255,255,255,0.9);
     text-decoration: none;
     font-weight: 600;
-    font-size: 14px;
-    transition: color 0.3s;
+    font-size: 15px;
+    letter-spacing: 0.2px;
+    padding: 6px 2px;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
 }
 
 .menu a:hover, .menu .ativo {
     color: #7CFF8F;
+    border-bottom-color: #7CFF8F;
 }
 
 .boas-vindas {
@@ -51,43 +65,79 @@ body {
     opacity: 0.9;
 }
 
+/* --- BARRA DE BUSCA NA NAVBAR --- */
+.barra-busca-nav {
+    flex: 1;
+    max-width: 540px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 32px;
+}
+
+.barra-busca-inner {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.busca-icon {
+    position: absolute;
+    left: 14px;
+    font-size: 15px;
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.barra-busca-nav input {
+    width: 100%;
+    padding: 10px 14px 10px 40px;
+    border-radius: 10px;
+    border: 1.5px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.12);
+    color: white;
+    font-size: 14px;
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    outline: none;
+    transition: background 0.25s, border-color 0.25s, box-shadow 0.25s;
+    backdrop-filter: blur(4px);
+}
+
+.barra-busca-nav input::placeholder {
+    color: rgba(255,255,255,0.6);
+}
+
+.barra-busca-nav input:focus {
+    background: rgba(255,255,255,0.22);
+    border-color: rgba(124,255,143,0.6);
+    box-shadow: 0 0 0 3px rgba(124,255,143,0.15);
+}
+
+.btn-buscar-nav {
+    background: #7CFF8F;
+    color: #033a1a;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s, transform 0.15s;
+    flex-shrink: 0;
+}
+
+.btn-buscar-nav:hover {
+    background: #5de872;
+    transform: translateY(-1px);
+}
+
 .container-busca {
     padding: 20px;
     max-width: 1200px;
     margin: 0 auto;
-}
-
-.barra-busca {
-    display: flex;
-    gap: 10px;
-    max-width: 700px;
-    margin: 0 auto 30px;
-    width: 100%;
-}
-
-.barra-busca input {
-    flex: 1;
-    padding: 12px 20px;
-    border-radius: 25px;
-    border: 1px solid #ddd;
-    font-size: 16px;
-    outline: none;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
-
-.barra-busca button {
-    background: #044F23;
-    color: white;
-    border: none;
-    padding: 0 25px;
-    border-radius: 25px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-.barra-busca button:hover {
-    background: #033a1a;
 }
 
 .conteudo {
@@ -504,29 +554,37 @@ body {
     }
 }
 
+@media (max-width: 800px) {
+    .nav-bar {
+        flex-wrap: wrap;
+        padding: 15px 20px;
+        gap: 15px;
+    }
+
+    .barra-busca-nav {
+        margin: 0;
+        order: 3;
+        width: 100%;
+        max-width: none;
+    }
+}
+
 @media (max-width: 600px) {
     .nav-bar {
-        padding: 10px 15px;
+        padding: 12px 15px;
+        gap: 12px;
     }
 
     .menu {
-        gap: 10px;
+        gap: 15px;
     }
 
     .menu a {
-        font-size: 12px;
+        font-size: 13px;
     }
 
     .boas-vindas {
         display: none;
-    }
-
-    .barra-busca {
-        flex-direction: column;
-    }
-
-    .barra-busca button {
-        height: 45px;
     }
 
     .filtros-wrapper {

@@ -30,6 +30,10 @@ export class Home {
   enderecoCidade: string = '';
   enderecoUF: string = '';
 
+  // Campos de CPF
+  cpfFormatado: string = '';
+  cpfErro: string = '';
+
   private apiUrl = `${environment.apiUrl}cadastro.php`;
 
   cidades = [
@@ -64,6 +68,8 @@ export class Home {
   fecharModal(): void {
     this.modalAberto = false;
     this.tipoUsuario = '';
+    this.cpfFormatado = '';
+    this.cpfErro = '';
     this.limparEndereco();
   }
 
@@ -76,6 +82,46 @@ export class Home {
     this.enderecoComplemento = '';
     this.enderecoCidade = '';
     this.enderecoUF = '';
+  }
+
+  // ---------- CPF ----------
+  onCpfInput(event: Event): void {
+    const el = event.target as HTMLInputElement;
+    const raw = el.value.replace(/\D/g, '').slice(0, 11);
+
+    // Aplica máscara 000.000.000-00
+    let masked = raw;
+    if (raw.length > 9) {
+      masked = `${raw.slice(0,3)}.${raw.slice(3,6)}.${raw.slice(6,9)}-${raw.slice(9)}`;
+    } else if (raw.length > 6) {
+      masked = `${raw.slice(0,3)}.${raw.slice(3,6)}.${raw.slice(6)}`;
+    } else if (raw.length > 3) {
+      masked = `${raw.slice(0,3)}.${raw.slice(3)}`;
+    }
+
+    this.cpfFormatado = masked;
+    el.value = masked;
+
+    if (raw.length === 11) {
+      this.cpfErro = this.validarCpf(raw) ? '' : 'CPF inválido. Verifique os números digitados.';
+    } else {
+      this.cpfErro = '';
+    }
+  }
+
+  private validarCpf(cpf: string): boolean {
+    // Rejeita sequências repetidas (ex: 111.111.111-11)
+    if (/^(\d)\1{10}$/.test(cpf)) return false;
+
+    const calcDigit = (slice: string, factor: number): number => {
+      const sum = slice.split('').reduce((acc, d, i) => acc + parseInt(d) * (factor - i), 0);
+      const rem = (sum * 10) % 11;
+      return rem >= 10 ? 0 : rem;
+    };
+
+    const d1 = calcDigit(cpf.slice(0, 9), 10);
+    const d2 = calcDigit(cpf.slice(0, 10), 11);
+    return d1 === parseInt(cpf[9]) && d2 === parseInt(cpf[10]);
   }
 
   buscarCep(cep: string): void {
@@ -130,6 +176,16 @@ export class Home {
       return;
     }
 
+    // Bloqueia CPF inválido
+    if (this.tipoUsuario === 'paciente') {
+      const rawCpf = this.cpfFormatado.replace(/\D/g, '');
+      if (!this.validarCpf(rawCpf)) {
+        this.cpfErro = 'CPF inválido. Verifique os números digitados.';
+        this.toastService.warning('CPF Inválido', 'Informe um CPF válido antes de continuar.');
+        return;
+      }
+    }
+
     const dados = {
       tipo: this.tipoUsuario,
       nome: form.value.nome,
@@ -140,7 +196,7 @@ export class Home {
       telefone: form.value.telefone,
       especialidade: form.value.especialidade,
       crm: form.value.crm,
-      cpf: form.value.cpf,
+      cpf: this.cpfFormatado,
       convenio_id: form.value.convenio,
     };
 
@@ -164,6 +220,8 @@ export class Home {
   limpar(form: NgForm) {
     form.resetForm();
     this.tipoUsuario = '';
+    this.cpfFormatado = '';
+    this.cpfErro = '';
     this.limparEndereco();
   }
 }

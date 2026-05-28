@@ -29,6 +29,7 @@ export class Perfil implements OnInit {
   usuarioOriginal: any = {};
   editando: boolean = false;
   loading: boolean = false;
+  exibirModalExclusao: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -119,5 +120,37 @@ export class Perfil implements OnInit {
   sair() {
     localStorage.clear();
     this.router.navigate(['/login']);
+  }
+
+  abrirModalExclusao() {
+    this.exibirModalExclusao = true;
+    this.cdr.detectChanges();
+  }
+
+  fecharModalExclusao() {
+    this.exibirModalExclusao = false;
+    this.cdr.detectChanges();
+  }
+
+  confirmarExclusaoModal() {
+    this.excluirPerfil();
+  }
+
+  excluirPerfil() {
+    this.loading = true;
+    this.authService.excluirPerfil().subscribe({
+      next: (res: any) => {
+        this.loading = false;
+        this.exibirModalExclusao = false;
+        this.toastService.success('Conta Excluída', 'Sua conta foi excluída com sucesso.');
+        localStorage.clear();
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        this.loading = false;
+        this.toastService.error('Erro ao excluir', err.error?.message || 'Erro ao excluir conta.');
+        this.cdr.detectChanges();
+      },
+    });
   }
 }
