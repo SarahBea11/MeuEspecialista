@@ -110,7 +110,7 @@ git clone https://github.com/SarahBea11/MeuEspecialista.git
 5. Importe o banco de dados:
    - Acesse `http://localhost/phpmyadmin`
    - Crie um banco chamado `meu_especialista`
-   - Importe o arquivo `banco_estrutura.sql` da raiz do projeto. Ele já possui as tabelas `usuarios` e `password_reset_tokens` prontas para uso.
+   - Importe o arquivo `banco_estrutura.sql` da raiz do projeto. Ele já possui todas as tabelas prontas para uso.
 6. Certifique-se que a pasta `php-backend/uploads/` tem permissão de escrita.
 
 ### 3. Configuração do Frontend (Angular)
@@ -177,13 +177,14 @@ MeuEspecialista/
 
 ## 🗄️ Banco de Dados
 
-O banco de dados possui **5 tabelas** com as seguintes relações:
+O banco de dados possui **6 tabelas** com as seguintes relações:
 
 - `usuarios` → tabela central de autenticação (`medico` | `paciente`)
 - `medicos_perfil` → dados profissionais + foto de perfil
 - `pacientes_perfil` → dados pessoais + convênio
 - `convenios` → catálogo de planos de saúde
 - `medico_convenio` → relacionamento N:M entre médicos e convênios
+- `password_reset_tokens` → gerenciamento de tokens de recuperação de senha
 
 ---
 

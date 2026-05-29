@@ -84,15 +84,22 @@ try {
             throw new Exception("CPF é obrigatório para pacientes.");
         }
 
-        $queryPac = "INSERT INTO pacientes_perfil (usuario_id, cpf, convenio_id) 
-                     VALUES (:usuario_id, :cpf, :convenio_id)";
+        $queryPac = "INSERT INTO pacientes_perfil (usuario_id, cpf, convenio_id, cidade, telefone, endereco) 
+                     VALUES (:usuario_id, :cpf, :convenio_id, :cidade, :telefone, :endereco)";
 
         $stmtPac = $db->prepare($queryPac);
         $stmtPac->bindParam(":usuario_id", $usuario_id);
         $stmtPac->bindParam(":cpf", $data->cpf);
 
-        $conv_id = !empty($data->convenio_id) ? $data->convenio_id : null;
+        $conv_id  = !empty($data->convenio_id) ? $data->convenio_id : null;
+        $cidade   = !empty($data->cidade)      ? trim($data->cidade)   : null;
+        $telefone = !empty($data->telefone)    ? trim($data->telefone) : null;
+        $endereco = !empty($data->endereco)    ? trim($data->endereco) : null;
+
         $stmtPac->bindParam(":convenio_id", $conv_id);
+        $stmtPac->bindParam(":cidade",      $cidade);
+        $stmtPac->bindParam(":telefone",    $telefone);
+        $stmtPac->bindParam(":endereco",    $endereco);
         $stmtPac->execute();
     }
 
