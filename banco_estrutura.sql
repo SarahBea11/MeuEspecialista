@@ -45,6 +45,7 @@ CREATE TABLE `medicos_perfil` (
   `cidade` varchar(100) NOT NULL,
   `endereco` text NOT NULL,
   `foto` varchar(255) DEFAULT NULL,
+  `atualizado_em` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `crm` (`crm`),
   KEY `usuario_id` (`usuario_id`),
@@ -98,6 +99,41 @@ CREATE TABLE `password_reset_tokens` (
   UNIQUE KEY `token` (`token`),
   KEY `usuario_id` (`usuario_id`),
   CONSTRAINT `password_reset_tokens_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- ------------------------------------------------------------
+-- 7. favoritos (depende de: usuarios)
+-- ------------------------------------------------------------
+DROP TABLE IF EXISTS `favoritos`;
+CREATE TABLE `favoritos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `paciente_usuario_id` int(11) NOT NULL,
+  `medico_usuario_id` int(11) NOT NULL,
+  `notificacoes_ativas` tinyint(1) NOT NULL DEFAULT 1,
+  `criado_em` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_favorito` (`paciente_usuario_id`,`medico_usuario_id`),
+  KEY `medico_usuario_id` (`medico_usuario_id`),
+  CONSTRAINT `favoritos_ibfk_1` FOREIGN KEY (`paciente_usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `favoritos_ibfk_2` FOREIGN KEY (`medico_usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- ------------------------------------------------------------
+-- 8. notificacoes (depende de: usuarios)
+-- ------------------------------------------------------------
+DROP TABLE IF EXISTS `notificacoes`;
+CREATE TABLE `notificacoes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `paciente_usuario_id` int(11) NOT NULL,
+  `medico_usuario_id` int(11) NOT NULL,
+  `mensagem` text NOT NULL,
+  `enviado_em` timestamp NOT NULL DEFAULT current_timestamp(),
+  `lido` tinyint(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  KEY `paciente_usuario_id` (`paciente_usuario_id`),
+  KEY `medico_usuario_id` (`medico_usuario_id`),
+  CONSTRAINT `notificacoes_ibfk_1` FOREIGN KEY (`paciente_usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `notificacoes_ibfk_2` FOREIGN KEY (`medico_usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 SET FOREIGN_KEY_CHECKS = 1;

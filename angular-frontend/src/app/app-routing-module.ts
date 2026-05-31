@@ -8,6 +8,7 @@ import { AuthGuard } from './guards/auth-guard';
 import { RouterModule, Routes } from '@angular/router';
 import { EsqueceuSenha } from './esqueceu-senha/esqueceu-senha';
 import { RedefinirSenha } from './redefinir-senha/redefinir-senha';
+import { Favoritos } from './favoritos/favoritos';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -15,6 +16,7 @@ export const routes: Routes = [
   { path: 'cadastro', component: Cadastro },
   { path: 'perfil', component: Perfil, canActivate: [AuthGuard] },
   { path: 'buscar', component: Buscar, canActivate: [AuthGuard] },
+  { path: 'favoritos', component: Favoritos, canActivate: [AuthGuard] },
   { path: 'esqueceu-senha', component: EsqueceuSenha },
   { path: 'redefinir-senha', component: RedefinirSenha },
 ];

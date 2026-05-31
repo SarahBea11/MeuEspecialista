@@ -264,10 +264,11 @@ body {
 }
 
 .card-avatar-wrapper {
+    position: relative;
     width: 68px;
     height: 68px;
     border-radius: 50%;
-    overflow: hidden;
+    overflow: visible;
     flex-shrink: 0;
     border: 2.5px solid rgba(4, 79, 35, 0.15);
     background-color: #f0fdf4;
@@ -282,12 +283,40 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 50%;
 }
 
 .card-avatar-placeholder {
     font-size: 32px;
     line-height: 1;
     color: #044F23;
+}
+
+/* Badges de Favorito e Notificação no Card */
+.card-badges {
+    position: absolute;
+    bottom: -6px;
+    right: -6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    background: #ffffff;
+    padding: 3px 6px;
+    border-radius: 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+    border: 1px solid rgba(4, 79, 35, 0.15);
+    z-index: 2;
+}
+
+.badge-star {
+    font-size: 11px;
+    display: inline-flex;
+}
+
+.badge-bell, .badge-bell-off {
+    font-size: 11px;
+    display: inline-flex;
 }
 
 .card-info {
@@ -610,5 +639,134 @@ body {
     height: 100%;
     border-radius: 50%;
     object-fit: cover;
+}
+
+/* ── Favoritar ── */
+.nav-favoritos {
+    color: #f5d020 !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.3px;
+    transition: color 0.2s, border-color 0.2s !important;
+}
+
+.nav-favoritos:hover {
+    color: #ffe44d !important;
+    border-bottom-color: #ffe44d !important;
+}
+
+.modal-footer {
+    padding: 16px 24px 24px;
+    background: #fbfcfb;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.favorito-acoes {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.btn-favoritar {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: 2px solid #e0c800;
+    background: #fffbe6;
+    color: #7a6000;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.22s ease;
+    font-family: inherit;
+    white-space: nowrap;
+}
+
+.btn-favoritar .star-icon {
+    font-size: 16px;
+    transition: transform 0.2s;
+}
+
+.btn-favoritar:hover:not(:disabled) {
+    background: #fff3a0;
+    border-color: #c9a800;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(200, 168, 0, 0.2);
+}
+
+.btn-favoritar.favoritado {
+    background: linear-gradient(135deg, #ffe066 0%, #ffd000 100%);
+    border-color: #f5c000;
+    color: #5a4200;
+    box-shadow: 0 3px 8px rgba(245, 192, 0, 0.3);
+}
+
+.btn-favoritar.favoritado:hover:not(:disabled) {
+    background: linear-gradient(135deg, #ffd000 0%, #f5b800 100%);
+    transform: translateY(-1px);
+}
+
+.btn-favoritar:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.notificacao-toggle {
+    display: flex;
+    align-items: center;
+}
+
+.btn-notificacao {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 2px solid #e0e0e0;
+    background: #f8f8f8;
+    color: #777;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.22s ease;
+    font-family: inherit;
+    white-space: nowrap;
+}
+
+.btn-notificacao:hover {
+    border-color: #b0b0b0;
+    background: #eee;
+}
+
+.btn-notificacao.ativo {
+    background: linear-gradient(135deg, #e8f5e9 0%, #d4eedb 100%);
+    border-color: #a5d6a7;
+    color: #1b5e20;
+    box-shadow: 0 2px 6px rgba(76, 175, 80, 0.15);
+}
+
+.btn-notificacao.ativo:hover {
+    background: linear-gradient(135deg, #d4eedb 0%, #c8e6c9 100%);
+    border-color: #81c784;
+}
+
+/* Data de Atualizacao do Perfil */
+.perfil-atualizado {
+    font-size: 13px;
+    color: #044F23;
+    background-color: #f0fdf4;
+    border: 1px solid rgba(4, 79, 35, 0.15);
+    padding: 6px 12px;
+    border-radius: 8px;
+    margin-bottom: 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
 }
 

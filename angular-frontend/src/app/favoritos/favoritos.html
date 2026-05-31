@@ -1,0 +1,179 @@
+<nav class="nav-bar">
+  <div class="logo">
+    <img src="assets/logo-especialista.png" alt="Meu Especialista" />
+  </div>
+  <div class="menu">
+    <span class="boas-vindas" *ngIf="userName">Olá, {{ userName }}</span>
+    <a routerLink="/buscar">Buscar</a>
+    <a routerLink="/favoritos" class="ativo nav-favoritos">⭐ Favoritos</a>
+    <a routerLink="/perfil">Meu perfil</a>
+    <a (click)="sair()" style="cursor: pointer;">Sair</a>
+  </div>
+</nav>
+
+<div class="container-favoritos">
+  <div class="page-header">
+    <h1 class="page-title">⭐ Meus Favoritos</h1>
+    <p class="page-subtitle">Médicos que você salvou. Ative notificações para saber quando eles atualizarem o perfil.</p>
+  </div>
+
+  <!-- Carregando -->
+  <div *ngIf="carregando" class="carregando">
+    <div class="spinner"></div>
+    Carregando seus favoritos...
+  </div>
+
+  <!-- Lista vazia -->
+  <div *ngIf="!carregando && favoritos.length === 0" class="sem-favoritos">
+    <div class="sem-favoritos-icon">⭐</div>
+    <h3>Nenhum favorito ainda</h3>
+    <p>Busque por médicos e clique em "Favoritar" para adicioná-los aqui.</p>
+    <a routerLink="/buscar" class="btn-buscar-agora">Buscar médicos</a>
+  </div>
+
+  <!-- Grid de favoritos -->
+  <div *ngIf="!carregando && favoritos.length > 0" class="grade-favoritos">
+    <div *ngFor="let fav of favoritos" class="card-favorito">
+
+      <!-- Cabeçalho do card -->
+      <div class="card-top">
+        <div class="avatar-wrapper">
+          <img
+            *ngIf="fav.foto"
+            [src]="obterFotoUrl(fav.foto)"
+            [alt]="'Foto de ' + fav.nome"
+            class="avatar-img"
+          />
+          <span class="avatar-placeholder" *ngIf="!fav.foto">🩺</span>
+        </div>
+        <div class="card-info-topo">
+          <h3 class="card-nome">{{ fav.nome }}</h3>
+          <span class="tag-especialidade">{{ fav.especialidade }}</span>
+        </div>
+        <button
+          class="btn-remover"
+          (click)="removerFavorito(fav)"
+          [disabled]="removendoId === fav.medico_usuario_id"
+          title="Remover dos favoritos"
+        >
+          ✕
+        </button>
+      </div>
+
+      <!-- Detalhes -->
+      <div class="card-detalhes">
+        <div class="detalhe-row">
+          <span class="detalhe-icon">📍</span>
+          <span>{{ fav.cidade }}</span>
+        </div>
+        <div class="detalhe-row">
+          <span class="detalhe-icon">📞</span>
+          <span>{{ fav.telefone }}</span>
+        </div>
+        <div class="detalhe-row">
+          <span class="detalhe-icon">🪪</span>
+          <span>CRM {{ fav.crm }}</span>
+        </div>
+      </div>
+
+      <!-- Ações do Card -->
+      <div class="card-acoes">
+        <button class="btn-ver-perfil" (click)="abrirPerfil(fav)">Ver Perfil</button>
+      </div>
+
+      <!-- Toggle de notificação -->
+      <div class="card-footer">
+        <button
+          class="btn-notificacao"
+          [class.ativo]="fav.notificacoes_ativas"
+          (click)="toggleNotificacao(fav)"
+          [title]="fav.notificacoes_ativas ? 'Desativar notificações de atualização' : 'Ativar notificações de atualização'"
+        >
+          <span class="notif-icon">{{ fav.notificacoes_ativas ? '🔔' : '🔕' }}</span>
+          <span class="notif-texto">
+            {{ fav.notificacoes_ativas ? 'Notificações ativas' : 'Notificações pausadas' }}
+          </span>
+          <span class="notif-badge" *ngIf="fav.notificacoes_ativas">ON</span>
+          <span class="notif-badge off" *ngIf="!fav.notificacoes_ativas">OFF</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Perfil do Médico -->
+<div class="modal-overlay" *ngIf="medicoSelecionado" (click)="fecharPerfil()">
+  <div class="modal-card" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Perfil do Especialista</h2>
+      <button class="btn-fechar" (click)="fecharPerfil()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="medico-perfil-card">
+        <div class="medico-avatar">
+          <img [src]="obterFotoUrl(medicoSelecionado.foto!)" alt="Foto de {{ medicoSelecionado.nome }}" *ngIf="medicoSelecionado.foto" class="modal-avatar-img" />
+          <span class="icon-avatar" *ngIf="!medicoSelecionado.foto">🩺</span>
+        </div>
+        <h3 class="medico-nome">{{ medicoSelecionado.nome }}</h3>
+        <p class="medico-especialidade-tag">{{ medicoSelecionado.especialidade }}</p>
+        
+        <div class="perfil-atualizado" *ngIf="medicoSelecionado.atualizado_em">
+          <span>🕒 Perfil atualizado em: <strong>{{ formatarData(medicoSelecionado.atualizado_em) }}</strong></span>
+        </div>
+
+        <div class="medico-detalhes-grid">
+          <div class="detalhe-item">
+            <span class="detalhe-label">CRM</span>
+            <span class="detalhe-valor">{{ medicoSelecionado.crm }}</span>
+          </div>
+          <div class="detalhe-item">
+            <span class="detalhe-label">Telefone</span>
+            <span class="detalhe-valor">{{ medicoSelecionado.telefone }}</span>
+          </div>
+          <div class="detalhe-item">
+            <span class="detalhe-label">Cidade</span>
+            <span class="detalhe-valor">{{ medicoSelecionado.cidade }}</span>
+          </div>
+          <div class="detalhe-item">
+            <span class="detalhe-label">E-mail</span>
+            <span class="detalhe-valor" style="word-break: break-all;">{{ medicoSelecionado.email }}</span>
+          </div>
+          <div class="detalhe-item full-width" *ngIf="medicoSelecionado.endereco">
+            <span class="detalhe-label">Endereço do Consultório</span>
+            <span class="detalhe-valor-endereco">{{ medicoSelecionado.endereco }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="favorito-acoes">
+        <button
+          id="btn-favoritar"
+          class="btn-favoritar"
+          [class.favoritado]="modalFavoritado"
+          (click)="toggleFavoritar()"
+          [disabled]="favoritandoEmProgresso"
+          [title]="modalFavoritado ? 'Remover dos favoritos' : 'Adicionar aos favoritos'"
+        >
+          <span class="star-icon">{{ modalFavoritado ? '⭐' : '☆' }}</span>
+          {{ modalFavoritado ? 'Favoritado' : 'Favoritar' }}
+        </button>
+
+        <div class="notificacao-toggle" *ngIf="modalFavoritado">
+          <button
+            id="btn-notificacao"
+            class="btn-notificacao-modal"
+            [class.ativo]="modalNotificacoesAtivas"
+            (click)="toggleNotificacaoModal()"
+            [title]="modalNotificacoesAtivas ? 'Desativar notificações' : 'Ativar notificações'"
+          >
+            <span>{{ modalNotificacoesAtivas ? '🔔' : '🔕' }}</span>
+            <span>{{ modalNotificacoesAtivas ? 'Notificações ativas' : 'Notificações pausadas' }}</span>
+          </button>
+        </div>
+      </div>
+
+      <button class="btn-acao-modal" (click)="fecharPerfil()">Voltar para Favoritos</button>
+    </div>
+  </div>
+</div>

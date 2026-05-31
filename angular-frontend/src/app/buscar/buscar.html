@@ -19,6 +19,7 @@
   <div class="menu">
     <span class="boas-vindas" *ngIf="userName">Olá, {{ userName }}</span>
     <a routerLink="/buscar" class="ativo">Buscar</a>
+    <a routerLink="/favoritos" *ngIf="isPaciente" class="nav-favoritos">⭐ Favoritos</a>
     <a routerLink="/perfil">Meu perfil</a>
     <a (click)="sair()" style="cursor: pointer;">Sair</a>
   </div>
@@ -78,8 +79,15 @@
 
       <div *ngFor="let medico of resultados" class="card-medico">
         <div class="card-avatar-wrapper">
-          <img [src]="obterFotoUrl(medico.foto)" alt="Foto de {{ medico.nome }}" *ngIf="medico.foto" class="card-avatar-img" />
+          <img [src]="obterFotoUrl(medico.foto!)" alt="Foto de {{ medico.nome }}" *ngIf="medico.foto" class="card-avatar-img" />
           <div class="card-avatar-placeholder" *ngIf="!medico.foto">🩺</div>
+          
+          <!-- Badges de Favorito/Notificação sobre a foto -->
+          <div class="card-badges" *ngIf="isPaciente && medico.favoritado">
+            <span class="badge-star" title="Médico Favoritado">⭐</span>
+            <span class="badge-bell" *ngIf="medico.notificacoes_ativas" title="Notificações Ativas">🔔</span>
+            <span class="badge-bell-off" *ngIf="!medico.notificacoes_ativas" title="Notificações Pausadas">🔕</span>
+          </div>
         </div>
         <div class="card-info">
           <h3>{{ medico.nome }}</h3>
@@ -107,12 +115,16 @@
     <div class="modal-body">
       <div class="medico-perfil-card">
         <div class="medico-avatar">
-          <img [src]="obterFotoUrl(medicoSelecionado.foto)" alt="Foto de {{ medicoSelecionado.nome }}" *ngIf="medicoSelecionado.foto" class="modal-avatar-img" />
+          <img [src]="obterFotoUrl(medicoSelecionado.foto!)" alt="Foto de {{ medicoSelecionado.nome }}" *ngIf="medicoSelecionado.foto" class="modal-avatar-img" />
           <span class="icon-avatar" *ngIf="!medicoSelecionado.foto">🩺</span>
         </div>
         <h3 class="medico-nome">{{ medicoSelecionado.nome }}</h3>
         <p class="medico-especialidade-tag">{{ medicoSelecionado.especialidade }}</p>
         
+        <div class="perfil-atualizado" *ngIf="medicoSelecionado.atualizado_em">
+          <span>🕒 Perfil atualizado em: <strong>{{ formatarData(medicoSelecionado.atualizado_em) }}</strong></span>
+        </div>
+
         <div class="medico-detalhes-grid">
           <div class="detalhe-item">
             <span class="detalhe-label">CRM</span>
@@ -138,7 +150,37 @@
       </div>
     </div>
     <div class="modal-footer">
+      <!-- Ações de favorito — apenas para pacientes -->
+      <div class="favorito-acoes" *ngIf="isPaciente">
+        <button
+          id="btn-favoritar"
+          class="btn-favoritar"
+          [class.favoritado]="modalFavoritado"
+          (click)="toggleFavoritar()"
+          [disabled]="favoritandoEmProgresso"
+          [title]="modalFavoritado ? 'Remover dos favoritos' : 'Adicionar aos favoritos'"
+        >
+          <span class="star-icon">{{ modalFavoritado ? '⭐' : '☆' }}</span>
+          {{ modalFavoritado ? 'Favoritado' : 'Favoritar' }}
+        </button>
+
+        <!-- Toggle de notificação — aparece apenas se estiver favoritado -->
+        <div class="notificacao-toggle" *ngIf="modalFavoritado">
+          <button
+            id="btn-notificacao"
+            class="btn-notificacao"
+            [class.ativo]="modalNotificacoesAtivas"
+            (click)="toggleNotificacao()"
+            [title]="modalNotificacoesAtivas ? 'Desativar notificações' : 'Ativar notificações'"
+          >
+            <span>{{ modalNotificacoesAtivas ? '🔔' : '🔕' }}</span>
+            <span>{{ modalNotificacoesAtivas ? 'Notificações ativas' : 'Notificações pausadas' }}</span>
+          </button>
+        </div>
+      </div>
+
       <button class="btn-acao-modal" (click)="fecharPerfil()">Voltar para a Busca</button>
     </div>
   </div>
 </div>
+

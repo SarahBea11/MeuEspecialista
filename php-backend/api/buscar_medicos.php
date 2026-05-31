@@ -28,9 +28,14 @@ $cidade = isset($_GET['cidade']) ? trim($_GET['cidade']) : '';
 $especialidade = isset($_GET['especialidade']) ? trim($_GET['especialidade']) : '';
 $termo = isset($_GET['termo']) ? trim($_GET['termo']) : '';
 
-$query = "SELECT u.nome, u.email, m.especialidade, m.cidade, m.telefone, m.crm, m.endereco, m.foto
+$paciente_id = ($usuarioLogado && isset($usuarioLogado->tipo) && $usuarioLogado->tipo === 'paciente') ? (int)$usuarioLogado->id : 0;
+
+$query = "SELECT u.id AS id, u.nome, u.email, m.especialidade, m.cidade, m.telefone, m.crm, m.endereco, m.foto, m.atualizado_em,
+                 (CASE WHEN f.id IS NOT NULL THEN 1 ELSE 0 END) AS favoritado,
+                 COALESCE(f.notificacoes_ativas, 0) AS notificacoes_ativas
           FROM usuarios u
           INNER JOIN medicos_perfil m ON u.id = m.usuario_id
+          LEFT JOIN favoritos f ON f.medico_usuario_id = u.id AND f.paciente_usuario_id = :paciente_id
           WHERE u.tipo = 'medico'";
 
 if (!empty($cidade)) {
@@ -47,6 +52,7 @@ if (!empty($termo)) {
 
 try {
     $stmt = $db->prepare($query);
+    $stmt->bindParam(":paciente_id", $paciente_id, PDO::PARAM_INT);
 
     if (!empty($cidade)) {
         $cidadeParam = "%{$cidade}%";
