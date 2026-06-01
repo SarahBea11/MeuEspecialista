@@ -7,6 +7,7 @@ require_once __DIR__ . '/../config/cors.php';
 
 include_once '../config/database.php';
 include_once '../config/auth_middleware.php';
+include_once '../config/security_helpers.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -46,9 +47,8 @@ if (!empty($especialidade)) {
     $query .= " AND m.especialidade LIKE :especialidade";
 }
 
-if (!empty($termo)) {
-    $query .= " AND (u.nome LIKE :termo OR m.crm LIKE :termo)";
-}
+// Note: we remove term query from database side because CRM is encrypted.
+// We will filter in PHP.
 
 try {
     $stmt = $db->prepare($query);
@@ -64,13 +64,25 @@ try {
         $stmt->bindParam(":especialidade", $especialidadeParam);
     }
 
-    if (!empty($termo)) {
-        $termoParam = "%{$termo}%";
-        $stmt->bindParam(":termo", $termoParam);
-    }
+    // Note: termo binding removed from statement prepare since we filter in PHP.
 
     $stmt->execute();
-    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $result = [];
+    foreach ($rows as $row) {
+        $row['crm'] = decryptData($row['crm'], true);
+        $row['telefone'] = decryptData($row['telefone'], false);
+        
+        if (!empty($termo)) {
+            $nomeMatch = (stripos($row['nome'], $termo) !== false);
+            $crmMatch = (stripos($row['crm'], $termo) !== false);
+            if ($nomeMatch || $crmMatch) {
+                $result[] = $row;
+            }
+        } else {
+            $result[] = $row;
+        }
+    }
     echo json_encode($result);
 } catch (PDOException $e) {
     http_response_code(500);

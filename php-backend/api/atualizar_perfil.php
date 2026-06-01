@@ -8,6 +8,7 @@ require_once __DIR__ . '/../config/email_config.php';
 
 include_once '../config/database.php';
 include_once '../config/auth_middleware.php';
+include_once '../config/security_helpers.php';
 include_once '../models/Usuario.php';
 
 // Carregar PHPMailer
@@ -72,6 +73,22 @@ try {
     ]);
 
     if ($usuarioLogado->tipo === 'medico') {
+        if (empty($data->crm)) {
+            throw new Exception("CRM é obrigatório.");
+        }
+        if (!validarCRM($data->crm)) {
+            throw new Exception("Formato de CRM inválido. Deve conter de 4 a 10 dígitos (opcionalmente seguido por estado, ex: 12345/SP).");
+        }
+        $crmCriptografado = encryptData($data->crm, true);
+        $queryCrmCheck = "SELECT id FROM medicos_perfil WHERE crm = :crm AND usuario_id != :id LIMIT 1";
+        $stmtCrmCheck = $db->prepare($queryCrmCheck);
+        $stmtCrmCheck->execute([':crm' => $crmCriptografado, ':id' => $idUsuario]);
+        if ($stmtCrmCheck->rowCount() > 0) {
+            throw new Exception("Este CRM já está em uso por outro médico.");
+        }
+
+        $telefoneCriptografado = encryptData($data->telefone, false);
+
         $queryExtra = "UPDATE medicos_perfil SET 
                         crm = :crm, 
                         especialidade = :especialidade, 
@@ -81,14 +98,30 @@ try {
                        WHERE usuario_id = :id";
         $stmtExtra = $db->prepare($queryExtra);
         $stmtExtra->execute([
-            ':crm' => $data->crm,
+            ':crm' => $crmCriptografado,
             ':especialidade' => $data->especialidade,
             ':cidade' => $data->cidade,
-            ':telefone' => $data->telefone,
+            ':telefone' => $telefoneCriptografado,
             ':endereco' => $data->endereco,
             ':id' => $idUsuario
         ]);
     } else {
+        if (empty($data->cpf)) {
+            throw new Exception("CPF é obrigatório.");
+        }
+        if (!validarCPF($data->cpf)) {
+            throw new Exception("CPF inválido.");
+        }
+        $cpfCriptografado = encryptData($data->cpf, true);
+        $queryCpfCheck = "SELECT id FROM pacientes_perfil WHERE cpf = :cpf AND usuario_id != :id LIMIT 1";
+        $stmtCpfCheck = $db->prepare($queryCpfCheck);
+        $stmtCpfCheck->execute([':cpf' => $cpfCriptografado, ':id' => $idUsuario]);
+        if ($stmtCpfCheck->rowCount() > 0) {
+            throw new Exception("Este CPF já está em uso por outro paciente.");
+        }
+
+        $telefoneCriptografado = !empty($data->telefone) ? encryptData($data->telefone, false) : null;
+
         $queryExtra = "UPDATE pacientes_perfil SET 
                         cpf = :cpf, 
                         cidade = :cidade, 
@@ -97,17 +130,17 @@ try {
                        WHERE usuario_id = :id";
         $stmtExtra = $db->prepare($queryExtra);
         $stmtExtra->execute([
-            ':cpf' => $data->cpf,
+            ':cpf' => $cpfCriptografado,
             ':cidade' => $data->cidade,
-            ':telefone' => $data->telefone,
+            ':telefone' => $telefoneCriptografado,
             ':endereco' => $data->endereco,
             ':id' => $idUsuario
         ]);
     }
 
     if (!empty($data->senha)) {
-        if (strlen($data->senha) < 6) {
-            throw new Exception("A nova senha deve ter pelo menos 6 caracteres.");
+        if (!preg_match('/^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/', $data->senha)) {
+            throw new Exception("A nova senha deve ter pelo menos 8 caracteres, incluir letras, números e símbolo.");
         }
         if ($data->senha === ($data->confirmarSenha ?? "")) {
             $senhaHash = password_hash($data->senha, PASSWORD_DEFAULT);

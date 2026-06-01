@@ -1,6 +1,6 @@
 # MeuEspecialista — Análise de Arquitetura e Implementação Técnica
 
-Este documento apresenta uma revisão técnica detalhada e estruturada do projeto **MeuEspecialista**. Ele foi elaborado como material de apoio para a reunião com seu orientador, demonstrando o rigor técnico, os padrões de projeto (Design Patterns) aplicados e as boas práticas de engenharia de software adotadas nas camadas de frontend e backend.
+Este documento apresenta uma revisão técnica detalhada e estruturada do projeto **MeuEspecialista**. Ele serve como material de apoio técnico, demonstrando o rigor técnico, os padrões de projeto (Design Patterns) aplicados, as boas práticas de engenharia de software e as implementações robustas de segurança adotadas nas camadas de frontend e backend.
 
 ---
 
@@ -16,7 +16,7 @@ graph TD
     subgraph Frontend [Angular Client SPA]
         A[Componentes Angular] <--> B[Serviços Angular: AuthService/MedicoService]
         B <--> C[AuthInterceptor: Injeta Token Bearer]
-        D[AuthGuard: Proteção de Rotas] -.-> A
+        D[AuthGuard: Validação Estrutural e Temporal de Token] -.-> A
     end
 
     subgraph Backend [PHP REST API]
@@ -24,6 +24,7 @@ graph TD
         F --> G[API Endpoints: login.php / cadastro.php / buscar_medicos.php / perfil.php]
         G <--> H[Modelos PHP: Usuario.php]
         H <--> I[database.php: Conexão PDO]
+        G <--> K[security_helpers.php: Criptografia e Validações]
     end
 
     subgraph BD [MySQL Database]
@@ -42,11 +43,15 @@ O frontend foi projetado sob os conceitos modernos do ecossistema Angular, desta
 ### Principais Destaques do Frontend:
 *   **Componentes Standalone**: Utilização de `standalone: true` (como visto no componente `Buscar`), permitindo componentes autocontidos com dependências explícitas (`imports: [CommonModule, FormsModule, RouterModule]`), o que reduz o overhead de carregamento e melhora o tree-shaking.
 *   **Ciclo de Vida do Componente**: Inicialização e carregamento assíncrono de dados no gancho `ngOnInit` (ex. disparo da busca inicial de médicos).
+*   **Validação de Formulários no Cliente**:
+    *   **CPF**: Implementação local do algoritmo matemático oficial de 11 dígitos com cálculo de dois dígitos verificadores antes do envio do formulário de cadastro ou perfil.
+    *   **CRM**: Validação via expressões regulares (regex) para aceitar formatos corretos (4 a 10 dígitos seguido opcionalmente por hífen, barra ou espaço e o estado, ex: `12345/SP`).
 *   **Interceptação Centralizada de Requisições (`AuthInterceptor`)**:
     *   Implementa `HttpInterceptor` para capturar todas as saídas de requisições HTTP de forma transparente.
     *   Injeta automaticamente o cabeçalho `Authorization: Bearer <TOKEN>` caso o usuário esteja autenticado, garantindo a segurança de rotas restritas sem duplicar lógica de código.
 *   **Proteção de Rotas (`AuthGuard`)**:
     *   Uso de um guarda de rotas implementando `canActivate`, impedindo que usuários não autenticados acessem áreas privadas como `/perfil` e `/buscar`.
+    *   **Validação do Token no Cliente**: O `AuthGuard` agora decodifica o payload base64 do JWT local e verifica o campo de expiração (`exp`). Caso expirado ou adulterado, realiza logout automático limpando o `localStorage`.
 *   **Comunicação Reativa**: Uso de **RxJS (`Observable`)** para manipular fluxos assíncronos de chamadas à API, permitindo tratamento limpo de respostas (`next`) e falhas (`error`), bem como gerenciamento dinâmico do estado de carregamento (`carregando: boolean`).
 
 ---
@@ -59,6 +64,11 @@ O backend é leve, rápido e estruturado para seguir as melhores práticas de tr
 *   **Segurança Criptográfica (Hashing de Senhas)**:
     *   Utilização do algoritmo robusto **bcrypt** por meio da função nativa `password_hash($senha, PASSWORD_DEFAULT)` no cadastro.
     *   Verificação segura com `password_verify($senha, $row['senha'])`, evitando o armazenamento de senhas em texto puro e protegendo o sistema contra vazamento de credenciais.
+*   **Criptografia Simétrica de Dados Sensíveis (LGPD Compliance)**:
+    *   Campos sensíveis no banco de dados como **CPF**, **CRM** e **Telefone** são armazenados criptografados usando o algoritmo **AES-256-CBC** com chave de 256 bits configurada centralizadamente.
+    *   **Criptografia Determinística**: Para o **CPF** e **CRM**, é usada criptografia com IV estático (derivado). Isso garante que o mesmo valor resulte no mesmo texto cifrado, preservando as restrições de unicidade (`UNIQUE`) e permitindo consultas seguras por chave única no MySQL.
+    *   **Criptografia Dinâmica**: Para o **Telefone**, é usado um IV aleatório (`openssl_random_pseudo_bytes`), garantindo a máxima confidencialidade para o mesmo número de telefone repetido em cadastros diferentes.
+    *   **Descriptografia Dinâmica**: As APIs descriptografam esses dados ao alimentar o perfil do usuário ou a listagem e busca de médicos.
 *   **Prevenção contra Injeção de SQL (SQL Injection)**:
     *   Uso estrito de **Prepared Statements** com a extensão **PDO** (PHP Data Objects).
     *   Toda variável vinda do cliente é tratada via `bindParam` (ex. `:email`, `:nome`, `:tipo`), eliminando qualquer possibilidade de injeção de comandos maliciosos no MySQL.
@@ -92,25 +102,12 @@ Uma das maiores qualidades arquiteturais do projeto é o sistema de **autentica�
     *   Se as assinaturas forem idênticas, garante-se que o token não foi adulterado no meio do caminho.
     *   Verifica se o token expirou (`$dados->exp < time()`).
 
-Este mecanismo elimina a necessidade de consultas constantes de sessão no banco de dados ou persistência em arquivos no servidor, escalando a aplicação horizontalmente.
-
 ---
 
 ## 5. Pontos Fortes e Rigor Acadêmico para Apresentar ao Orientador
 
 Ao conversar com seu orientador, você pode destacar estes **argumentos de peso**:
 1.  **Arquitetura Baseada em Separação de Responsabilidades (SoC - Separation of Concerns)**: O frontend cuida estritamente da renderização e experiência do usuário, enquanto o backend atua como um provedor de dados puro (Stateless API), aumentando a manutenibilidade.
-2.  **Integridade de Dados Relacionais**: A divisão entre perfis (`medicos_perfil` e `pacientes_perfil`) estendendo a tabela comum `usuarios` com o uso de transações demonstra entendimento avançado de modelagem relacional.
-3.  **Segurança por Design (Security by Design)**: O projeto não possui vulnerabilidades comuns da Web (como injeção SQL ou senhas mal armazenadas). A implementação de autenticação criptografada própria demonstra profunda compreensão de criptografia aplicada.
-
----
-
-## 6. Próximos Passos (Roadmap de Evolução)
-
-Para demonstrar ao orientador que o projeto tem visão de futuro e planejamento contínuo, você pode listar as seguintes metas futuras:
-*   **Migração para biblioteca JWT Standard**: Substituir o token personalizado pela biblioteca padrão do setor `firebase/php-jwt` para dar suporte completo a claims registradas complexas e chaves assimétricas.
-*   **Implantação de Migrations**: Adotar uma ferramenta como **Phinx** ou **Flyway** no backend PHP para versionamento do esquema de banco de dados, facilitando o trabalho em equipe.
-*   **Testes Automatizados**:
-    *   **Backend**: Testes unitários de endpoints da API usando **PHPUnit**.
-    *   **Frontend**: Testes de integração de componentes usando **Jasmine / Karma** ou **Cypress** para testes E2E (End-to-End).
-*   **Melhoria de UI/UX**: Adição de micro-animações, estados de esqueleto (Skeleton Screens) para carregamentos assíncronos e transições de página fluidas.
+2.  **Conformidade com Privacidade de Dados (LGPD/Security by Design)**: Em vez de armazenar dados pessoais (CPF, telefone, CRM) em texto puro, o projeto implementa criptografia simétrica avançada com diferentes estratégias de IV (vetores de inicialização estáticos e aleatórios).
+3.  **Integridade de Dados Relacionais**: A divisão entre perfis (`medicos_perfil` e `pacientes_perfil`) estendendo a tabela comum `usuarios` com o uso de transações e controle manual de erros de chaves únicas/duplicidades no backend demonstra maturidade técnica.
+4.  **Validações em Camada Dupla**: Implementação do algoritmo matemático oficial de 11 dígitos do CPF e filtros estruturados para CRM no cliente e no servidor de forma redundante para segurança e melhor experiência do usuário.

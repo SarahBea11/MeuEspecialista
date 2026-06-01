@@ -32,6 +32,11 @@ CREATE TABLE `convenios` (
   UNIQUE KEY `nome_convenio` (`nome_convenio`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+INSERT INTO `convenios` (`id`, `nome_convenio`) VALUES
+  (2, 'Amil'),
+  (3, 'Intermédica'),
+  (4, 'Unimed');
+
 -- ------------------------------------------------------------
 -- 3. medicos_perfil (depende de: usuarios)
 -- ------------------------------------------------------------

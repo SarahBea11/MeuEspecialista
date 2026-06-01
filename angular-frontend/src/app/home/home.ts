@@ -124,6 +124,11 @@ export class Home {
     return d1 === parseInt(cpf[9]) && d2 === parseInt(cpf[10]);
   }
 
+  private validarSenhaForte(senha: string): boolean {
+    const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
+    return regex.test(senha);
+  }
+
   buscarCep(cep: string): void {
     const cepLimpo = cep.replace(/\D/g, '');
     this.cepErro = '';
@@ -171,6 +176,11 @@ export class Home {
   }
 
   criarConta(form: NgForm) {
+    if (!this.validarSenhaForte(form.value.senha)) {
+      this.toastService.warning('Senha Fraca', 'A senha deve ter pelo menos 8 caracteres, incluir letras, números e símbolo.');
+      return;
+    }
+
     if (form.value.senha !== form.value.confirmaSenha) {
       this.toastService.warning('Senha Incorreta', 'As senhas não coincidem!');
       return;

@@ -34,9 +34,9 @@ if ($nova_senha !== $confirmar) {
     exit();
 }
 
-if (strlen($nova_senha) < 6) {
+if (!preg_match('/^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/', $nova_senha)) {
     http_response_code(400);
-    echo json_encode(["status" => "error", "message" => "A senha deve ter pelo menos 6 caracteres."]);
+    echo json_encode(["status" => "error", "message" => "A senha deve ter pelo menos 8 caracteres, incluir letras, números e símbolo."]);
     exit();
 }
 

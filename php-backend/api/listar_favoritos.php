@@ -15,6 +15,8 @@ require_once __DIR__ . '/../config/cors.php';
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../config/auth_middleware.php';
 
+require_once __DIR__ . '/../config/security_helpers.php';
+
 header('Content-Type: application/json; charset=utf-8');
 
 $usuarioLogado = verificarAutenticacao();
@@ -65,9 +67,11 @@ try {
     $stmt->execute([$usuarioLogado->id]);
     $favoritos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Converter flags para boolean
+    // Converter flags para boolean e descriptografar dados
     foreach ($favoritos as &$fav) {
         $fav['notificacoes_ativas'] = (bool)$fav['notificacoes_ativas'];
+        $fav['crm'] = decryptData($fav['crm'], true);
+        $fav['telefone'] = decryptData($fav['telefone'], false);
     }
 
     echo json_encode($favoritos);

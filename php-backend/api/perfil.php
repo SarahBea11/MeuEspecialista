@@ -7,6 +7,7 @@ require_once __DIR__ . '/../config/cors.php';
 
 include_once '../config/database.php';
 include_once '../config/auth_middleware.php';
+include_once '../config/security_helpers.php';
 
 $usuarioLogado = verificarAutenticacao();
 
@@ -37,6 +38,10 @@ try {
         $stmtMed->bindParam(":id", $id);
         $stmtMed->execute();
         $dadosExtra = $stmtMed->fetch(PDO::FETCH_ASSOC) ?: [];
+        if (!empty($dadosExtra)) {
+            $dadosExtra['crm'] = decryptData($dadosExtra['crm'], true);
+            $dadosExtra['telefone'] = decryptData($dadosExtra['telefone'], false);
+        }
     } else {
         $queryPac = "SELECT p.cpf, p.cidade, p.telefone, p.endereco, c.nome_convenio as convenio 
                      FROM pacientes_perfil p
@@ -46,6 +51,10 @@ try {
         $stmtPac->bindParam(":id", $id);
         $stmtPac->execute();
         $dadosExtra = $stmtPac->fetch(PDO::FETCH_ASSOC) ?: [];
+        if (!empty($dadosExtra)) {
+            $dadosExtra['cpf'] = decryptData($dadosExtra['cpf'], true);
+            $dadosExtra['telefone'] = decryptData($dadosExtra['telefone'], false);
+        }
     }
 
     echo json_encode([
