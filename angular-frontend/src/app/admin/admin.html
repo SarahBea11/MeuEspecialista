@@ -1,0 +1,174 @@
+<nav class="nav-bar">
+  <div class="logo">
+    <img src="assets/logo-especialista.png" alt="Meu Especialista" />
+  </div>
+
+  <div class="menu">
+    <span class="boas-vindas" *ngIf="usuario.nome">Painel Admin — Olá, {{ usuario.nome }}</span>
+    <a (click)="sair()" style="cursor: pointer;">Sair</a>
+  </div>
+</nav>
+
+<div class="container-admin">
+  <div class="admin-layout">
+    
+    <!-- Sidebar Menu -->
+    <aside class="admin-sidebar">
+      <div class="sidebar-header">
+        <h3>Menu Admin</h3>
+      </div>
+      <ul class="sidebar-menu">
+        <li [class.ativo]="abaAtiva === 'cidades'" (click)="alterarAba('cidades')">
+          <span class="icon">📍</span> Cidades
+        </li>
+        <li [class.ativo]="abaAtiva === 'especialidades'" (click)="alterarAba('especialidades')">
+          <span class="icon">🩺</span> Especialidades
+        </li>
+        <li [class.ativo]="abaAtiva === 'convenios'" (click)="alterarAba('convenios')">
+          <span class="icon">💳</span> Convênios
+        </li>
+        <li [class.ativo]="abaAtiva === 'perfil'" (click)="alterarAba('perfil')">
+          <span class="icon">👤</span> Meu Perfil
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="admin-main">
+      
+      <!-- Cidade, Especialidade, Convênio CRUDs -->
+      <div class="crud-card" *ngIf="abaAtiva !== 'perfil'">
+        <div class="card-header">
+          <h2>Gerenciar {{ abaAtiva | titlecase }}</h2>
+          <p>Adicione, edite ou remova registros de {{ abaAtiva }}.</p>
+        </div>
+
+        <div class="card-body">
+          
+          <!-- Formulário Adicionar / Editar -->
+          <div class="crud-form">
+            <input 
+              type="text" 
+              [(ngModel)]="novoNome" 
+              placeholder="Digite o nome do registro..." 
+              (keyup.enter)="salvarItem()"
+            />
+            <button class="btn-salvar" (click)="salvarItem()">
+              {{ editId > 0 ? 'Salvar Edição' : 'Adicionar Novo' }}
+            </button>
+            <button class="btn-cancelar" *ngIf="editId > 0" (click)="cancelarEdicao()">
+              Cancelar
+            </button>
+          </div>
+
+          <!-- Listagem -->
+          <div *ngIf="carregando" class="loading-state">
+            <div class="spinner"></div>
+            Carregando registros...
+          </div>
+
+          <div class="lista-registros" *ngIf="!carregando">
+            
+            <div class="registro-item vazia" *ngIf="abaAtiva === 'cidades' && cidades.length === 0">
+              Nenhuma cidade cadastrada.
+            </div>
+            <div class="registro-item vazia" *ngIf="abaAtiva === 'especialidades' && especialidades.length === 0">
+              Nenhuma especialidade cadastrada.
+            </div>
+            <div class="registro-item vazia" *ngIf="abaAtiva === 'convenios' && convenios.length === 0">
+              Nenhum convênio cadastrado.
+            </div>
+
+            <!-- Cidades List -->
+            <ng-container *ngIf="abaAtiva === 'cidades'">
+              <div class="registro-item" *ngFor="let item of cidades" [class.editando]="editId === item.id">
+                <span class="item-nome">{{ item.nome }}</span>
+                <div class="item-acoes">
+                  <button class="btn-editar" (click)="iniciarEdicao(item)">Editar</button>
+                  <button class="btn-remover" (click)="removerItem(item)">Remover</button>
+                </div>
+              </div>
+            </ng-container>
+
+            <!-- Especialidades List -->
+            <ng-container *ngIf="abaAtiva === 'especialidades'">
+              <div class="registro-item" *ngFor="let item of especialidades" [class.editando]="editId === item.id">
+                <span class="item-nome">{{ item.nome }}</span>
+                <div class="item-acoes">
+                  <button class="btn-editar" (click)="iniciarEdicao(item)">Editar</button>
+                  <button class="btn-remover" (click)="removerItem(item)">Remover</button>
+                </div>
+              </div>
+            </ng-container>
+
+            <!-- Convênios List -->
+            <ng-container *ngIf="abaAtiva === 'convenios'">
+              <div class="registro-item" *ngFor="let item of convenios" [class.editando]="editId === item.id">
+                <span class="item-nome">{{ item.nome }}</span>
+                <div class="item-acoes">
+                  <button class="btn-editar" (click)="iniciarEdicao(item)">Editar</button>
+                  <button class="btn-remover" (click)="removerItem(item)">Remover</button>
+                </div>
+              </div>
+            </ng-container>
+
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Perfil do Administrador -->
+      <div class="crud-card" *ngIf="abaAtiva === 'perfil'">
+        <div class="card-header">
+          <h2>Minhas Informações</h2>
+          <p>Mantenha seus dados cadastrais atualizados.</p>
+        </div>
+
+        <div class="card-body">
+          <form (ngSubmit)="salvarPerfil()" #perfilForm="ngForm" class="perfil-form">
+            
+            <div class="campo">
+              <label>Nome Completo</label>
+              <input type="text" name="nome" [(ngModel)]="usuario.nome" required />
+            </div>
+
+            <div class="campo">
+              <label>E-mail</label>
+              <input type="email" name="email" [(ngModel)]="usuario.email" required />
+            </div>
+
+            <div class="duas-colunas">
+              <div class="campo-interno">
+                <label>Nova Senha</label>
+                <input 
+                  type="password" 
+                  name="senha" 
+                  [(ngModel)]="usuario.senha" 
+                  placeholder="Deixe em branco para não alterar" 
+                />
+              </div>
+
+              <div class="campo-interno">
+                <label>Confirmar Senha</label>
+                <input 
+                  type="password" 
+                  name="confirmarSenha" 
+                  [(ngModel)]="usuario.confirmarSenha" 
+                  placeholder="Confirme a nova senha" 
+                />
+              </div>
+            </div>
+
+            <div class="botoes-form">
+              <button type="submit" class="btn-salvar-perfil" [disabled]="!perfilForm.valid || carregando">
+                {{ carregando ? 'Salvando...' : 'Salvar Alterações' }}
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>

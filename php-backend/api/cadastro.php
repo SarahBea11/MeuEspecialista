@@ -181,7 +181,27 @@ try {
     }
 
     $db->commit();
-    echo json_encode(["status" => "success", "message" => "Cadastro realizado com sucesso!"]);
+
+    // Gera o token JWT para login automático
+    $payload = [
+        "id" => (int)$usuario_id,
+        "email" => $email,
+        "tipo" => $tipo,
+        "exp" => time() + JWT_EXPIRACAO
+    ];
+
+    $tokenPayload = base64_encode(json_encode($payload));
+    $assinatura = hash_hmac('sha256', $tokenPayload, JWT_SECRET);
+    $tokenFinal = $tokenPayload . "." . $assinatura;
+
+    echo json_encode([
+        "status" => "success",
+        "message" => "Cadastro realizado com sucesso!",
+        "token" => $tokenFinal,
+        "tipo" => $tipo,
+        "nome" => $nome
+    ]);
+
 
 } catch (Exception $e) {
     if ($db->inTransaction()) {

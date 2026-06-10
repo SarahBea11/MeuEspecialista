@@ -1,6 +1,5 @@
-import { Router } from '@angular/router';
-import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
@@ -15,35 +14,51 @@ import { ToastService } from '../services/toast';
   templateUrl: './cadastro.html',
   styleUrls: ['./cadastro.css'],
 })
-export class Cadastro {
+export class Cadastro implements OnInit {
   tipoUsuario: string = '';
   carregando: boolean = false;
   private apiUrl = `${environment.apiUrl}cadastro.php`;
 
-  cidades = [
-    { id: 1, nome: 'Campinas' },
-    { id: 2, nome: 'Indaiatuba' },
-    { id: 3, nome: 'Itu' },
-  ];
-
-  especialidades = [
-    { id: 1, nome: 'Cardiologia' },
-    { id: 2, nome: 'Pediatria' },
-    { id: 3, nome: 'Psiquiatria' },
-  ];
-
-  convenios = [
-    { id: 1, nome: 'Não conveniado' },
-    { id: 2, nome: 'Amil' },
-    { id: 3, nome: 'Intermédica' },
-    { id: 4, nome: 'Unimed' },
-  ];
+  cidades: any[] = [];
+  especialidades: any[] = [];
+  convenios: any[] = [];
 
   constructor(
     private router: Router,
     private http: HttpClient,
     private toastService: ToastService,
   ) {}
+
+  ngOnInit(): void {
+    this.carregarListas();
+  }
+
+  carregarListas(): void {
+    this.http.get<any>(`${environment.apiUrl}listar_cidades.php`).subscribe({
+      next: (res) => {
+        if (res.status === 'success') {
+          this.cidades = res.dados;
+        }
+      }
+    });
+
+    this.http.get<any>(`${environment.apiUrl}listar_especialidades.php`).subscribe({
+      next: (res) => {
+        if (res.status === 'success') {
+          this.especialidades = res.dados;
+        }
+      }
+    });
+
+    this.http.get<any>(`${environment.apiUrl}listar_convenios.php`).subscribe({
+      next: (res) => {
+        if (res.status === 'success') {
+          // Mantém "Não conveniado" opcional se necessário, ou adiciona ao início se não houver
+          this.convenios = res.dados;
+        }
+      }
+    });
+  }
 
   criarConta(form: NgForm) {
     // Verificação básica de senha
@@ -92,16 +107,28 @@ export class Cadastro {
         next: (res: any) => {
           this.carregando = false;
           this.toastService.success('Sucesso!', res.message || 'Cadastro realizado com sucesso!');
-          this.router.navigate(['/login']);
+          if (res.token) {
+            localStorage.setItem('token', res.token);
+            localStorage.setItem('user_type', res.tipo);
+            localStorage.setItem('user_name', res.nome || '');
+            if (res.tipo === 'medico') {
+              this.router.navigate(['/perfil']);
+            } else {
+              this.router.navigate(['/buscar']);
+            }
+          } else {
+            this.router.navigate(['/login']);
+          }
         },
+
         error: (err) => {
           this.carregando = false;
           console.error(err);
-          const erroMsg = err.error?.message || 'Verifique a conexão com o servidor.';
-          this.toastService.error('Erro ao cadastrar', erroMsg);
+          this.toastService.errorFriendly('Erro ao cadastrar', err);
         },
       });
   }
+
 
   cancelar() {
     this.router.navigate(['/']);

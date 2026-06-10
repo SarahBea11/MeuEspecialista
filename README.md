@@ -20,10 +20,12 @@ O **MeuEspecialista** é um sistema web fullstack desenvolvido como projeto acad
 
 ## ✨ Funcionalidades
 
-### 👤 Autenticação
+### 👤 Autenticação & Cadastro
 
-- ✅ Cadastro de usuários (médicos e pacientes) com modal integrado na tela inicial
+- ✅ Cadastro de usuários (médicos e pacientes) com orientações de senha e **Termo de Aceite LGPD**
 - ✅ Login com autenticação via **JWT (JSON Web Token)**
+- ✅ **Login automático** após conclusão do cadastro
+- ✅ Botão "Me Inscrever" redireciona diretamente para o formulário de cadastro
 - ✅ Recuperação de senha completa com geração de token seguro e **envio real de e-mail via PHPMailer + Gmail SMTP**
 - ✅ Interceptor HTTP automático para envio do token nas requisições
 - ✅ Proteção de rotas com Guards no frontend Angular
@@ -32,17 +34,30 @@ O **MeuEspecialista** é um sistema web fullstack desenvolvido como projeto acad
 
 - ✅ Busca por nome, especialidade e cidade
 - ✅ Filtro por convênio aceito
+- ✅ **Opções dinâmicas** carregadas do banco de dados (cidades, especialidades, convênios)
 - ✅ Cards modernos com foto de perfil do médico
 - ✅ Modal detalhado com informações completas do especialista
+- ✅ Tela de busca **bloqueada para médicos** (redirecionamento automático para o perfil)
 
-### 🩺 Perfil do Médico
+### 🩺 Área do Médico
 
 - ✅ Cadastro de CRM, especialidade, telefone, endereço e convênios aceitos
 - ✅ **Upload de foto de perfil** (com validação de tipo MIME e tamanho máximo de 5MB)
 - ✅ Avatar exibido nos cards de busca e no modal de detalhes
 - ✅ Edição de perfil com visualização de dados descriptografados
+- ✅ **Contador de favoritos** — exibe quantos pacientes favoritaram o perfil
+- ✅ **Formulário de solicitação** — médico solicita inclusão de nova cidade/especialidade/convênio por e-mail ao administrador
+- ✅ Redirecionamento automático para o perfil após o login
 
-### � Segurança
+### 🛡️ Área Administrativa
+
+- ✅ Tipo de usuário `admin` suportado no banco de dados e APIs
+- ✅ **Painel administrativo** com CRUD completo de cidades, especialidades e convênios
+- ✅ Administrador pode editar suas próprias informações de perfil
+- ✅ Rota `/admin` protegida por `AdminGuard`
+- ✅ Notificações por e-mail ao admin quando médicos fazem solicitações
+
+### 🔒 Segurança
 
 - ✅ **Criptografia AES-256-CBC** para dados sensíveis (CPF, CRM, telefone)
 - ✅ **Senhas com hash bcrypt** (PASSWORD_DEFAULT do PHP)
@@ -50,10 +65,14 @@ O **MeuEspecialista** é um sistema web fullstack desenvolvido como projeto acad
 - ✅ **CORS configurado** para apenas domínios autorizados
 - ✅ **Validação de e-mail** e **formato de CPF/CRM** no servidor
 - ✅ **Proteção CSRF** com validação de origem
+
 ### 🔔 UX & Feedback Visual
-- ✅ Sistema de **Toast Notifications** (sucesso, erro, aviso)
+
+- ✅ Sistema de **Toast Notifications** reativo (sucesso, erro, aviso, info) com auto-dismiss
+- ✅ Modais fecham **apenas pelo botão X** (não pelo clique no fundo)
 - ✅ Spinners de carregamento em todas as ações assíncronas
-- ✅ Layout totalmente **responsivo** (desktop, tablet e mobile) com telas de login e redefinição altamente modernas
+- ✅ Layout totalmente **responsivo** (desktop, tablet e mobile)
+- ✅ Logo maior na navbar e identidade visual padronizada
 
 ### 📲 PWA (Progressive Web App)
 

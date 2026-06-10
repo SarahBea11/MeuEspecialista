@@ -2,7 +2,7 @@ export interface LoginResponse {
   status: 'success' | 'error';
   message: string;
   token: string;
-  tipo: 'medico' | 'paciente';
+  tipo: 'medico' | 'paciente' | 'admin';
   nome: string;
 }
 

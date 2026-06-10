@@ -5,7 +5,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 18px 36px;
+  padding: 10px 36px;
   flex-wrap: wrap;
   gap: 12px;
   box-shadow: 0 2px 12px rgba(0,0,0,0.18);
@@ -475,4 +475,159 @@ input[readonly] {
     width: 100%;
   }
 }
+
+/* --- RECURSOS DO MÉDICO: FAVORITOS E SOLICITAÇÕES --- */
+.medico-recursos {
+  margin-top: 35px;
+  border-top: 2px dashed rgba(4, 79, 35, 0.15);
+  padding-top: 30px;
+}
+
+.card-favoritos {
+  background: linear-gradient(135deg, #044f23 0%, #087f3b 100%);
+  color: white;
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 25px;
+  box-shadow: 0 8px 20px rgba(4, 79, 35, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.card-favoritos:hover {
+  transform: translateY(-3px);
+}
+
+.favoritos-icon {
+  font-size: 40px;
+  background: rgba(255, 255, 255, 0.15);
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.favoritos-info h3 {
+  margin: 0;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.85;
+}
+
+.favoritos-info p {
+  margin: 4px 0 0 0;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.secao-solicitacao {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 24px;
+  transition: all 0.3s ease;
+}
+
+.secao-solicitacao h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-top: 0;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.secao-solicitacao p {
+  font-size: 14px;
+  color: #64748b;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.btn-solicitar-toggle {
+  background: transparent;
+  color: #044f23;
+  border: 2px solid #044f23;
+  width: 100%;
+  border-radius: 12px;
+  padding: 12px;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  margin-bottom: 15px;
+}
+
+.btn-solicitar-toggle:hover {
+  background: rgba(4, 79, 35, 0.05);
+}
+
+.solicitacao-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  animation: slideUp 0.3s ease;
+}
+
+.select-solicitacao {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  font-size: 15px;
+  background-color: #fff;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  color: #334155;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.select-solicitacao:focus {
+  border-color: #044f23;
+  box-shadow: 0 0 0 3px rgba(4,79,35,0.1);
+}
+
+.textarea-solicitacao {
+  width: 100%;
+  min-height: 100px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  font-size: 15px;
+  background-color: #fff;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  color: #334155;
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.2s;
+}
+
+.textarea-solicitacao:focus {
+  border-color: #044f23;
+  box-shadow: 0 0 0 3px rgba(4,79,35,0.1);
+}
+
+.solicitacao-botoes {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.btn-enviar-solicitacao {
+  background: #044f23;
+  color: white;
+  min-width: 120px;
+}
+
+.btn-cancelar-solicitacao {
+  background: #e2e8f0;
+  color: #475569;
+  min-width: 100px;
+}
+
 

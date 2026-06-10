@@ -18,11 +18,12 @@
 
   <div class="menu">
     <span class="boas-vindas" *ngIf="userName">Olá, {{ userName }}</span>
-    <a routerLink="/buscar" class="ativo">Buscar</a>
+    <a routerLink="/buscar" class="ativo">Início</a>
     <a routerLink="/favoritos" *ngIf="isPaciente" class="nav-favoritos">⭐ Favoritos</a>
     <a routerLink="/perfil">Meu perfil</a>
     <a (click)="sair()" style="cursor: pointer;">Sair</a>
   </div>
+
 </nav>
 
 <div class="container-busca">
@@ -86,8 +87,9 @@
           <div class="card-badges" *ngIf="isPaciente && medico.favoritado">
             <span class="badge-star" title="Médico Favoritado">⭐</span>
             <span class="badge-bell" *ngIf="medico.notificacoes_ativas" title="Notificações Ativas">🔔</span>
-            <span class="badge-bell-off" *ngIf="!medico.notificacoes_ativas" title="Notificações Pausadas">🔕</span>
+            <span class="badge-bell-off" *ngIf="!medico.notificacoes_ativas" title="Notificações Desativadas">🔕</span>
           </div>
+
         </div>
         <div class="card-info">
           <h3>{{ medico.nome }}</h3>
@@ -174,10 +176,11 @@
             [title]="modalNotificacoesAtivas ? 'Desativar notificações' : 'Ativar notificações'"
           >
             <span>{{ modalNotificacoesAtivas ? '🔔' : '🔕' }}</span>
-            <span>{{ modalNotificacoesAtivas ? 'Notificações ativas' : 'Notificações pausadas' }}</span>
+            <span>{{ modalNotificacoesAtivas ? 'Notificações ativas' : 'Notificações Desativadas' }}</span>
           </button>
         </div>
       </div>
+
 
       <button class="btn-acao-modal" (click)="fecharPerfil()">Voltar para a Busca</button>
     </div>

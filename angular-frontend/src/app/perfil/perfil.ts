@@ -31,6 +31,13 @@ export class Perfil implements OnInit {
   loading: boolean = false;
   exibirModalExclusao: boolean = false;
 
+  // Recursos de médico
+  totalFavoritos: number = 0;
+  mostrarFormSolicitacao: boolean = false;
+  tipoSolicitacao: string = '';
+  descricaoSolicitacao: string = '';
+  enviandoSolicitacao: boolean = false;
+
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -65,7 +72,7 @@ export class Perfil implements OnInit {
       error: (err) => {
         this.loading = false;
         console.error(err);
-        this.toastService.error('Erro no Upload', err.error?.message || 'Erro ao enviar a imagem.');
+        this.toastService.errorFriendly('Erro no Upload', err, 'Erro ao enviar a imagem.');
         this.cdr.detectChanges();
       },
     });
@@ -81,12 +88,29 @@ export class Perfil implements OnInit {
         if (res.status === 'success') {
           this.usuario = { ...res.dados, senha: '', confirmarSenha: '' };
           this.usuarioOriginal = { ...res.dados, senha: '', confirmarSenha: '' };
+          if (this.usuario.tipo === 'medico') {
+            this.obterFavoritos();
+          }
           this.cdr.detectChanges();
         }
       },
       error: (err) => {
         console.error('Erro:', err);
       },
+    });
+  }
+
+  obterFavoritos() {
+    this.authService.contarFavoritos().subscribe({
+      next: (res: any) => {
+        if (res.status === 'success') {
+          this.totalFavoritos = res.total_favoritos;
+          this.cdr.detectChanges();
+        }
+      },
+      error: (err) => {
+        console.error('Erro ao contar favoritos:', err);
+      }
     });
   }
 
@@ -126,7 +150,7 @@ export class Perfil implements OnInit {
       },
       error: (err) => {
         this.loading = false;
-        this.toastService.error('Erro ao salvar', err.error?.message || 'Erro ao salvar perfil.');
+        this.toastService.errorFriendly('Erro ao salvar', err, 'Erro ao salvar perfil.');
       },
     });
   }
@@ -162,7 +186,7 @@ export class Perfil implements OnInit {
       },
       error: (err) => {
         this.loading = false;
-        this.toastService.error('Erro ao excluir', err.error?.message || 'Erro ao excluir conta.');
+        this.toastService.errorFriendly('Erro ao excluir', err, 'Erro ao excluir conta.');
         this.cdr.detectChanges();
       },
     });
@@ -196,5 +220,35 @@ export class Perfil implements OnInit {
     crm = crm.trim();
     const regex = /^\d{4,10}([-/ ]?[A-Za-z]{2})?$/;
     return regex.test(crm);
+  }
+
+  enviarSolicitacao() {
+    if (!this.tipoSolicitacao || !this.descricaoSolicitacao) {
+      this.toastService.warning('Campos obrigatórios', 'Por favor, preencha o tipo e a descrição da solicitação.');
+      return;
+    }
+
+    this.enviandoSolicitacao = true;
+    this.cdr.detectChanges();
+
+    this.authService.solicitarCadastro(this.tipoSolicitacao, this.descricaoSolicitacao).subscribe({
+      next: (res: any) => {
+        this.enviandoSolicitacao = false;
+        if (res.status === 'success') {
+          this.toastService.success('Sucesso', res.message || 'Solicitação enviada com sucesso!');
+          this.tipoSolicitacao = '';
+          this.descricaoSolicitacao = '';
+          this.mostrarFormSolicitacao = false;
+        } else {
+          this.toastService.error('Erro', res.message || 'Erro ao enviar a solicitação.');
+        }
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.enviandoSolicitacao = false;
+        this.toastService.errorFriendly('Erro ao enviar', err, 'Erro ao enviar solicitação.');
+        this.cdr.detectChanges();
+      }
+    });
   }
 }

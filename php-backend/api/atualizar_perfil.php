@@ -105,7 +105,7 @@ try {
             ':endereco' => $data->endereco,
             ':id' => $idUsuario
         ]);
-    } else {
+    } else if ($usuarioLogado->tipo === 'paciente') {
         if (empty($data->cpf)) {
             throw new Exception("CPF é obrigatório.");
         }
@@ -137,6 +137,7 @@ try {
             ':id' => $idUsuario
         ]);
     }
+
 
     if (!empty($data->senha)) {
         if (!preg_match('/^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/', $data->senha)) {

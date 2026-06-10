@@ -41,5 +41,13 @@ export class AuthService {
   redefinirSenha(token: string, nova_senha: string, confirmar_senha: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}redefinir_senha.php`, { token, nova_senha, confirmar_senha });
   }
+
+  contarFavoritos(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}contar_favoritos.php`);
+  }
+
+  solicitarCadastro(tipo: string, descricao: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}solicitar_cadastro.php`, { tipo, descricao });
+  }
 }
 

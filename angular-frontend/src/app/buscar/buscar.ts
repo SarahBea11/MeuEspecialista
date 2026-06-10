@@ -5,18 +5,19 @@ import { Router, RouterModule } from '@angular/router';
 import { MedicoService } from '../services/medico.service';
 import { Medico } from '../models/usuario.model';
 import { environment } from '../environments';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-buscar',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, HttpClientModule],
   templateUrl: './buscar.html',
   styleUrls: ['./buscar.css'],
 })
 export class Buscar implements OnInit {
-  especialidades = ['Cardiologia', 'Pediatria', 'Psiquiatria'];
-  cidades = ['Campinas', 'Indaiatuba', 'Itu'];
-  convenios = ['Amil', 'Intermédica', 'Unimed'];
+  especialidades: string[] = [];
+  cidades: string[] = [];
+  convenios: string[] = [];
 
   cidadeSelecionada: string = '';
   convenioSelecionado: string = '';
@@ -60,6 +61,7 @@ export class Buscar implements OnInit {
     private medicoService: MedicoService,
     private router: Router,
     private cdr: ChangeDetectorRef,
+    private http: HttpClient,
   ) {
     this.userName = localStorage.getItem('user_name') || '';
     this.userTipo = localStorage.getItem('user_type') || '';
@@ -150,7 +152,35 @@ export class Buscar implements OnInit {
   }
 
   ngOnInit(): void {
+    this.carregarListas();
     this.buscarMedicos();
+  }
+
+  carregarListas() {
+    this.http.get<any>(`${environment.apiUrl}listar_cidades.php`).subscribe({
+      next: (res) => {
+        if (res.status === 'success') {
+          this.cidades = res.dados.map((c: any) => c.nome);
+          this.cdr.detectChanges();
+        }
+      }
+    });
+    this.http.get<any>(`${environment.apiUrl}listar_especialidades.php`).subscribe({
+      next: (res) => {
+        if (res.status === 'success') {
+          this.especialidades = res.dados.map((e: any) => e.nome);
+          this.cdr.detectChanges();
+        }
+      }
+    });
+    this.http.get<any>(`${environment.apiUrl}listar_convenios.php`).subscribe({
+      next: (res) => {
+        if (res.status === 'success') {
+          this.convenios = res.dados.map((c: any) => c.nome);
+          this.cdr.detectChanges();
+        }
+      }
+    });
   }
 
   buscarMedicos() {

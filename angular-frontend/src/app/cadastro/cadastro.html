@@ -74,6 +74,7 @@
                 <span class="input-icon">🔒</span>
                 <input type="password" name="senha" placeholder="Mín. 8 caracteres (letras, números e símbolo)" ngModel required />
               </div>
+              <small class="orientacao-senha" style="display: block; font-size: 11px; color: #718096; margin-top: 4px;">A senha deve ter no mínimo 8 caracteres, incluindo letras, números e símbolos.</small>
             </div>
 
             <!-- Confirmar Senha -->
@@ -93,6 +94,7 @@
                 <input type="text" name="telefone" placeholder="Ex: (11) 99999-9999" ngModel required />
               </div>
             </div>
+
 
             <!-- CRM (Apenas Médico) -->
             <div class="campo" *ngIf="tipoUsuario === 'medico'">
@@ -168,8 +170,17 @@
             </div>
           </div>
 
+          <!-- Termo de Aceite e LGPD -->
+          <div class="campo full-width lgpd-campo" style="margin-top: 15px; margin-bottom: 20px; grid-column: span 2;">
+            <label class="lgpd-label" style="display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: #4a5568; cursor: pointer; text-align: left;">
+              <input type="checkbox" name="aceiteTermos" ngModel required style="margin-top: 3px;" />
+              <span>Li e concordo com os <strong>Termos de Uso</strong> e com as políticas de privacidade de dados (<strong>LGPD</strong>).</span>
+            </label>
+          </div>
+
           <!-- Ações do Formulário -->
           <div class="botoes-secao">
+
             <button type="submit" class="btn-criar" [disabled]="!cadastroForm.valid || carregando">
               <div class="btn-conteudo">
                 <div *ngIf="carregando" class="btn-spinner"></div>

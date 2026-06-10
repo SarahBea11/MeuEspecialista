@@ -4,11 +4,12 @@
   </div>
   <div class="menu">
     <span class="boas-vindas" *ngIf="userName">Olá, {{ userName }}</span>
-    <a routerLink="/buscar">Buscar</a>
+    <a routerLink="/buscar">Início</a>
     <a routerLink="/favoritos" class="ativo nav-favoritos">⭐ Favoritos</a>
     <a routerLink="/perfil">Meu perfil</a>
     <a (click)="sair()" style="cursor: pointer;">Sair</a>
   </div>
+
 </nav>
 
 <div class="container-favoritos">
@@ -91,8 +92,9 @@
         >
           <span class="notif-icon">{{ fav.notificacoes_ativas ? '🔔' : '🔕' }}</span>
           <span class="notif-texto">
-            {{ fav.notificacoes_ativas ? 'Notificações ativas' : 'Notificações pausadas' }}
+            {{ fav.notificacoes_ativas ? 'Notificações ativas' : 'Notificações Desativadas' }}
           </span>
+
           <span class="notif-badge" *ngIf="fav.notificacoes_ativas">ON</span>
           <span class="notif-badge off" *ngIf="!fav.notificacoes_ativas">OFF</span>
         </button>
@@ -168,8 +170,9 @@
             [title]="modalNotificacoesAtivas ? 'Desativar notificações' : 'Ativar notificações'"
           >
             <span>{{ modalNotificacoesAtivas ? '🔔' : '🔕' }}</span>
-            <span>{{ modalNotificacoesAtivas ? 'Notificações ativas' : 'Notificações pausadas' }}</span>
+            <span>{{ modalNotificacoesAtivas ? 'Notificações ativas' : 'Notificações Desativadas' }}</span>
           </button>
+
         </div>
       </div>
 

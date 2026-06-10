@@ -33,15 +33,40 @@ export class Login {
         localStorage.setItem('user_name', res.nome || '');
 
         this.toastService.success('Bem-vindo(a)!', 'Login realizado com sucesso.');
-        this.router.navigate(['/buscar']);
+        if (res.tipo === 'medico') {
+          this.router.navigate(['/perfil']);
+        } else if (res.tipo === 'admin') {
+          this.router.navigate(['/admin']);
+        } else {
+          this.router.navigate(['/buscar']);
+        }
         this.loading = false;
+
+
       },
       error: (err) => {
-        this.errorMessage = err.error?.message || 'Erro ao realizar login. Tente novamente.';
+        let erroFriendly = 'Erro ao realizar login. Tente novamente.';
+        if (err) {
+          if (err.error) {
+            if (typeof err.error === 'string') {
+              if (err.error.includes('<br') || err.error.includes('<b>') || err.error.trim().startsWith('<')) {
+                erroFriendly = 'Erro interno no servidor (formato inválido).';
+              } else {
+                erroFriendly = err.error;
+              }
+            } else if (err.error.message) {
+              erroFriendly = err.error.message;
+            }
+          } else if (err.message) {
+            erroFriendly = err.message;
+          }
+        }
+        this.errorMessage = erroFriendly;
         this.toastService.error('Erro de Login', this.errorMessage);
         console.error('Login error:', err);
         this.loading = false;
       },
+
     });
   }
 }

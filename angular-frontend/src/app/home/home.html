@@ -28,7 +28,7 @@
 </div>
 
 <!-- Modal de Cadastro -->
-<div class="modal-overlay" *ngIf="modalAberto" (click)="fecharModal()">
+<div class="modal-overlay" *ngIf="modalAberto">
   <div class="modal-card" (click)="$event.stopPropagation()">
 
     <div class="modal-header">
@@ -91,6 +91,7 @@
                 <span class="input-icon">🔒</span>
                 <input type="password" name="senha" placeholder="Mín. 8 caracteres (letras, números e símbolo)" ngModel required />
               </div>
+              <small class="orientacao-senha" style="display: block; font-size: 11px; color: #718096; margin-top: 4px;">A senha deve ter no mínimo 8 caracteres, incluindo letras, números e símbolos.</small>
             </div>
 
             <div class="campo">
@@ -100,6 +101,7 @@
                 <input type="password" name="confirmaSenha" placeholder="Confirme a senha" ngModel required />
               </div>
             </div>
+
 
             <div class="campo">
               <label class="campo-label">Telefone</label>
@@ -275,6 +277,14 @@
 
           </div>
 
+          <!-- Termo de Aceite e LGPD -->
+          <div class="campo full-width lgpd-campo" style="margin-top: 15px; margin-bottom: 20px; grid-column: span 2;">
+            <label class="lgpd-label" style="display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: #4a5568; cursor: pointer; text-align: left;">
+              <input type="checkbox" name="aceiteTermos" ngModel required style="margin-top: 3px;" />
+              <span>Li e concordo com os <strong>Termos de Uso</strong> e com as políticas de privacidade de dados (<strong>LGPD</strong>).</span>
+            </label>
+          </div>
+
           <!-- Preview do endereço montado -->
           <div class="endereco-preview" *ngIf="enderecoCompleto">
             <span class="preview-label">📋 Endereço que será salvo:</span>
@@ -283,6 +293,7 @@
 
           <!-- Ações -->
           <div class="botoes-secao">
+
             <button type="submit" class="btn-criar" [disabled]="!cadastroForm.valid || carregando || !enderecoNumero">
               <div class="btn-conteudo">
                 <div *ngIf="carregando" class="btn-spinner"></div>

@@ -4,10 +4,11 @@
   </div>
 
   <div class="menu">
-    <a routerLink="/buscar">Buscar</a>
+    <a routerLink="/buscar">Início</a>
     <a class="ativo" routerLink="/perfil">Meu perfil</a>
     <a (click)="sair()" style="cursor: pointer">Sair</a>
   </div>
+
 </nav>
 
 <div class="container-perfil">
@@ -180,10 +181,62 @@
       </ng-container>
     </div>
   </form>
+
+  <!-- Recursos Exclusivos do Médico -->
+  <div class="medico-recursos" *ngIf="usuario.tipo === 'medico'">
+    <div class="card-favoritos">
+      <div class="favoritos-icon">⭐</div>
+      <div class="favoritos-info">
+        <h3>Favoritado por</h3>
+        <p>{{ totalFavoritos }} {{ totalFavoritos === 1 ? 'paciente' : 'pacientes' }}</p>
+      </div>
+    </div>
+
+    <div class="secao-solicitacao">
+      <h2>📋 Solicitações ao Administrador</h2>
+      <p>Solicite a inclusão de novas cidades, especialidades ou convênios médicos que ainda não estão cadastrados no sistema.</p>
+
+      <button type="button" class="btn-solicitar-toggle" *ngIf="!mostrarFormSolicitacao" (click)="mostrarFormSolicitacao = true">
+        Nova Solicitação
+      </button>
+
+      <div class="solicitacao-form" *ngIf="mostrarFormSolicitacao">
+        <div class="campo">
+          <label>O que você deseja sugerir/solicitar?</label>
+          <select name="tipoSolicitacao" [(ngModel)]="tipoSolicitacao" class="select-solicitacao">
+            <option value="" disabled selected>Selecione uma opção...</option>
+            <option value="Cidade">Inclusão de nova Cidade</option>
+            <option value="Especialidade">Inclusão de nova Especialidade</option>
+            <option value="Convênio">Inclusão de novo Convênio</option>
+            <option value="Outros">Outras solicitações / Sugestões</option>
+          </select>
+        </div>
+
+        <div class="campo">
+          <label>Detalhes da Solicitação:</label>
+          <textarea 
+            name="descricaoSolicitacao" 
+            [(ngModel)]="descricaoSolicitacao" 
+            class="textarea-solicitacao"
+            placeholder="Descreva o nome do item a ser incluído e outras informações úteis..."
+          ></textarea>
+        </div>
+
+        <div class="solicitacao-botoes">
+          <button type="button" class="btn-cancelar-solicitacao" (click)="mostrarFormSolicitacao = false; tipoSolicitacao = ''; descricaoSolicitacao = ''" [disabled]="enviandoSolicitacao">
+            Cancelar
+          </button>
+          <button type="button" class="btn-enviar-solicitacao" (click)="enviarSolicitacao()" [disabled]="enviandoSolicitacao">
+            {{ enviandoSolicitacao ? 'Enviando...' : 'Enviar' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- Modal de Exclusão de Perfil -->
-<div class="modal-overlay" *ngIf="exibirModalExclusao" (click)="fecharModalExclusao()">
+<div class="modal-overlay" *ngIf="exibirModalExclusao">
   <div class="modal-card modal-confirmar-exclusao" (click)="$event.stopPropagation()">
     <div class="modal-header-danger">
       <h2>Atenção!</h2>

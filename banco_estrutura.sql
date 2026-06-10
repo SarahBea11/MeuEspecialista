@@ -1,6 +1,6 @@
 -- ============================================================
 -- MeuEspecialista — Estrutura do banco de dados
--- Gerado em: 2026-05-29
+-- Atualizado em: 2026-06-10
 -- Importar em: phpMyAdmin > Selecionar banco > Aba SQL > Executar
 -- ============================================================
 
@@ -15,14 +15,46 @@ CREATE TABLE `usuarios` (
   `nome` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
   `senha` varchar(255) NOT NULL,
-  `tipo` enum('paciente','medico') NOT NULL,
+  `tipo` enum('paciente','medico','admin') NOT NULL,
   `data_cadastro` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ------------------------------------------------------------
--- 2. convenios (sem dependências)
+-- 2. cidades (sem dependências)
+-- ------------------------------------------------------------
+DROP TABLE IF EXISTS `cidades`;
+CREATE TABLE `cidades` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nome` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `nome` (`nome`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO `cidades` (`nome`) VALUES
+  ('Campinas'),
+  ('Indaiatuba'),
+  ('Itu');
+
+-- ------------------------------------------------------------
+-- 3. especialidades (sem dependências)
+-- ------------------------------------------------------------
+DROP TABLE IF EXISTS `especialidades`;
+CREATE TABLE `especialidades` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nome` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `nome` (`nome`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO `especialidades` (`nome`) VALUES
+  ('Cardiologia'),
+  ('Pediatria'),
+  ('Psiquiatria');
+
+-- ------------------------------------------------------------
+-- 4. convenios (sem dependências)
 -- ------------------------------------------------------------
 DROP TABLE IF EXISTS `convenios`;
 CREATE TABLE `convenios` (

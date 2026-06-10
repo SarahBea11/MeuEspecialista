@@ -42,7 +42,7 @@ try {
             $dadosExtra['crm'] = decryptData($dadosExtra['crm'], true);
             $dadosExtra['telefone'] = decryptData($dadosExtra['telefone'], false);
         }
-    } else {
+    } else if ($tipo === 'paciente') {
         $queryPac = "SELECT p.cpf, p.cidade, p.telefone, p.endereco, c.nome_convenio as convenio 
                      FROM pacientes_perfil p
                      LEFT JOIN convenios c ON p.convenio_id = c.id
@@ -56,6 +56,7 @@ try {
             $dadosExtra['telefone'] = decryptData($dadosExtra['telefone'], false);
         }
     }
+
 
     echo json_encode([
         "status" => "success",
