@@ -17,23 +17,26 @@ import { AuthService } from '../services/auth';
   styleUrls: ['./admin.css'],
 })
 export class Admin implements OnInit {
-  abaAtiva: 'cidades' | 'especialidades' | 'convenios' | 'perfil' = 'cidades';
-  
+  abaAtiva: 'cidades' | 'especialidades' | 'convenios' | 'perfil' | 'administradores' = 'cidades';
+
   cidades: any[] = [];
   especialidades: any[] = [];
   convenios: any[] = [];
-  
+  administradores: any[] = [];
+
   // Modelos para inputs
   novoNome: string = '';
   editId: number = 0;
-  
+
+  novoAdmin: any = { nome: '', email: '', senha: '' };
+
   usuario: any = {
     nome: '',
     email: '',
     senha: '',
     confirmarSenha: ''
   };
-  
+
   carregando: boolean = false;
 
   private crudUrl = `${environment.apiUrl}admin_crud.php`;
@@ -55,9 +58,10 @@ export class Admin implements OnInit {
     }
     this.carregarDados();
     this.carregarPerfil();
+    this.carregarAdministradores();
   }
 
-  alterarAba(aba: 'cidades' | 'especialidades' | 'convenios' | 'perfil') {
+  alterarAba(aba: 'cidades' | 'especialidades' | 'convenios' | 'perfil' | 'administradores') {
     this.abaAtiva = aba;
     this.novoNome = '';
     this.editId = 0;
@@ -65,7 +69,7 @@ export class Admin implements OnInit {
 
   carregarDados() {
     this.carregando = true;
-    
+
     // Cidades
     this.http.get<any>(`${environment.apiUrl}listar_cidades.php`).subscribe({
       next: (res) => {
@@ -91,6 +95,18 @@ export class Admin implements OnInit {
       error: (err) => {
         this.toastService.errorFriendly('Erro', err, 'Erro ao carregar convênios.');
         this.carregando = false;
+      }
+    });
+  }
+
+  carregarAdministradores() {
+    // Busca simples dos usuários com tipo=admin
+    this.http.get<any>(`${environment.apiUrl}listar_administradores.php`).subscribe({
+      next: (res) => {
+        this.administradores = res.dados || [];
+      },
+      error: (err) => {
+        this.toastService.errorFriendly('Erro', err, 'Erro ao carregar administradores.');
       }
     });
   }
@@ -138,8 +154,38 @@ export class Admin implements OnInit {
         this.novoNome = '';
         this.editId = 0;
         this.carregarDados();
+          this.carregarAdministradores();
       },
       error: (err) => this.toastService.errorFriendly('Erro ao salvar', err)
+    });
+  }
+
+  criarAdmin() {
+    if (!this.novoAdmin.nome || !this.novoAdmin.email) {
+      this.toastService.warning('Aviso', 'Nome e e-mail são obrigatórios.');
+      return;
+    }
+    if (this.novoAdmin.senha && this.novoAdmin.senha.length < 6) {
+      this.toastService.warning('Aviso', 'Senha muito curta. Use ao menos 6 caracteres.');
+      return;
+    }
+
+    this.carregando = true;
+    this.http.post<any>(`${this.crudUrl}?action=create_admin`, this.novoAdmin).subscribe({
+      next: (res) => {
+        this.carregando = false;
+        this.toastService.success('Administrador criado', res.message || 'Administrador criado com sucesso!');
+        // Exibe senha temporária se retornada
+        if (res.senha_temp) {
+          this.toastService.info('Senha temporária', `Senha: ${res.senha_temp}`);
+        }
+        this.novoAdmin = { nome: '', email: '', senha: '' };
+        this.carregarAdministradores();
+      },
+      error: (err) => {
+        this.carregando = false;
+        this.toastService.errorFriendly('Erro ao criar', err);
+      }
     });
   }
 

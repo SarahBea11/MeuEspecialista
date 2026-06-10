@@ -159,6 +159,52 @@ switch ($action) {
         }
         break;
 
+    // Criar novo administrador
+    case 'create_admin':
+        $nome = isset($data->nome) ? trim($data->nome) : '';
+        $email = isset($data->email) ? trim($data->email) : '';
+        $senha = isset($data->senha) ? $data->senha : '';
+
+        if (empty($nome) || empty($email)) {
+            http_response_code(400);
+            echo json_encode(["status" => "error", "message" => "Nome e e-mail são obrigatórios."]);
+            exit();
+        }
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            http_response_code(400);
+            echo json_encode(["status" => "error", "message" => "E-mail inválido."]);
+            exit();
+        }
+
+        try {
+            // Verifica existência
+            $stmt = $db->prepare("SELECT id FROM usuarios WHERE email = :email");
+            $stmt->execute([':email' => $email]);
+            if ($stmt->rowCount() > 0) {
+                http_response_code(409);
+                echo json_encode(["status" => "error", "message" => "Já existe um usuário com este e-mail."]);
+                exit();
+            }
+
+            // Se nenhuma senha informada, gera senha temporária aleatória
+            if (empty($senha)) {
+                $senha = bin2hex(random_bytes(6)); // 12 chars
+            }
+
+            $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+
+            $query = "INSERT INTO usuarios (nome, email, senha, tipo) VALUES (:nome, :email, :senha, 'admin')";
+            $stmtInsert = $db->prepare($query);
+            $stmtInsert->execute([':nome' => $nome, ':email' => $email, ':senha' => $senhaHash]);
+
+            echo json_encode(["status" => "success", "message" => "Administrador criado com sucesso!", "senha_temp" => $senha]);
+        } catch (PDOException $e) {
+            http_response_code(500);
+            echo json_encode(["status" => "error", "message" => "Erro ao criar administrador: " . $e->getMessage()]);
+        }
+        break;
+
     default:
         http_response_code(400);
         echo json_encode(["status" => "error", "message" => "Ação inválida."]);

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
@@ -42,12 +42,23 @@ export class Home implements OnInit {
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private http: HttpClient,
     private toastService: ToastService,
   ) {}
 
   ngOnInit(): void {
     this.carregarListas();
+
+    // Abre o modal de cadastro automaticamente se a query param `?openCadastro=1` estiver presente
+    this.route.queryParams.subscribe(params => {
+      const open = params['openCadastro'];
+      if (open === '1' || open === 'true') {
+        this.abrirModal();
+        // Remove o query param para evitar reabertura em reload
+        this.router.navigate([], { queryParams: { openCadastro: null }, replaceUrl: true });
+      }
+    });
   }
 
   carregarListas(): void {

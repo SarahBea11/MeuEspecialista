@@ -11,7 +11,7 @@
 
 <div class="container-admin">
   <div class="admin-layout">
-    
+
     <!-- Sidebar Menu -->
     <aside class="admin-sidebar">
       <div class="sidebar-header">
@@ -27,6 +27,9 @@
         <li [class.ativo]="abaAtiva === 'convenios'" (click)="alterarAba('convenios')">
           <span class="icon">💳</span> Convênios
         </li>
+        <li [class.ativo]="abaAtiva === 'administradores'" (click)="alterarAba('administradores')">
+          <span class="icon">🔐</span> Administradores
+        </li>
         <li [class.ativo]="abaAtiva === 'perfil'" (click)="alterarAba('perfil')">
           <span class="icon">👤</span> Meu Perfil
         </li>
@@ -35,22 +38,22 @@
 
     <!-- Main Content Area -->
     <main class="admin-main">
-      
+
       <!-- Cidade, Especialidade, Convênio CRUDs -->
-      <div class="crud-card" *ngIf="abaAtiva !== 'perfil'">
+      <div class="crud-card" *ngIf="abaAtiva !== 'perfil' && abaAtiva !== 'administradores'">
         <div class="card-header">
           <h2>Gerenciar {{ abaAtiva | titlecase }}</h2>
           <p>Adicione, edite ou remova registros de {{ abaAtiva }}.</p>
         </div>
 
         <div class="card-body">
-          
+
           <!-- Formulário Adicionar / Editar -->
           <div class="crud-form">
-            <input 
-              type="text" 
-              [(ngModel)]="novoNome" 
-              placeholder="Digite o nome do registro..." 
+            <input
+              type="text"
+              [(ngModel)]="novoNome"
+              placeholder="Digite o nome do registro..."
               (keyup.enter)="salvarItem()"
             />
             <button class="btn-salvar" (click)="salvarItem()">
@@ -68,7 +71,7 @@
           </div>
 
           <div class="lista-registros" *ngIf="!carregando">
-            
+
             <div class="registro-item vazia" *ngIf="abaAtiva === 'cidades' && cidades.length === 0">
               Nenhuma cidade cadastrada.
             </div>
@@ -117,6 +120,30 @@
         </div>
       </div>
 
+      <!-- Administradores -->
+      <div class="crud-card" *ngIf="abaAtiva === 'administradores'">
+        <div class="card-header">
+          <h2>Administradores</h2>
+          <p>Cadastre outros administradores que terão acesso ao painel.</p>
+        </div>
+
+        <div class="card-body">
+          <div class="crud-form">
+            <input type="text" [(ngModel)]="novoAdmin.nome" placeholder="Nome completo" />
+            <input type="email" [(ngModel)]="novoAdmin.email" placeholder="E-mail" />
+            <input type="password" [(ngModel)]="novoAdmin.senha" placeholder="Senha (opcional)" />
+            <button class="btn-salvar" (click)="criarAdmin()">Criar Administrador</button>
+          </div>
+
+          <div class="lista-registros">
+            <div class="registro-item vazia" *ngIf="administradores.length === 0">Nenhum administrador cadastrado além de você.</div>
+            <div class="registro-item" *ngFor="let adm of administradores">
+              <span class="item-nome">{{ adm.nome }} — {{ adm.email }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Perfil do Administrador -->
       <div class="crud-card" *ngIf="abaAtiva === 'perfil'">
         <div class="card-header">
@@ -126,7 +153,7 @@
 
         <div class="card-body">
           <form (ngSubmit)="salvarPerfil()" #perfilForm="ngForm" class="perfil-form">
-            
+
             <div class="campo">
               <label>Nome Completo</label>
               <input type="text" name="nome" [(ngModel)]="usuario.nome" required />
@@ -140,21 +167,21 @@
             <div class="duas-colunas">
               <div class="campo-interno">
                 <label>Nova Senha</label>
-                <input 
-                  type="password" 
-                  name="senha" 
-                  [(ngModel)]="usuario.senha" 
-                  placeholder="Deixe em branco para não alterar" 
+                <input
+                  type="password"
+                  name="senha"
+                  [(ngModel)]="usuario.senha"
+                  placeholder="Deixe em branco para não alterar"
                 />
               </div>
 
               <div class="campo-interno">
                 <label>Confirmar Senha</label>
-                <input 
-                  type="password" 
-                  name="confirmarSenha" 
-                  [(ngModel)]="usuario.confirmarSenha" 
-                  placeholder="Confirme a nova senha" 
+                <input
+                  type="password"
+                  name="confirmarSenha"
+                  [(ngModel)]="usuario.confirmarSenha"
+                  placeholder="Confirme a nova senha"
                 />
               </div>
             </div>

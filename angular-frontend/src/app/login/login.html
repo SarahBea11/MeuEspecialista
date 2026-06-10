@@ -64,7 +64,7 @@
       </div>
 
       <!-- Botão Cadastro -->
-      <button class="btn-cadastro" routerLink="/cadastro">
+      <button class="btn-cadastro" [routerLink]="['/']" [queryParams]="{openCadastro: '1'}">
         Me Inscrever
       </button>
 
