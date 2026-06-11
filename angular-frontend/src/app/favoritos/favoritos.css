@@ -70,9 +70,10 @@ body {
 }
 
 .boas-vindas {
-    font-size: 13px;
+    font-size: 15px;
+    font-weight: 600;
     color: #7CFF8F;
-    opacity: 0.9;
+    letter-spacing: 0.2px;
 }
 
 /* ── Container principal ── */

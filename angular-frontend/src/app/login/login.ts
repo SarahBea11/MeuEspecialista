@@ -28,6 +28,7 @@ export class Login {
     this.loading = true;
     this.authService.login(this.loginData).subscribe({
       next: (res) => {
+        this.loading = false;
         localStorage.setItem('token', res.token);
         localStorage.setItem('user_type', res.tipo);
         localStorage.setItem('user_name', res.nome || '');
@@ -40,11 +41,9 @@ export class Login {
         } else {
           this.router.navigate(['/buscar']);
         }
-        this.loading = false;
-
-
       },
       error: (err) => {
+        this.loading = false;
         let erroFriendly = 'Erro ao realizar login. Tente novamente.';
         if (err) {
           if (err.error) {
@@ -64,7 +63,6 @@ export class Login {
         this.errorMessage = erroFriendly;
         this.toastService.error('Erro de Login', this.errorMessage);
         console.error('Login error:', err);
-        this.loading = false;
       },
 
     });

@@ -60,9 +60,9 @@ body {
 }
 
 .boas-vindas {
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 600;
   color: #7CFF8F;
-  font-weight: 500;
 }
 
 /* Layout Principal */
