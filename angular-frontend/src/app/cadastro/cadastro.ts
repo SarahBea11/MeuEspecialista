@@ -19,6 +19,11 @@ export class Cadastro implements OnInit {
   carregando: boolean = false;
   private apiUrl = `${environment.apiUrl}cadastro.php`;
 
+  // Controle dos Termos de Uso
+  modalTermosAberto: boolean = false;
+  termosLidos: boolean = false;
+  termosScrollCompleto: boolean = false;
+
   cidades: any[] = [];
   especialidades: any[] = [];
   convenios: any[] = [];
@@ -169,8 +174,36 @@ export class Cadastro implements OnInit {
     return regex.test(crm);
   }
 
+  abrirTermos(event?: Event): void {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    this.modalTermosAberto = true;
+    this.termosScrollCompleto = false;
+  }
+
+  fecharTermos(): void {
+    this.modalTermosAberto = false;
+  }
+
+  aceitarTermos(): void {
+    this.termosLidos = true;
+    this.modalTermosAberto = false;
+  }
+
+  onScrollTermos(event: Event): void {
+    const el = event.target as HTMLElement;
+    const threshold = 15; // pixels de tolerância
+    if (el.scrollHeight - el.scrollTop <= el.clientHeight + threshold) {
+      this.termosScrollCompleto = true;
+    }
+  }
+
   limpar(form: NgForm) {
     form.resetForm();
     this.tipoUsuario = '';
+    this.termosLidos = false;
+    this.termosScrollCompleto = false;
   }
 }

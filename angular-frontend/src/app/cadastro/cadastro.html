@@ -172,9 +172,21 @@
 
           <!-- Termo de Aceite e LGPD -->
           <div class="campo full-width lgpd-campo" style="margin-top: 15px; margin-bottom: 20px; grid-column: span 2;">
-            <label class="lgpd-label" style="display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: #4a5568; cursor: pointer; text-align: left;">
-              <input type="checkbox" name="aceiteTermos" ngModel required style="margin-top: 3px;" />
-              <span>Li e concordo com os <strong>Termos de Uso</strong> e com as políticas de privacidade de dados (<strong>LGPD</strong>).</span>
+            <label class="lgpd-label" style="display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: #4a5568; text-align: left;">
+              <input
+                type="checkbox"
+                name="aceiteTermos"
+                [ngModel]="termosLidos"
+                [disabled]="!termosLidos"
+                required
+                style="margin-top: 3px; cursor: not-allowed;"
+              />
+              <span>
+                Li e concordo com os 
+                <a href="javascript:void(0)" class="link-termos" (click)="abrirTermos($event)">Termos de Uso</a> 
+                e com as 
+                <a href="javascript:void(0)" class="link-termos" (click)="abrirTermos($event)">políticas de privacidade de dados (LGPD)</a>.
+              </span>
             </label>
           </div>
 
@@ -203,5 +215,60 @@
       </form>
     </div>
 
+  </div>
+</div>
+
+<!-- Modal Secundário de Termos de Uso e LGPD -->
+<div class="modal-overlay terms-modal-overlay" *ngIf="modalTermosAberto">
+  <div class="modal-card terms-modal-card" (click)="$event.stopPropagation()">
+    
+    <div class="modal-header">
+      <h2>Termos de Uso e LGPD</h2>
+      <button type="button" class="btn-fechar" (click)="fecharTermos()">&times;</button>
+    </div>
+    
+    <div class="modal-body terms-modal-body" (scroll)="onScrollTermos($event)">
+      <h3>1. Aceitação dos Termos</h3>
+      <p>Ao se cadastrar na plataforma MeuEspecialista, você concorda em cumprir e se submeter a estes Termos de Uso e às políticas de privacidade aqui descritas. Esta plataforma destina-se a facilitar o contato entre profissionais de saúde (médicos) e pacientes.</p>
+      
+      <h3>2. Cadastro e Segurança</h3>
+      <p>Você é responsável por manter a confidencialidade de suas credenciais de login e por todas as atividades que ocorram em sua conta. Os dados fornecidos devem ser verídicos e precisos. O uso de identidades falsas ou informações fraudulentas constitui infração a estes termos e à legislação vigentes.</p>
+      
+      <h3>3. Proteção de Dados e LGPD</h3>
+      <p>Em conformidade com a Lei Geral de Proteção de Dados Pessoais (LGPD - Lei nº 13.709/2018), informamos que:</p>
+      <ul>
+        <li>Coletamos dados estritamente necessários para o funcionamento dos serviços (como nome, e-mail, telefone, CRM/CPF e endereço).</li>
+        <li>Dados sensíveis como CPF, CRM e telefones são armazenados com criptografia forte (AES-256) para garantir sua máxima privacidade.</li>
+        <li>O paciente autoriza o compartilhamento de seus dados de contato com os médicos que selecionar para agendamentos.</li>
+        <li>Você poderá, a qualquer momento, solicitar a exclusão definitiva de seu perfil e dados pessoais através de sua área logada ou entrando em contato com a administração da plataforma.</li>
+      </ul>
+
+      <h3>4. Responsabilidade Médica</h3>
+      <p>O MeuEspecialista funciona estritamente como um intermediário de busca e facilitação de contato. Não nos responsabilizamos pela conduta profissional dos médicos cadastrados, diagnósticos, tratamentos prescritos, ou pela veracidade do CRM informado — embora façamos validações periódicas.</p>
+      
+      <h3>5. Condições de Uso</h3>
+      <p>É expressamente proibido utilizar a plataforma para fins comerciais não autorizados, spam, disseminação de vírus, engenharia reversa ou qualquer atividade que comprometa a estabilidade e segurança da aplicação.</p>
+
+      <h3>6. Alterações nos Termos</h3>
+      <p>Reservamo-nos o direito de modificar estes termos a qualquer momento. Quaisquer alterações significativas serão notificadas aos usuários cadastrados por e-mail ou aviso em nossa página inicial.</p>
+      
+      <div class="scroll-fim-indicador" *ngIf="!termosScrollCompleto">
+        <span>👇 Por favor, role o texto até o final para habilitar o aceite.</span>
+      </div>
+    </div>
+    
+    <div class="modal-footer terms-modal-footer">
+      <button type="button" class="btn-cancelar" (click)="fecharTermos()">Fechar</button>
+      <button 
+        type="button" 
+        class="btn-aceitar-termos" 
+        [disabled]="!termosScrollCompleto" 
+        (click)="aceitarTermos()"
+        [title]="!termosScrollCompleto ? 'Role o texto até o fim para aceitar' : 'Aceitar os termos'"
+      >
+        Li e Aceito os Termos
+      </button>
+    </div>
+    
   </div>
 </div>

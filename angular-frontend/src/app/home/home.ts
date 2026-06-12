@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
@@ -18,6 +18,11 @@ export class Home implements OnInit {
   modalAberto: boolean = false;
   tipoUsuario: string = '';
   carregando: boolean = false;
+
+  // Controle dos Termos de Uso
+  modalTermosAberto: boolean = false;
+  termosLidos: boolean = false;
+  termosScrollCompleto: boolean = false;
 
   // Campos de endereço
   cepValue: string = '';
@@ -45,6 +50,7 @@ export class Home implements OnInit {
     private route: ActivatedRoute,
     private http: HttpClient,
     private toastService: ToastService,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -96,7 +102,35 @@ export class Home implements OnInit {
     this.tipoUsuario = '';
     this.cpfFormatado = '';
     this.cpfErro = '';
+    this.termosLidos = false;
+    this.termosScrollCompleto = false;
     this.limparEndereco();
+  }
+
+  abrirTermos(event?: Event): void {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    this.modalTermosAberto = true;
+    this.termosScrollCompleto = false;
+  }
+
+  fecharTermos(): void {
+    this.modalTermosAberto = false;
+  }
+
+  aceitarTermos(): void {
+    this.termosLidos = true;
+    this.modalTermosAberto = false;
+  }
+
+  onScrollTermos(event: Event): void {
+    const el = event.target as HTMLElement;
+    const threshold = 15; // pixels de tolerância
+    if (el.scrollHeight - el.scrollTop <= el.clientHeight + threshold) {
+      this.termosScrollCompleto = true;
+    }
   }
 
   limparEndereco(): void {
@@ -175,17 +209,20 @@ export class Home implements OnInit {
         if (res.erro) {
           this.cepErro = 'CEP não encontrado.';
           this.toastService.warning('CEP não encontrado', 'Verifique o número digitado.');
+          this.cdr.detectChanges();
           return;
         }
         this.enderecoLogradouro = res.logradouro || '';
         this.enderecoBairro = res.bairro || '';
         this.enderecoCidade = res.localidade || '';
         this.enderecoUF = res.uf || '';
+        this.cdr.detectChanges();
       },
       error: () => {
         this.cepCarregando = false;
         this.cepErro = 'Erro ao buscar o CEP. Verifique sua conexão.';
         this.toastService.error('Erro de CEP', 'Erro ao buscar o CEP. Verifique sua conexão.');
+        this.cdr.detectChanges();
       },
     });
   }
@@ -270,6 +307,8 @@ export class Home implements OnInit {
     this.tipoUsuario = '';
     this.cpfFormatado = '';
     this.cpfErro = '';
+    this.termosLidos = false;
+    this.termosScrollCompleto = false;
     this.limparEndereco();
   }
 }

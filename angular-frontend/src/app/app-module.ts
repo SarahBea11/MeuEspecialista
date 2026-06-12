@@ -10,6 +10,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AuthInterceptor } from './services/auth.interceptor';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { EsqueceuSenha } from './esqueceu-senha/esqueceu-senha';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 @NgModule({
   declarations: [App, Login, Perfil, EsqueceuSenha],
@@ -22,6 +23,7 @@ import { EsqueceuSenha } from './esqueceu-senha/esqueceu-senha';
     Home,
   ],
   providers: [
+    provideZonelessChangeDetection(),
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
