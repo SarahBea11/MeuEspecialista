@@ -630,4 +630,23 @@ input[readonly] {
   min-width: 100px;
 }
 
+.select-perfil {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  font-size: 15px;
+  background-color: #fff;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  color: #334155;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.select-perfil:focus {
+  border-color: #044f23;
+  box-shadow: 0 0 0 3px rgba(4,79,35,0.1);
+}
+
 

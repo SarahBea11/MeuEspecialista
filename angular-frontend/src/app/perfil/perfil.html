@@ -93,12 +93,26 @@
         <div class="campo-interno">
           <label>Especialidade:</label>
           <input
+            *ngIf="!editando"
             type="text"
             name="especialidade"
             [(ngModel)]="usuario.especialidade"
             placeholder="Especialidade"
-            [readonly]="!editando"
+            readonly
           />
+          <select
+            *ngIf="editando"
+            name="especialidade"
+            [(ngModel)]="usuario.especialidade"
+            (change)="aoMudarEspecialidade()"
+            class="select-perfil"
+          >
+            <option value="" disabled selected>Selecione sua especialidade</option>
+            <option *ngFor="let esp of especialidades" [value]="esp.nome">
+              {{ esp.nome }}
+            </option>
+            <option value="nao_achei">⚠️ Não achei minha especialidade...</option>
+          </select>
         </div>
       </ng-container>
 
@@ -152,15 +166,29 @@
         />
       </div>
 
-      <div class="campo-interno">
+      <div class="campo-interno" *ngIf="usuario.tipo === 'paciente'">
         <label>Convênio:</label>
         <input
+          *ngIf="!editando"
           type="text"
           name="convenio"
           [(ngModel)]="usuario.convenio"
-          placeholder="Convênio"
-          [readonly]="!editando"
+          placeholder="Sem convênio / Particular"
+          readonly
         />
+        <select
+          *ngIf="editando"
+          name="convenio_id"
+          [(ngModel)]="usuario.convenio_id"
+          (change)="aoMudarConvenio()"
+          class="select-perfil"
+        >
+          <option [value]="null">Sem convênio (Particular)</option>
+          <option *ngFor="let conv of convenios" [value]="conv.id">
+            {{ conv.nome }}
+          </option>
+          <option value="nao_achei">⚠️ Não achei meu convênio...</option>
+        </select>
       </div>
     </div>
 

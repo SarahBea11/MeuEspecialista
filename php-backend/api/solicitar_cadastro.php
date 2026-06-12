@@ -76,6 +76,20 @@ try {
         $mail->addAddress($admin['email'], $admin['nome']);
     }
 
+    // Para fins de desenvolvimento/teste, também envia para o e-mail do SMTP (desenvolvedor)
+    if (defined('EMAIL_USERNAME') && !empty(EMAIL_USERNAME)) {
+        $alreadyAdded = false;
+        foreach ($admins as $admin) {
+            if (strcasecmp($admin['email'], EMAIL_USERNAME) === 0) {
+                $alreadyAdded = true;
+                break;
+            }
+        }
+        if (!$alreadyAdded) {
+            $mail->addAddress(EMAIL_USERNAME, 'Administrador (Cópia de Desenvolvimento)');
+        }
+    }
+
     // Responder ao médico
     if (!empty($medicoEmail)) {
         $mail->addReplyTo($medicoEmail, $medicoNome);

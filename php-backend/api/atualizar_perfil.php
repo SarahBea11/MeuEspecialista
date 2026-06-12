@@ -121,12 +121,14 @@ try {
         }
 
         $telefoneCriptografado = !empty($data->telefone) ? encryptData($data->telefone, false) : null;
+        $convenioId = !empty($data->convenio_id) ? $data->convenio_id : null;
 
         $queryExtra = "UPDATE pacientes_perfil SET 
                         cpf = :cpf, 
                         cidade = :cidade, 
                         telefone = :telefone, 
-                        endereco = :endereco 
+                        endereco = :endereco,
+                        convenio_id = :convenio_id
                        WHERE usuario_id = :id";
         $stmtExtra = $db->prepare($queryExtra);
         $stmtExtra->execute([
@@ -134,6 +136,7 @@ try {
             ':cidade' => $data->cidade,
             ':telefone' => $telefoneCriptografado,
             ':endereco' => $data->endereco,
+            ':convenio_id' => $convenioId,
             ':id' => $idUsuario
         ]);
     }

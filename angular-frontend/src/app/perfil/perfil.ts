@@ -3,6 +3,7 @@ import { AuthService } from '../services/auth';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ToastService } from '../services/toast';
 import { environment } from '../environments';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-perfil',
@@ -38,11 +39,15 @@ export class Perfil implements OnInit {
   descricaoSolicitacao: string = '';
   enviandoSolicitacao: boolean = false;
 
+  especialidades: any[] = [];
+  convenios: any[] = [];
+
   constructor(
     private authService: AuthService,
     private router: Router,
     private cdr: ChangeDetectorRef,
     private toastService: ToastService,
+    private http: HttpClient,
   ) {}
 
   obterFotoUrl(foto: string): string {
@@ -80,6 +85,64 @@ export class Perfil implements OnInit {
 
   ngOnInit(): void {
     this.carregarUsuario();
+    this.carregarListas();
+  }
+
+  carregarListas() {
+    this.http.get<any>(`${environment.apiUrl}listar_especialidades.php`).subscribe({
+      next: (res) => {
+        if (res.status === 'success') {
+          this.especialidades = res.dados || [];
+          this.cdr.detectChanges();
+        }
+      }
+    });
+
+    this.http.get<any>(`${environment.apiUrl}listar_convenios.php`).subscribe({
+      next: (res) => {
+        if (res.status === 'success') {
+          this.convenios = res.dados || [];
+          this.cdr.detectChanges();
+        }
+      }
+    });
+  }
+
+  aoMudarEspecialidade() {
+    if (this.usuario.especialidade === 'nao_achei') {
+      this.usuario.especialidade = '';
+      this.solicitarNaoEncontrado('Especialidade');
+    }
+  }
+
+  aoMudarConvenio() {
+    if (this.usuario.convenio_id === 'nao_achei' || this.usuario.convenio_id === 'nao_achei_str') {
+      this.usuario.convenio_id = null;
+      this.solicitarNaoEncontrado('Convênio');
+    }
+  }
+
+  solicitarNaoEncontrado(tipo: 'Especialidade' | 'Convênio') {
+    if (this.usuario.tipo === 'medico') {
+      this.mostrarFormSolicitacao = true;
+      this.tipoSolicitacao = tipo;
+      this.descricaoSolicitacao = `Solicito a inclusão da ${tipo === 'Especialidade' ? 'especialidade' : 'do convênio'} chamado: `;
+      this.toastService.info(
+        'Solicitação de Inclusão',
+        `Por favor, informe no formulário abaixo o nome do item que deseja solicitar.`
+      );
+      this.cdr.detectChanges();
+      
+      setTimeout(() => {
+        const el = document.querySelector('.secao-solicitacao');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    } else {
+      this.toastService.info(
+        'Item não encontrado',
+        `Entre em contato com o administrador para solicitar o cadastro do seu convênio.`
+      );
+    }
   }
 
   carregarUsuario() {

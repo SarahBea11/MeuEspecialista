@@ -49,9 +49,35 @@ CREATE TABLE `especialidades` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO `especialidades` (`nome`) VALUES
+  ('Alergologia'),
+  ('Anestesiologia'),
+  ('Angiologia'),
   ('Cardiologia'),
+  ('Cirurgia Geral'),
+  ('Cirurgia Plástica'),
+  ('Coloproctologia'),
+  ('Dermatologia'),
+  ('Endocrinologia'),
+  ('Fisiatria'),
+  ('Gastroenterologia'),
+  ('Geriatria'),
+  ('Ginecologia e Obstetrícia'),
+  ('Hematologia'),
+  ('Infectologia'),
+  ('Mastologia'),
+  ('Medicina do Trabalho'),
+  ('Nefrologia'),
+  ('Neurologia'),
+  ('Nutrologia'),
+  ('Oftalmologia'),
+  ('Oncologia'),
+  ('Ortopedia'),
+  ('Otorrinolaringologia'),
   ('Pediatria'),
-  ('Psiquiatria');
+  ('Pneumologia'),
+  ('Psiquiatria'),
+  ('Reumatologia'),
+  ('Urologia');
 
 -- ------------------------------------------------------------
 -- 4. convenios (sem dependências)
@@ -64,10 +90,19 @@ CREATE TABLE `convenios` (
   UNIQUE KEY `nome_convenio` (`nome_convenio`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO `convenios` (`id`, `nome_convenio`) VALUES
-  (2, 'Amil'),
-  (3, 'Intermédica'),
-  (4, 'Unimed');
+INSERT INTO `convenios` (`nome_convenio`) VALUES
+  ('Allianz Saúde'),
+  ('Amil'),
+  ('Bradesco Saúde'),
+  ('Care Plus'),
+  ('Golden Cross'),
+  ('GreenLine'),
+  ('Intermédica (GNDI)'),
+  ('NotreDame Intermédica'),
+  ('Porto Seguro Saúde'),
+  ('Sompo Saúde'),
+  ('SulAmérica Saúde'),
+  ('Unimed');
 
 -- ------------------------------------------------------------
 -- 3. medicos_perfil (depende de: usuarios)

@@ -50,7 +50,7 @@
   right: 24px;
   width: 380px;
   max-width: calc(100vw - 48px);
-  z-index: 10000;
+  z-index: 30000; /* Z-Index altíssimo para ficar à frente de modais e overlays */
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -199,8 +199,19 @@
   }
 }
 
-/* Ajustes Responsivos para Mobile */
-@media (max-width: 480px) {
+@keyframes slideInMobile {
+  from {
+    transform: translateY(-80px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Ajustes Responsivos para Mobile e Tablets */
+@media (max-width: 768px) {
   .toast-wrapper {
     top: 16px;
     right: 16px;
@@ -212,6 +223,7 @@
     padding: 12px 16px;
     min-height: 70px;
     gap: 12px;
+    animation: slideInMobile 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .toast-icon-badge {
     width: 34px;
