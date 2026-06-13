@@ -199,3 +199,21 @@
     </main>
   </div>
 </div>
+
+<!-- Modal de Confirmação de Exclusão -->
+<div class="modal-confirmacao-overlay" *ngIf="confirmacaoExclusao.visivel" (click)="fecharConfirmacao()">
+  <div class="modal-confirmacao" (click)="$event.stopPropagation()">
+    <div class="modal-confirmacao-header">
+      <span class="modal-icon">⚠️</span>
+      <h3>Confirmar Exclusão</h3>
+    </div>
+    <div class="modal-confirmacao-body">
+      <p>Você tem certeza de que deseja remover o(a) {{ confirmacaoExclusao.tipo }} <strong>"{{ confirmacaoExclusao.item?.nome }}"</strong>?</p>
+      <p class="alerta-exclusao">Atenção: Esta ação é irreversível e removerá permanentemente esta informação do sistema, podendo afetar os perfis dos médicos vinculados a ela.</p>
+    </div>
+    <div class="modal-confirmacao-footer">
+      <button class="btn-cancelar-modal" (click)="fecharConfirmacao()">Cancelar</button>
+      <button class="btn-confirmar-modal" (click)="confirmarExclusao()">Sim, Remover</button>
+    </div>
+  </div>
+</div>

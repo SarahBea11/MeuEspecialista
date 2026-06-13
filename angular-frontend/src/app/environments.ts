@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://192.168.0.51/MeuEspecialista/php-backend/api/',
+  apiUrl: 'http://172.16.66.85/MeuEspecialista/php-backend/api/',
 };

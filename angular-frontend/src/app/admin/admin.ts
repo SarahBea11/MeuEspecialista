@@ -39,6 +39,12 @@ export class Admin implements OnInit {
 
   carregando: boolean = false;
 
+  confirmacaoExclusao: any = {
+    visivel: false,
+    item: null,
+    tipo: null
+  };
+
   private crudUrl = `${environment.apiUrl}admin_crud.php`;
 
   constructor(
@@ -190,21 +196,46 @@ export class Admin implements OnInit {
   }
 
   removerItem(item: any) {
-    if (!confirm(`Tem certeza que deseja remover "${item.nome}"?`)) {
-      return;
-    }
+    let tipo: 'cidade' | 'especialidade' | 'convenio' | null = null;
+    if (this.abaAtiva === 'cidades') tipo = 'cidade';
+    if (this.abaAtiva === 'especialidades') tipo = 'especialidade';
+    if (this.abaAtiva === 'convenios') tipo = 'convenio';
+
+    this.confirmacaoExclusao = {
+      visivel: true,
+      item: item,
+      tipo: tipo
+    };
+  }
+
+  fecharConfirmacao() {
+    this.confirmacaoExclusao = {
+      visivel: false,
+      item: null,
+      tipo: null
+    };
+  }
+
+  confirmarExclusao() {
+    const item = this.confirmacaoExclusao.item;
+    const tipo = this.confirmacaoExclusao.tipo;
+    if (!item || !tipo) return;
 
     let action = '';
-    if (this.abaAtiva === 'cidades') action = 'delete_cidade';
-    if (this.abaAtiva === 'especialidades') action = 'delete_especialidade';
-    if (this.abaAtiva === 'convenios') action = 'delete_convenio';
+    if (tipo === 'cidade') action = 'delete_cidade';
+    if (tipo === 'especialidade') action = 'delete_especialidade';
+    if (tipo === 'convenio') action = 'delete_convenio';
 
     this.http.post<any>(`${this.crudUrl}?action=${action}`, { id: item.id }).subscribe({
       next: (res) => {
         this.toastService.success('Sucesso', res.message || 'Removido com sucesso!');
         this.carregarDados();
+        this.fecharConfirmacao();
       },
-      error: (err) => this.toastService.errorFriendly('Erro ao remover', err)
+      error: (err) => {
+        this.toastService.errorFriendly('Erro ao remover', err);
+        this.fecharConfirmacao();
+      }
     });
   }
 

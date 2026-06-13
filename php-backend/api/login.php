@@ -6,6 +6,24 @@ require_once __DIR__ . '/../config/app_config.php';
 include_once '../config/database.php';
 include_once '../models/Usuario.php';
 
+// Protege contra saída acidental (warnings/whitespace/BOM) que podem corromper JSON
+if (!ob_get_level()) {
+    ob_start();
+}
+
+if (!function_exists('send_json')) {
+    function send_json($data, $code = 200)
+    {
+        if (ob_get_length()) {
+            ob_clean();
+        }
+        http_response_code($code);
+        header("Content-Type: application/json; charset=UTF-8");
+        echo json_encode($data);
+        exit();
+    }
+}
+
 $database = new Database();
 $db = $database->getConnection();
 $usuario = new Usuario($db);
@@ -18,9 +36,7 @@ $senha = isset($data->senha) ? $data->senha : "";
 if (!empty($email) && !empty($senha)) {
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        http_response_code(400);
-        echo json_encode(["status" => "error", "message" => "Formato de e-mail inválido."]);
-        exit();
+        send_json(["status" => "error", "message" => "Formato de e-mail inválido."], 400);
     }
 
     $usuario->email = $email;
@@ -42,24 +58,19 @@ if (!empty($email) && !empty($senha)) {
             $tokenPayload = base64_encode(json_encode($payload));
             $assinatura = hash_hmac('sha256', $tokenPayload, JWT_SECRET);
             $tokenFinal = $tokenPayload . "." . $assinatura;
-
-            http_response_code(200);
-            echo json_encode([
+            send_json([
                 "status" => "success",
                 "message" => "Login realizado!",
                 "token" => $tokenFinal,
                 "tipo" => $row['tipo'],
                 "nome" => $row['nome'] ?? null
-            ]);
+            ], 200);
         } else {
-            http_response_code(401);
-            echo json_encode(["status" => "error", "message" => "Senha incorreta."]);
+            send_json(["status" => "error", "message" => "Senha incorreta."], 401);
         }
     } else {
-        http_response_code(404);
-        echo json_encode(["status" => "error", "message" => "Usuário não encontrado."]);
+        send_json(["status" => "error", "message" => "Usuário não encontrado."], 404);
     }
 } else {
-    http_response_code(400);
-    echo json_encode(["status" => "error", "message" => "Preencha todos os campos"]);
+    send_json(["status" => "error", "message" => "Preencha todos os campos"], 400);
 }
